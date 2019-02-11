@@ -243,6 +243,10 @@ export interface WithContextTypes<IJ> {
   context: IJ;
 }
 
+export interface GeneralObject {
+  [key: string]: any;
+}
+
 export enum TypeOf {
   Undefined = 'undefined',
   Object = 'object',
@@ -251,8 +255,4 @@ export enum TypeOf {
   String = 'string',
   Symbol = 'symbol',
   Function = 'function',
-}
-
-export interface GeneralObject {
-  [key: string]: any;
 }
