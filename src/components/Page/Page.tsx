@@ -1,5 +1,4 @@
 import * as React from 'react';
-import isEqual from 'lodash/isEqual';
 import {classNames} from '@shopify/react-utilities/styles';
 import {
   Button as AppBridgeButton,
@@ -11,6 +10,7 @@ import {
   generateRedirect,
 } from '../../utilities/app-bridge-transformers';
 import pick from '../../utilities/pick';
+import isObjectsEqual from '../../utilities/isObjectsEqual';
 import {withAppProvider, WithAppProviderProps} from '../AppProvider';
 
 import {Header, HeaderProps} from './components';
@@ -64,7 +64,7 @@ export class Page extends React.PureComponent<ComposedProps, never> {
     const prevAppBridgeProps = pick(prevProps, APP_BRIDGE_PROPS);
     const currentAppBridgeProps = pick(this.props, APP_BRIDGE_PROPS);
 
-    if (!isEqual(prevAppBridgeProps, currentAppBridgeProps)) {
+    if (!isObjectsEqual(prevAppBridgeProps, currentAppBridgeProps)) {
       this.titlebar.unsubscribe();
       this.titlebar.set(this.transformProps());
     }

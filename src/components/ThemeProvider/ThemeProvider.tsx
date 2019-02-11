@@ -1,5 +1,5 @@
 import * as React from 'react';
-import isEqual from 'lodash/isEqual';
+import isObjectsEqual from '../../utilities/isObjectsEqual';
 import {setColors} from './utils';
 import {Theme, ThemeProviderContext, THEME_CONTEXT_TYPES} from './types';
 
@@ -35,7 +35,7 @@ export default class ThemeProvider extends React.Component<Props> {
   }
 
   componentWillReceiveProps({theme}: Props) {
-    if (isEqual(theme, this.props.theme)) {
+    if (isObjectsEqual(theme, this.props.theme)) {
       return;
     }
 

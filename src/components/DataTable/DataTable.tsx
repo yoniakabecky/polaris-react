@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {classNames} from '@shopify/react-utilities/styles';
-import isEqual from 'lodash/isEqual';
+import isObjectsEqual from '../../utilities/isObjectsEqual';
 import debounce from 'lodash/debounce';
 
 import {headerCell} from '../shared';
@@ -110,7 +110,7 @@ export class DataTable extends React.PureComponent<
   }
 
   componentDidUpdate(prevProps: Props) {
-    if (isEqual(prevProps, this.props)) {
+    if (isObjectsEqual(prevProps, this.props)) {
       return;
     }
     this.handleResize();
