@@ -1,29 +1,37 @@
 import * as React from 'react';
-import Button from '../Button';
+import {classNames} from '@shopify/react-utilities';
 
+import {withAppProvider, WithAppProviderProps} from '../AppProvider';
 import {handleMouseUpByBlurring} from '../../utilities/focus';
+import Icon, {Props as IconProps} from '../Icon';
 import styles from './ToggleButton.scss';
+
+export type IconSource = IconProps['source'];
 
 export interface Props {
   /** The content to display inside the toggle */
-  content: string | string[];
+  children?: string | string[];
   /** A unique identifier for the toggle */
   id?: string;
-  /** Provides extra visual weight and identifies the toggle as the primary action */
+  /** Provides extra visual weight and identifies the toggle as the primary action on the page */
   primary?: boolean;
   /** Disables the toggle, disallowing merchant interaction */
   disabled?: boolean;
+  /** Replaces toggle text with a spinner while a background action is being performed */
+  loading?: boolean;
   /** Gives the toggle a subtle alternative to the default styling, appropriate for certain backdrops */
   outline?: boolean;
+  /** Icon to display to the left of the toggle content */
+  icon?: React.ReactNode | IconSource;
   /** Visually hidden text for screen readers */
   accessibilityLabel?: string;
   /** Id of the element the toggle controls */
   ariaControls?: string;
-  /** Tells screen reader the toggle is pressed */
-  pressed: boolean;
+  /** Tells screen reader the toggle is pressed, and sets the aria-pressed property */
+  pressed?: boolean;
   /** Callback when clicked */
   onClick?(): void;
-  /** Callback when toggle becomes focussed */
+  /** Callback when toggle becomes focused */
   onFocus?(): void;
   /** Callback when focus leaves toggle */
   onBlur?(): void;
@@ -35,32 +43,50 @@ export interface Props {
   onKeyDown?(event: React.KeyboardEvent<HTMLButtonElement>): void;
 }
 
-export default function ToggleButton({
+export type CombinedProps = Props & WithAppProviderProps;
+
+function ToggleButton({
   id,
   disabled,
-  content,
+  loading,
+  children,
   accessibilityLabel,
   ariaControls,
   pressed,
-  primary,
-  outline,
   onClick,
   onFocus,
   onBlur,
   onKeyDown,
   onKeyPress,
   onKeyUp,
-}: Props) {
+  icon,
+  primary,
+  outline,
+}: CombinedProps) {
+  const className = classNames(
+    styles.ToggleButton,
+    primary && styles.primary,
+    outline && styles.outline,
+    disabled && styles.disabled,
+    pressed && styles.pressed,
+    icon && children == null && styles.iconOnly,
+  );
+
+  let iconMarkup;
+
+  if (icon) {
+    const iconInner = isIconSource(icon) ? (
+      <Icon source={loading ? 'placeholder' : icon} />
+    ) : (
+      icon
+    );
+    iconMarkup = <IconWrapper>{iconInner}</IconWrapper>;
+  }
+
   return (
-    <Button
+    <button
       id={id}
-      primary={primary}
-      outline={outline}
-      className={styles.ToggleButton}
-      disabled={disabled}
-      aria-label={accessibilityLabel}
-      aria-controls={ariaControls}
-      aria-pressed={pressed}
+      type="button"
       onClick={onClick}
       onFocus={onFocus}
       onBlur={onBlur}
@@ -68,8 +94,28 @@ export default function ToggleButton({
       onKeyUp={onKeyUp}
       onKeyPress={onKeyPress}
       onMouseUp={handleMouseUpByBlurring}
+      className={className}
+      disabled={disabled}
+      aria-label={accessibilityLabel}
+      aria-controls={ariaControls}
+      aria-pressed={pressed}
+      role={loading ? 'alert' : undefined}
+      aria-busy={loading ? true : undefined}
     >
-      {content}
-    </Button>
+      <span className={styles.Content}>
+        {children && <span className={styles.Text}>{children}</span>}
+        {iconMarkup && iconMarkup}
+      </span>
+    </button>
   );
 }
+
+export function IconWrapper({children}: any) {
+  return <span className={styles.Icon}>{children}</span>;
+}
+
+function isIconSource(x: any): x is IconSource {
+  return typeof x === 'string' || (typeof x === 'object' && x.body);
+}
+
+export default withAppProvider<Props>()(ToggleButton);
