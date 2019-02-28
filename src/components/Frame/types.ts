@@ -51,6 +51,15 @@ export interface ContextualSaveBarProps {
 
 // Toast
 
+export enum ToastDurationEnum {
+  Fast = 3000,
+  Base = 5000,
+  Slow = 10000,
+  Slower = 15000,
+}
+
+export type ToastDuration = keyof typeof ToastDurationEnum;
+
 export interface ToastProps {
   /** The content that should appear in the toast message */
   content: string;
@@ -58,7 +67,7 @@ export interface ToastProps {
    * The length of time in milliseconds the toast message should persist
    * @default 5000
    */
-  duration?: number;
+  duration?: ToastDuration | number;
   /** Display an error toast. */
   error?: boolean;
   /** Callback when the dismiss icon is clicked */

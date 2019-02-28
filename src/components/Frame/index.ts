@@ -8,6 +8,7 @@ export {
   ContextualSaveBarProps,
   FrameContext,
   frameContextTypes,
+  ToastDurationEnum,
   ToastProps,
 } from './types';
 

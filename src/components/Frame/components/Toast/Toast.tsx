@@ -5,11 +5,11 @@ import {Key} from '../../../../types';
 
 import Icon from '../../../Icon';
 import KeypressListener from '../../../KeypressListener';
-import {ToastProps as Props} from '../../types';
+import {ToastProps as Props, ToastDurationEnum} from '../../types';
 
 import styles from './Toast.scss';
 
-export const DEFAULT_TOAST_DURATION = 5000;
+export const DEFAULT_TOAST_DURATION = ToastDurationEnum.Base;
 
 export default class Toast extends React.Component<Props, never> {
   private timer?: number;
@@ -54,10 +54,12 @@ export default class Toast extends React.Component<Props, never> {
 
   private triggerDismissalTimeout() {
     const {onDismiss, duration = DEFAULT_TOAST_DURATION} = this.props;
+    const timerDuration =
+      typeof duration === 'number' ? duration : ToastDurationEnum[duration];
 
     this.clearDismissalTimeout();
     if (onDismiss != null && duration != null) {
-      this.timer = window.setTimeout(onDismiss, duration);
+      this.timer = window.setTimeout(onDismiss, timerDuration);
     }
   }
 }

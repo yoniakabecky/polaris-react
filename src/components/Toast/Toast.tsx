@@ -6,6 +6,7 @@ import {
   DEFAULT_TOAST_DURATION,
   FrameContext,
   frameContextTypes,
+  ToastDurationEnum,
   ToastProps,
 } from '../Frame';
 import {withAppProvider, WithAppProviderProps} from '../AppProvider';
@@ -43,9 +44,12 @@ export class Toast extends React.PureComponent<ComposedProps, never> {
         ...(props as Props),
       });
     } else {
+      const timerDuration =
+        typeof duration === 'number' ? duration : ToastDurationEnum[duration];
+
       this.appBridgeToast = AppBridgeToast.create(appBridge, {
         message: content,
-        duration,
+        duration: timerDuration,
         isError: error,
       });
 
