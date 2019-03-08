@@ -111,7 +111,7 @@ describe('<FilterControl />', () => {
         <Provider value={mockDefaultContext}>
           <FilterControl
             {...mockDefaultProps}
-            appliedFilters={mockAppliedFilters}
+            appliedFilters={[{...mockAppliedFilters[0], key: 'my-custom-key', value: 'my-custom-value'}, mockAppliedFilters[1]]}
             onFiltersChange={onFiltersChange}
           />
         </Provider>,
