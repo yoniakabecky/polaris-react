@@ -124,7 +124,6 @@ module.exports = ({config, mode}) => {
           options: {
             resources: [
               path.resolve(__dirname, '..', 'src', 'styles', 'foundation.scss'),
-              path.resolve(__dirname, '..', 'src', 'styles', 'shared.scss'),
             ],
           },
         },

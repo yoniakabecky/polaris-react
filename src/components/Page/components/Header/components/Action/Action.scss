@@ -1,3 +1,8 @@
+@import 'shared/buttons';
+@import 'shared/controls';
+@import 'shared/icons';
+@import 'shared/typography';
+
 $difference-between-touch-area-and-backdrop: control-height() -
   control-slim-height();
 $action-horizontal-padding: (1.5 * spacing(tight));
