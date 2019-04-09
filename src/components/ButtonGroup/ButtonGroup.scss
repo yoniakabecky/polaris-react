@@ -47,10 +47,18 @@ $item-spacing: spacing(tight);
       margin-left: -(border-width());
     }
 
-    // stylelint-disable-next-line selector-max-combinators
+    // stylelint-disable selector-max-combinators
     > * {
       border-radius: 0;
+
+      &:not(:only-child) {
+        // stylelint-disable-next-line max-nesting-depth
+        &:not(:first-child) {
+          margin-left: -(border-width());
+        }
+      }
     }
+    // stylelint-enable selector-max-combinators
 
     // stylelint-disable-next-line selector-max-combinators
     &:first-child > * {

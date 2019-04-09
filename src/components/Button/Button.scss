@@ -6,11 +6,20 @@ $large-min-height: rem(44px);
 $large-vertical-padding: ($large-min-height - line-height(body) - rem(2px)) / 2;
 $spinner-size: rem(20px);
 
+$stacking-order: (
+  item: 10,
+  focused: 20,
+);
+
 .Button {
   @include button-base;
 
   &.disabled {
     @include base-button-disabled;
+  }
+
+  &:focus {
+    z-index: z-index(focused, $stacking-order);
   }
 }
 
