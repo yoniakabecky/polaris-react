@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {ReactWrapper} from 'enzyme';
 import {
   CirclePlusMinor,
   CircleAlertMajorTwotone,
@@ -114,5 +115,27 @@ describe('<Banner />', () => {
   it('renders a slim button with contentContext', () => {
     const button = bannerWithContentContext.find(Button);
     expect(button.prop('size')).toBe('slim');
+  });
+
+  describe('focus', () => {
+    it('exposes a function that allows the banner to be programmatically focused', () => {
+      class Test extends React.Component {
+        banner = React.createRef<any>();
+
+        componentDidMount() {
+          this.banner.current.focus();
+        }
+
+        render() {
+          return <Banner ref={this.banner} status="critical" />;
+        }
+      }
+
+      const div = mountWithAppProvider(<Test />)
+        .find('div')
+        .filterWhere((element: ReactWrapper) => element.prop('tabIndex') === 0);
+
+      expect(div.getDOMNode()).toBe(document.activeElement);
+    });
   });
 });

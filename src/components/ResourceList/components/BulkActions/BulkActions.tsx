@@ -2,8 +2,8 @@ import * as React from 'react';
 import {CSSTransition, Transition} from 'react-transition-group';
 import debounce from 'lodash/debounce';
 import {classNames} from '@shopify/react-utilities/styles';
+import {durationBase} from '@shopify/polaris-tokens';
 import {DisableableAction, Action, ActionListSection} from '../../../../types';
-import {Duration} from '../../../shared';
 import ActionList from '../../../ActionList';
 import Popover from '../../../Popover';
 import Button from '../../../Button';
@@ -239,6 +239,7 @@ export class BulkActions extends React.PureComponent<CombinedProps, State> {
     const cancelButtonClassName = classNames(
       styles.Button,
       styles['Button-cancel'],
+      disabled && styles.disabled,
     );
     const cancelButton = (
       <button
@@ -246,8 +247,9 @@ export class BulkActions extends React.PureComponent<CombinedProps, State> {
         // eslint-disable-next-line react/jsx-no-bind
         onClick={this.setSelectMode.bind(this, false)}
         testID="btn-cancel"
+        disabled={disabled}
       >
-        Cancel
+        {intl.translate('Polaris.Common.cancel')}
       </button>
     );
 
@@ -265,6 +267,7 @@ export class BulkActions extends React.PureComponent<CombinedProps, State> {
               content={intl.translate(
                 'Polaris.ResourceList.BulkActions.actionsActivatorLabel',
               )}
+              disabled={disabled}
             />
           }
           onClose={this.toggleSmallScreenPopover}
@@ -284,6 +287,7 @@ export class BulkActions extends React.PureComponent<CombinedProps, State> {
             .slice(0, numberOfPromotedActionsToRender)
             .map((action, index) => (
               <BulkActionButton
+                disabled={disabled}
                 {...action}
                 key={index}
                 handleMeasurement={this.handleMeasurement}
@@ -366,7 +370,7 @@ export class BulkActions extends React.PureComponent<CombinedProps, State> {
               <div className={styles.ButtonGroup}>
                 <CSSTransition
                   in={selectMode}
-                  timeout={Duration.Base}
+                  timeout={durationBase}
                   classNames={slideClasses}
                   appear
                 >
