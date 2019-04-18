@@ -71,6 +71,8 @@ Read the [actionable language guidelines](/content/actionable-language) to learn
 Buttons should always lead with a strong verb that encourages
 action. To provide enough context to merchants use the {verb}+{noun} format on
 buttons except in the case of common actions like Save, Close, Cancel, or OK.
+You can also use {icon}+{verb} when it's redundant to mention the noun (e.g.
+when buttons part of a button group all have the same noun.)
 
 <!-- usagelist -->
 
