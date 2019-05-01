@@ -17,6 +17,7 @@ Use [the changelog guidelines](https://git.io/polaris-changelog-guidelines) to f
 ### Enhancements
 
 - Added translations for all supported locales ([#1358](https://github.com/Shopify/polaris-react/pull/1358))
+- Allow `Link` and `Button` interactions when rendered as `prefix/suffix` within `<TextField />` ([#1394](https://github.com/Shopify/polaris-react/pull/1394))
 - Improved the performance of `ResourceList` ([#1313](https://github.com/Shopify/polaris-react/pull/1313))
 - Adds `withinContentContainer` context to `Navigation` ([#1393](https://github.com/Shopify/polaris-react/pull/1393))
 
