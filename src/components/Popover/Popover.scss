@@ -8,27 +8,31 @@ $content-max-width: rem(400px);
   margin: $visible-portion-of-arrow spacing(tight) spacing();
   box-shadow: shadow(deep);
   border-radius: border-radius();
+  will-change: opacity, left, top;
 }
 
-.PopoverEnter {
+.enter {
   opacity: 0;
 }
 
-.PopoverEnterActive {
+.enterActive {
   opacity: 1;
-  will-change: opacity, left, top;
   transition: opacity duration() easing(in);
 }
 
-.PopoverExit {
+.exit {
   opacity: 1;
 }
 
-.PopoverExitActive {
+.exitActive {
   opacity: 0;
-  will-change: opacity, left, top;
   transition: opacity duration() easing(out);
 }
+
+// .measuring:not(.exitActive),
+// .exitActive {
+//   opacity: 0;
+// }
 
 .fullWidth {
   margin: 0;
@@ -39,19 +43,10 @@ $content-max-width: rem(400px);
   }
 }
 
-.measuring:not(.exiting),
-.exiting {
-  opacity: 0;
-}
-
 .measuring {
   .Content {
     display: block;
   }
-}
-
-.exiting {
-  transition-timing-function: easing(out);
 }
 
 .positionedAbove {

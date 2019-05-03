@@ -26,8 +26,6 @@ export enum CloseSource {
   ScrollOut,
 }
 
-type TransitionStatus = 'entering' | 'entered' | 'exiting' | 'exited';
-
 export interface Props {
   children?: React.ReactNode;
   fullWidth?: boolean;
@@ -45,7 +43,6 @@ export interface Props {
 
 export default class PopoverOverlay extends React.PureComponent<Props, never> {
   private contentNode = React.createRef<HTMLDivElement>();
-  private transitionStatus: TransitionStatus | null = null;
 
   componentDidMount() {
     if (this.props.active) {
@@ -61,6 +58,7 @@ export default class PopoverOverlay extends React.PureComponent<Props, never> {
 
   render() {
     const {active} = this.props;
+
     return (
       <CSSTransition
         in={active}
@@ -68,10 +66,10 @@ export default class PopoverOverlay extends React.PureComponent<Props, never> {
         mountOnEnter
         unmountOnExit
         classNames={{
-          enter: styles.PopoverEnter,
-          enterActive: styles.PopoverEnterActive,
-          exit: styles.PopoverExit,
-          exitActive: styles.PopoverExitActive,
+          enter: styles.enter,
+          enterActive: styles.enterActive,
+          exit: styles.exit,
+          exitActive: styles.exitActive,
         }}
       >
         {this.renderOverlay}
@@ -96,7 +94,7 @@ export default class PopoverOverlay extends React.PureComponent<Props, never> {
     });
   }
 
-  private renderOverlay = (transitionStatus: TransitionStatus) => {
+  private renderOverlay = () => {
     const {
       active,
       activator,
@@ -115,30 +113,24 @@ export default class PopoverOverlay extends React.PureComponent<Props, never> {
         preferredPosition={preferredPosition}
         preferredAlignment={preferredAlignment}
         // eslint-disable-next-line react/jsx-no-bind
-        render={this.renderPopover.bind(this, transitionStatus)}
+        render={this.renderPopover.bind(this)}
         fixed={fixed}
         onScrollOut={this.handleScrollOut}
       />
     );
   };
 
-  private renderPopover = (
-    transitionStatus: TransitionStatus,
-    overlayDetails: OverlayDetails,
-  ) => {
+  private renderPopover = (overlayDetails: OverlayDetails) => {
     const {measuring, desiredHeight, positioning} = overlayDetails;
 
     const {id, children, sectioned, fullWidth, fullHeight} = this.props;
 
     const className = classNames(
       styles.Popover,
-      transitionStatus && animationVariations(transitionStatus),
       positioning === 'above' && styles.positionedAbove,
       fullWidth && styles.fullWidth,
       measuring && styles.measuring,
     );
-
-    this.transitionStatus = transitionStatus;
 
     const contentStyles = measuring ? undefined : {height: desiredHeight};
 
@@ -187,17 +179,17 @@ export default class PopoverOverlay extends React.PureComponent<Props, never> {
       contentNode,
       props: {activator, onClose},
     } = this;
+
     const isDescendant =
       contentNode.current != null &&
       nodeContainsDescendant(contentNode.current, target);
     const isActivatorDescendant = nodeContainsDescendant(activator, target);
-    if (
-      isDescendant ||
-      isActivatorDescendant ||
-      this.transitionStatus !== 'entered'
-    ) {
+
+    // this.transitionStatus !== 'entered'
+    if (isDescendant || isActivatorDescendant) {
       return;
     }
+
     onClose(CloseSource.Click);
   };
 
@@ -227,13 +219,4 @@ function renderPopoverContent(
     return childrenArray;
   }
   return wrapWithComponent(childrenArray, Pane, props);
-}
-
-function animationVariations(status: TransitionStatus) {
-  switch (status) {
-    case 'exiting':
-      return styles.exiting;
-    default:
-      return null;
-  }
 }
