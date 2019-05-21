@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+const babel = require('@babel/core');
+const polarisIcons = require('@shopify/polaris-icons');
 const chalk = require('chalk');
 const grayMatter = require('gray-matter');
 const MdParser = require('./md-parser');
@@ -46,9 +48,14 @@ module.exports = function loader(source) {
   );
 
   // Example code does not have any scope attached to it by default. It boldly
-  // states `<Button>An example Button</Button>`, blindly trusting that `Button`
-  // is available in its scope.
-  //
+  // states `<Button icon={SearchMinor}>An example Button</Button>`, blindly
+  // trusting that `Button` and `SearchMinor` are available in its scope.
+  // We deal with this in two ways:
+  // - For variables that would be defined in polaris-icons we can extract the
+  // identifiers used and dynamically build up an import list
+  // - For variables that would be defined within polaris-react we need to use
+  // the codeInvoker to inject polaris items into the scope
+
   // codeInvoker is responsible for providing a scope for an example function
   // so that it will work. It does this by creating a new fuction with the scope
   // defined as parameters and then calling that new function.
@@ -74,7 +81,26 @@ module.exports = function loader(source) {
     return eval(`(${fnString})`)(...scopeValues);
   };
 
-  return `const codeInvoker = ${codeInvoker};\nexport const component = ${stringyReadme};`;
+  const iconExportsList = Array.from(
+    readme.examples.reduce((memo, example) => {
+      extractIconImports(example.code).forEach((iconExport) => {
+        memo.add(iconExport);
+      });
+      return memo;
+    }, new Set()),
+  ).join(', ');
+
+  const iconImportString = iconExportsList
+    ? `import {${iconExportsList}} from '@shopify/polaris-icons'; `
+    : '';
+
+  return `
+import React from 'react';
+import * as Polaris from '@shopify/polaris';
+${iconImportString}
+const codeInvoker = ${codeInvoker};
+export const component = ${stringyReadme};
+`;
 };
 
 const exampleForRegExp = /<!-- example-for: ([\w\s,]+) -->/u;
@@ -247,9 +273,31 @@ return ${classMatch[1]};
   // PLACEHOLDER because its name will get mangled as part of minification in
   // production mode and thus searching for "PLACEHOLDER in the function's
   // string representation shall fail.
-  return `function (scope) {
+  return `function () {
     return codeInvoker(function () {
       ${wrappedCode}
-    }, scope);
+    }, {...Polaris});
   }`;
+}
+
+/**
+ * Given a block of parsable JavaScript code, find all the times a variable that
+ * matches the name of an icon is used. If it is undefined then make a note of
+ * it so that we can import it
+ */
+function extractIconImports(code) {
+  const ast = babel.parse(`(${code})`);
+  const iconExports = new Set();
+  babel.traverse(ast, {
+    'Identifier|JSXIdentifier'(path) {
+      if (
+        path.node.name in polarisIcons &&
+        !path.scope.hasBinding(path.node.name)
+      ) {
+        iconExports.add(path.node.name);
+      }
+    },
+  });
+
+  return iconExports;
 }
