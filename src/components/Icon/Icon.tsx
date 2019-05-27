@@ -1,9 +1,156 @@
 import * as React from 'react';
-import {classNames, variationName} from '@shopify/react-utilities/styles';
+import {classNames, variationName} from '@shopify/css-utilities';
+import {
+  PlusMinor,
+  AlertMinor,
+  ArrowDownMinor,
+  ArrowLeftMinor,
+  ArrowRightMinor,
+  ArrowUpMinor,
+  ArrowUpDownMinor,
+  CalendarMinor,
+  MobileCancelMajorMonotone,
+  CancelSmallMinor,
+  CaretDownMinor,
+  CaretUpMinor,
+  TickSmallMinor,
+  ChevronDownMinor,
+  ChevronLeftMinor,
+  ChevronRightMinor,
+  ChevronUpMinor,
+  CircleCancelMinor,
+  CircleChevronDownMinor,
+  CircleChevronLeftMinor,
+  CircleChevronRightMinor,
+  CircleChevronUpMinor,
+  CircleInformationMajorTwotone,
+  CirclePlusMinor,
+  CirclePlusOutlineMinor,
+  ConversationMinor,
+  DeleteMinor,
+  CircleDisableMinor,
+  DisputeMinor,
+  DuplicateMinor,
+  EmbedMinor,
+  ExportMinor,
+  ExternalMinor,
+  QuestionMarkMajorTwotone,
+  HomeMajorMonotone,
+  HorizontalDotsMinor,
+  ImportMinor,
+  LogOutMinor,
+  MobileHamburgerMajorMonotone,
+  NoteMinor,
+  NotificationMajorMonotone,
+  OnlineStoreMajorTwotone,
+  OrdersMajorTwotone,
+  PrintMinor,
+  ProductsMajorTwotone,
+  ProfileMinor,
+  MinusMinor,
+  RefreshMinor,
+  RiskMinor,
+  SaveMinor,
+  SearchMinor,
+  ViewMinor,
+} from '@shopify/polaris-icons';
+
 import {withAppProvider, WithAppProviderProps} from '../AppProvider';
-import {IconSource, Color, BUNDLED_ICONS, BundledIcon} from './types';
 
 import styles from './Icon.scss';
+
+export type Color =
+  | 'white'
+  | 'black'
+  | 'skyLighter'
+  | 'skyLight'
+  | 'sky'
+  | 'skyDark'
+  | 'inkLightest'
+  | 'inkLighter'
+  | 'inkLight'
+  | 'ink'
+  | 'blueLighter'
+  | 'blueLight'
+  | 'blue'
+  | 'blueDark'
+  | 'blueDarker'
+  | 'indigoLighter'
+  | 'indigoLight'
+  | 'indigo'
+  | 'indigoDark'
+  | 'indigoDarker'
+  | 'tealLighter'
+  | 'tealLight'
+  | 'teal'
+  | 'tealDark'
+  | 'tealDarker'
+  | 'greenLighter'
+  | 'green'
+  | 'greenDark'
+  | 'yellowLighter'
+  | 'yellow'
+  | 'yellowDark'
+  | 'orange'
+  | 'redLighter'
+  | 'red'
+  | 'redDark'
+  | 'purple';
+
+export const BUNDLED_ICONS = {
+  add: PlusMinor,
+  alert: AlertMinor,
+  arrowDown: ArrowDownMinor,
+  arrowLeft: ArrowLeftMinor,
+  arrowRight: ArrowRightMinor,
+  arrowUp: ArrowUpMinor,
+  arrowUpDown: ArrowUpDownMinor,
+  calendar: CalendarMinor,
+  cancel: MobileCancelMajorMonotone,
+  cancelSmall: CancelSmallMinor,
+  caretDown: CaretDownMinor,
+  caretUp: CaretUpMinor,
+  checkmark: TickSmallMinor,
+  chevronDown: ChevronDownMinor,
+  chevronLeft: ChevronLeftMinor,
+  chevronRight: ChevronRightMinor,
+  chevronUp: ChevronUpMinor,
+  circleCancel: CircleCancelMinor,
+  circleChevronDown: CircleChevronDownMinor,
+  circleChevronLeft: CircleChevronLeftMinor,
+  circleChevronRight: CircleChevronRightMinor,
+  circleChevronUp: CircleChevronUpMinor,
+  circleInformation: CircleInformationMajorTwotone,
+  circlePlus: CirclePlusMinor,
+  circlePlusOutline: CirclePlusOutlineMinor,
+  conversation: ConversationMinor,
+  delete: DeleteMinor,
+  disable: CircleDisableMinor,
+  dispute: DisputeMinor,
+  duplicate: DuplicateMinor,
+  embed: EmbedMinor,
+  export: ExportMinor,
+  external: ExternalMinor,
+  help: QuestionMarkMajorTwotone,
+  home: HomeMajorMonotone,
+  horizontalDots: HorizontalDotsMinor,
+  import: ImportMinor,
+  logOut: LogOutMinor,
+  menu: MobileHamburgerMajorMonotone,
+  notes: NoteMinor,
+  notification: NotificationMajorMonotone,
+  onlineStore: OnlineStoreMajorTwotone,
+  orders: OrdersMajorTwotone,
+  print: PrintMinor,
+  products: ProductsMajorTwotone,
+  profile: ProfileMinor,
+  refresh: RefreshMinor,
+  risk: RiskMinor,
+  save: SaveMinor,
+  search: SearchMinor,
+  subtract: MinusMinor,
+  view: ViewMinor,
+};
 
 const COLORS_WITH_BACKDROPS = [
   'teal',
@@ -20,8 +167,17 @@ interface SVGSource {
   viewBox: string;
 }
 
+export type BundledIcon = keyof typeof BUNDLED_ICONS;
+
 export type UntrustedSVG = string;
 
+export type IconSource =
+  | React.ReactNode
+  | React.SFC<React.SVGProps<SVGSVGElement>>
+  | SVGSource
+  | 'placeholder'
+  | BundledIcon
+  | UntrustedSVG;
 export interface Props {
   /** The SVG contents to display in the icon (icons should fit in a 20 × 20 pixel viewBox) */
   source: IconSource;
