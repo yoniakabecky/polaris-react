@@ -19,5 +19,7 @@ git add --all
 git status
 git commit -m 'upgrade to alpha test branch'
 git status
+git config --global user.email "shopifybuild@shopify.com"
+git config --global user.name "Shopify Build"
 git push origin HEAD
 git status
