@@ -14,7 +14,7 @@ ls -l
 export BRANCH_NAME="polaris-react-$RANDOM-alpha"
 git checkout -b $BRANCH_NAME
 git branch | grep \* | cut -d ' ' -f2
-yarn upgrade @shopify/polaris-react@next
+yarn upgrade @shopify/polaris@next
 git status
 git add --all
 git status
