@@ -9,5 +9,13 @@ mv !(node_modules) ../tmp/polaris-react
 mv ../tmp/polaris-react polaris-react
 git clone ssh://git@github.com/Shopify/$1 --depth 1
 ls -l
-yarn --cwd ./$1 remove @shopify/polaris
-yarn --cwd ./$1 add file:../polaris-react
+git checkout -b "polaris-react-$RANDOM-alpha"
+git branch | grep \* | cut -d ' ' -f2
+yarn upgrade @shopify/polaris-react@next
+git status
+git add --all
+git status
+git commit -m 'upgrade to alpha test branch'
+git status
+git push origin HEAD
+git status

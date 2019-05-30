@@ -13,6 +13,7 @@ shared:
       - yarn
     run:
       - yarn run build
+      - ./.shopify-build/deploy-alpha-package.sh
       - ./.shopify-build/setup-consumer-test.sh web
       - yarn --cwd ./web run build
   build-styleguide: &build-styleguide
@@ -41,4 +42,4 @@ shared:
 
 steps:
   - <<: *build-styleguide
-  - <<: *unit-tests
+  # - <<: *unit-tests
