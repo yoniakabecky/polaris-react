@@ -42,7 +42,6 @@ shared:
 
 steps:
   - <<: *build-styleguide
-  - wait
   - trigger: 'web-ci-builder'
     label: 'Run web build'
     build:

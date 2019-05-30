@@ -11,6 +11,7 @@ git clone ssh://git@github.com/Shopify/$1 --depth 1
 ls -l
 cd $1
 ls -l
+
 git checkout -b "$BUILDKITE_BRANCH-alpha"
 git branch | grep \* | cut -d ' ' -f2
 yarn upgrade @shopify/polaris@next
