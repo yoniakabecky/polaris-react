@@ -11,8 +11,7 @@ git clone ssh://git@github.com/Shopify/$1 --depth 1
 ls -l
 cd $1
 ls -l
-export BRANCH_NAME="polaris-react-$RANDOM-alpha"
-git checkout -b $BRANCH_NAME
+git checkout -b "$BUILDKITE_BRANCH-alpha"
 git branch | grep \* | cut -d ' ' -f2
 yarn upgrade @shopify/polaris@next
 git status

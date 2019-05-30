@@ -42,8 +42,9 @@ shared:
 
 steps:
   - <<: *build-styleguide
-  - trigger: 'web-production-builder'
+  - wait
+  - trigger: 'web-ci-builder'
     label: 'Run web build'
     build:
-      branch: '${BRANCH_NAME}'
+      branch: '${BUILDKITE_BRANCH}-alpha'
   # - <<: *unit-tests
