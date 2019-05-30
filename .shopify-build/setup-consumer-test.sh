@@ -9,6 +9,8 @@ mv !(node_modules) ../tmp/polaris-react
 mv ../tmp/polaris-react polaris-react
 git clone ssh://git@github.com/Shopify/$1 --depth 1
 ls -l
+cd $1
+ls -l
 export BRANCH_NAME="polaris-react-$RANDOM-alpha"
 git checkout -b $BRANCH_NAME
 git branch | grep \* | cut -d ' ' -f2
