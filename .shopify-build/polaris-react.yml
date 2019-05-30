@@ -42,4 +42,8 @@ shared:
 
 steps:
   - <<: *build-styleguide
+  - trigger: 'web-production-builder'
+    label: 'Run web build'
+    build:
+      branch: '${BRANCH_NAME}'
   # - <<: *unit-tests
