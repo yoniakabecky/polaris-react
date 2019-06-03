@@ -17,7 +17,7 @@ shared:
       - yarn run build
       - ./.shopify-build/deploy-alpha-package.sh
       - ./.shopify-build/setup-consumer-test.sh web
-      - yarn --cwd ./web run build
+      # - yarn --cwd ./web run build
   build-styleguide: &build-styleguide
     label: 'Build styleguide'
     container: styleguide
@@ -53,7 +53,7 @@ shared:
       - yarn run publish
 
 steps:
-  - <<: *build-styleguide
+  - <<: *build-web
   - trigger: 'web-ci-builder'
     label: 'Run web build'
     build:
