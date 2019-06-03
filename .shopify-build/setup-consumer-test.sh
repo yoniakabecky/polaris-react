@@ -12,15 +12,5 @@ ls -l
 cd $1
 ls -l
 
-git checkout -b "$BUILDKITE_BRANCH-alpha"
-git branch | grep \* | cut -d ' ' -f2
 yarn upgrade @shopify/polaris@next
-git status
-git add --all
-git status
-git commit -m 'upgrade to alpha test branch'
-git status
-git config --global user.email "shopifybuild@shopify.com"
-git config --global user.name "Shopify Build"
-git push origin HEAD
-git status
+./create-branch
