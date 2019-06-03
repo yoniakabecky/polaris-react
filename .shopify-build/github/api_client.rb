@@ -1,7 +1,11 @@
 # typed: true
 # frozen_string_literal: true
+require "json"
 require 'octokit'
 require_relative './../jwt_helper'
+
+file = File.open "../secrets.json"
+secrets = JSON.load file
 
 module DevelopmentSupport
   module Github
@@ -17,7 +21,7 @@ module DevelopmentSupport
       INSTALLATION_ID = 54319
 
       # Creates an installation access token, expires after 1 hour
-      def self.integration_client(pem = ENV['GITHUB_PEM'])
+      def self.integration_client(pem = secrets['github']['shopify-polaris'])
         client = Octokit::Client.new(bearer_token: DevelopmentSupport::JWTHelper.new_jwt_token(pem))
         resource = client.create_installation_access_token(INSTALLATION_ID).to_h
         client.access_token = resource.fetch(:token)
