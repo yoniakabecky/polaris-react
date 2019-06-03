@@ -3,11 +3,13 @@ containers:
     docker: gcr.io/shopify-docker-images/apps/production/web-platform-ci-node:10.11.0-yarn-1.12.3
   styleguide:
     docker: circleci/node:10.13.0
+  ruby:
+    docker: circleci/ruby:2.5.1
 
 shared:
   build-web: &build-web
     label: 'Build web'
-    container: default
+    container: ruby
     timeout: 35m
     dependencies:
       - yarn
