@@ -11,7 +11,9 @@ shared:
     timeout: 35m
     dependencies:
       - yarn
+      - bundler
     run:
+      - bundle exec eval $(ejson2env test.ejson)
       - yarn run build
       - ./.shopify-build/deploy-alpha-package.sh
       - ./.shopify-build/setup-consumer-test.sh web

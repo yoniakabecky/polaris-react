@@ -4,6 +4,7 @@ GEM
     addressable (2.5.2)
       public_suffix (>= 2.0.2, < 4.0)
     ejson (1.2.1)
+    ejson2env (1.1.0)
     faraday (0.15.4)
       multipart-post (>= 1.2, < 3)
     jwt (2.1.0)
@@ -21,6 +22,7 @@ PLATFORMS
 
 DEPENDENCIES
   ejson
+  ejson2env
   jwt
   octokit
   rake
