@@ -13,7 +13,7 @@ shared:
       - yarn
       - bundler
     run:
-      - bundle exec eval $(bundle exec ejson decrypt -o secrets.json secrets.ejson)
+      - bundle exec eval $(bundle exec ejson decrypt -o secrets.json secrets2.ejson)
       - yarn run build
       - ./.shopify-build/deploy-alpha-package.sh
       - ./.shopify-build/setup-consumer-test.sh web
