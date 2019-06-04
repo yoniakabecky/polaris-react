@@ -15,8 +15,7 @@ shared:
     run:
       - bundle exec eval $(bundle exec ejson decrypt -o secrets.json secrets2.ejson)
       - yarn run build
-      - ./.shopify-build/deploy-alpha-package.sh
-      - ./.shopify-build/setup-consumer-test.sh web
+      - ./.shopify-build/setup-consumer-test.sh polaris-styleguide
       # - yarn --cwd ./web run build
   build-styleguide: &build-styleguide
     label: 'Build styleguide'
