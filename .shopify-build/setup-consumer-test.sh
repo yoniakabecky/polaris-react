@@ -14,4 +14,5 @@ ls -la
 
 yarn upgrade @shopify/polaris@next
 pwd
-bundle exec ./../.shopify-build/create-branch
+cd ../
+bundle exec ./.shopify-build/create-branch
