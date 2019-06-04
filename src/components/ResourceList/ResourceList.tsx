@@ -1,4 +1,4 @@
-import React from 'react';
+import * as React from 'react';
 
 import debounce from 'lodash/debounce';
 import {classNames} from '@shopify/css-utilities';
@@ -19,10 +19,10 @@ import {
   CheckableButton,
   FilterControl,
   Item,
+  Provider,
 } from './components';
-import ResourceListContext from './context';
 
-import {SelectedItems, SELECT_ALL_ITEMS} from './types';
+import {ResourceListContext, SelectedItems, SELECT_ALL_ITEMS} from './types';
 
 import styles from './ResourceList.scss';
 
@@ -295,6 +295,23 @@ export class ResourceList extends React.Component<CombinedProps, State> {
     };
   }
 
+  get getContext(): ResourceListContext {
+    const {
+      selectedItems,
+      resourceName = this.defaultResourceName,
+      loading,
+    } = this.props;
+    const {selectMode} = this.state;
+    return {
+      selectable: this.selectable,
+      selectedItems,
+      selectMode,
+      resourceName,
+      loading,
+      onSelectionChange: this.handleSelectionChange,
+    };
+  }
+
   componentDidMount() {
     this.forceUpdate();
     if (this.props.loading) {
@@ -349,8 +366,6 @@ export class ResourceList extends React.Component<CombinedProps, State> {
       sortOptions,
       sortValue,
       alternateTool,
-      selectedItems,
-      resourceName = this.defaultResourceName,
       onSortChange,
       polaris: {intl},
     } = this.props;
@@ -539,24 +554,15 @@ export class ResourceList extends React.Component<CombinedProps, State> {
       emptyStateMarkup
     );
 
-    const context = {
-      selectable: this.selectable,
-      selectedItems,
-      selectMode,
-      resourceName,
-      loading,
-      onSelectionChange: this.handleSelectionChange,
-    };
-
     return (
-      <ResourceListContext.Provider value={context}>
+      <Provider value={this.getContext}>
         <div className={styles.ResourceListWrapper}>
           {filterControlMarkup}
           {headerMarkup}
           {listMarkup}
           {loadingWithoutItemsMarkup}
         </div>
-      </ResourceListContext.Provider>
+      </Provider>
     );
   }
 
