@@ -13,4 +13,4 @@ cd $1
 ls -l
 
 yarn upgrade @shopify/polaris@next
-./create-branch
+./../polaris-react/.shopify-build/create-branch
