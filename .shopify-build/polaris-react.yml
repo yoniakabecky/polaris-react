@@ -53,10 +53,10 @@ shared:
 
 steps:
   - <<: *build-web
-  - trigger: 'web-ci-builder'
-    label: 'Run web build'
-    build:
-      # branch: '${BUILDKITE_BRANCH}-alpha'
-      branch: 'master'
-      commit: 'HEAD'
-  # - <<: *unit-tests
+  # - trigger: 'web-ci-builder'
+  #   label: 'Run web build'
+  #   build:
+  #     # branch: '${BUILDKITE_BRANCH}-alpha'
+  #     branch: 'master'
+  #     commit: 'HEAD'
+  # # - <<: *unit-tests
