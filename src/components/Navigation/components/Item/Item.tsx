@@ -200,6 +200,8 @@ export class BaseItem extends React.Component<CombinedProps, State> {
 
     const matchState = matchStateForItem(this.props, location);
 
+    console.log(`${this.props.label.toUpperCase()} MATCH STATE: ${matchState}`);
+
     const matchingSubNavigationItems = subNavigationItems.filter((item) => {
       const subMatchState = matchStateForItem(item, location);
       return (
@@ -341,6 +343,16 @@ export function isNavigationItemActive(
     matchState === MatchState.MatchUrl ||
     matchState === MatchState.MatchPaths;
 
+  console.log(
+    `${navigationItem.label.toUpperCase()} MATCH STATE: `,
+    matchState,
+  );
+
+  console.log(
+    `${navigationItem.label.toUpperCase()} IS ACTIVE: `,
+    selected || childIsActive,
+  );
+
   return selected || childIsActive;
 }
 
@@ -362,10 +374,12 @@ function matchStateForItem(
   location: string,
 ) {
   if (url == null) {
+    console.log('Returning from conditional 1: URL IS NULL');
     return MatchState.NoMatch;
   }
 
   if (matches) {
+    console.log('Returning from conditional 2: MATCHES');
     return MatchState.MatchForced;
   }
 
@@ -374,17 +388,22 @@ function matchStateForItem(
     (excludePaths &&
       excludePaths.some((path) => safeStartsWith(location, path)))
   ) {
+    console.log('Returning from conditional 3: !MATCHES || EXCLUDED');
     return MatchState.Excluded;
   }
 
   if (matchPaths && matchPaths.some((path) => safeStartsWith(location, path))) {
+    console.log('Returning from conditional 4: PATH MATCHED');
     return MatchState.MatchPaths;
   }
 
   const matchesUrl = exactMatch
     ? safeEqual(location, url)
     : safeStartsWith(location, url);
-  return matchesUrl ? MatchState.MatchUrl : MatchState.NoMatch;
+
+  const doesMatch = matchesUrl ? MatchState.MatchUrl : MatchState.NoMatch;
+  console.log('MATCHES: ', doesMatch);
+  return doesMatch;
 }
 
 export const Item = withAppProvider<Props>()(BaseItem);
