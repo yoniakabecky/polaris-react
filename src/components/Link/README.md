@@ -42,9 +42,9 @@ Links should:
 
 Links should:
 
-- Set the expectation of where merchants will be taken or what action will be performed.
-- Be consistent with the content they point to. If a navigational link leads to a page called Orders, label the link “orders”.
+- Be clear and predictable. Merchants should be able to anticipate what will happen when they select a link.
 - Use descriptive text and avoid using generic content such as “click here”.
+- Be consistent with the content they point to. If a navigational link leads to a page called Orders, label the link “orders”.
 
 <!-- usageblock -->
 
@@ -69,6 +69,8 @@ Learn more about <a>fulfilling orders</a> at the Shopify Help Center
 - To orders section
 
 <!-- end -->
+
+Learn more about the [content guidelines](/content/actionable-language#section-buttons) for links.
 
 ---
 

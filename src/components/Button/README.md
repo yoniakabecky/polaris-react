@@ -50,9 +50,7 @@ Buttons should:
 
 ## Content guidelines
 
-Buttons should be clear and predictable—merchants should be able to anticipate what will happen when they click a button. Never deceive merchants by mislabeling a button.
-
-Read the [actionable language guidelines](/content/actionable-language) to learn what to label buttons for different states in web, iOS, and Android.
+Buttons should be clear and predictable—merchants should be able to anticipate what will happen when they click a button. Never mislead merchants by mislabeling a button.
 
 <!-- usagelist -->
 
@@ -99,6 +97,8 @@ Add menu item
 Add a menu item
 
 <!-- end -->
+
+Learn more about the [content guidelines](/content/actionable-language#section-buttons) for buttons.
 
 ---
 
