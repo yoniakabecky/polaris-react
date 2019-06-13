@@ -116,6 +116,7 @@ module.exports = ({config, mode}) => {
           loader: 'sass-loader',
           options: {
             sourceMap: false,
+            includePaths: [path.resolve(__dirname, '..', 'src', 'styles')],
           },
         },
       ],

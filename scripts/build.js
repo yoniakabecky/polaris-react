@@ -63,6 +63,9 @@ copy(['./src/**/*.{scss,svg,png,jpg,jpeg,json}', intermediateBuild], {up: 1})
       );
     });
   })
+  // Rewrites absolute styles path to relative path so no include paths
+  // are required by consumers. This allows for a nicer developer
+  // experience when using foundation modules in component sass
   .then(() => {
     getAllSassFilesFromDirectory(
       resolvePath(intermediateBuild, './components'),
