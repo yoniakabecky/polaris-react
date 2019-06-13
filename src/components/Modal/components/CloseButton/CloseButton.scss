@@ -1,5 +1,5 @@
-@import '../../../../styles/foundation';
-@import '../../../../styles/shared/buttons';
+@import 'foundation';
+@import 'shared/buttons';
 
 .CloseButton {
   @include unstyled-button;

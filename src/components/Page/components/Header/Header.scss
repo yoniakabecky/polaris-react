@@ -1,7 +1,7 @@
-@import '../../../../styles/foundation';
-@import '../../../../styles/shared/accessibility';
-@import '../../../../styles/shared/page';
-@import '../../../../styles/shared/typography';
+@import 'foundation';
+@import 'shared/accessibility';
+@import 'shared/page';
+@import 'shared/typography';
 
 $action-horizontal-padding: (1.5 * spacing(tight));
 

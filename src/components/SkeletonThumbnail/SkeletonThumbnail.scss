@@ -1,5 +1,5 @@
-@import '../../styles/foundation';
-@import '../../styles/shared/skeleton';
+@import 'foundation';
+@import 'shared/skeleton';
 
 @mixin skeleton-thumbnail-size($size) {
   height: thumbnail-size($size);

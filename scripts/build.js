@@ -2,7 +2,13 @@
 
 const {execSync} = require('child_process');
 const {join, resolve: resolvePath} = require('path');
-const {ensureDirSync, writeFileSync, readFileSync} = require('fs-extra');
+const {
+  ensureDirSync,
+  writeFileSync,
+  readFileSync,
+  readdirSync,
+  statSync,
+} = require('fs-extra');
 const {rollup} = require('rollup');
 const {cp, mv, rm} = require('shelljs');
 const copyfiles = require('copyfiles');
@@ -56,6 +62,11 @@ copy(['./src/**/*.{scss,svg,png,jpg,jpeg,json}', intermediateBuild], {up: 1})
           .replace(/<%= POLARIS_VERSION %>/g, packageJSON.version),
       );
     });
+  })
+  .then(() => {
+    getAllSassFilesFromDirectory(
+      resolvePath(intermediateBuild, './components'),
+    ).forEach(rewriteSassImport);
   })
   // Custom build consumed by Sewing Kit: it preserves all ESNext features
   // including imports/ exports for better tree shaking.
@@ -119,4 +130,51 @@ function copy(paths, config) {
       }
     });
   });
+}
+
+function getAllSassFilesFromDirectory(dir, filelist = []) {
+  let result = filelist;
+  const files = readdirSync(dir);
+  files.forEach((file) => {
+    if (statSync(`${dir}/${file}`).isDirectory()) {
+      result = getAllSassFilesFromDirectory(`${dir}/${file}`, result);
+    } else if (/\.scss$/.test(file)) {
+      result.push(`${dir}/${file}`);
+    }
+  });
+  return result;
+}
+
+function rewriteSassImport(filePath) {
+  const regex = /@import ['"](foundation|shared)(.*?)['"];/gim;
+  const fileContent = readFileSync(filePath, 'utf8');
+
+  const newFileContent = fileContent.replace(
+    regex,
+    (match, namespace, path) =>
+      `@import '${getRelativePath(filePath)}${namespace}${path}';`,
+  );
+
+  if (newFileContent !== fileContent) {
+    writeFileSync(filePath, newFileContent);
+  }
+}
+
+function getRelativePath(filePath) {
+  const pathFragments = filePath.split('/');
+
+  let pathFragment = pathFragments.pop();
+  let levels = 0;
+
+  while (pathFragment !== 'build-intermediate' && pathFragments.length !== 0) {
+    levels++;
+    pathFragment = pathFragments.pop();
+  }
+
+  const backLevels = new Array(levels - 1)
+    .fill(0)
+    .map(() => '../')
+    .join('');
+
+  return `${backLevels}styles/`;
 }
