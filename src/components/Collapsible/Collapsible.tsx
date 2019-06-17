@@ -3,10 +3,11 @@ import {
   addEventListener,
   removeEventListener,
 } from '@shopify/javascript-utilities/events';
-import {durationBase} from '@shopify/polaris-tokens';
+import {durationBase, durationSlower} from '@shopify/polaris-tokens';
 import {classNames} from '../../utilities/css';
 import {withAppProvider} from '../AppProvider';
 
+import animationMap from '../../utilities/animationMapping';
 import styles from './Collapsible.scss';
 
 export interface Props {
@@ -21,9 +22,12 @@ export interface Props {
 const CSS_VAR_COLLAPSIBLE_HEIGHT = '--polaris-collapsible-height';
 const CSS_VAR_COLLAPSIBLE_TRANSITION_DURATION =
   '--polaris-collapsible-transition-duration';
+const CSS_VAR_COLLAPSIBLE_TRANSITION_DELAY =
+  '--polaris-collapsible-transition-delay';
 
 function duration(height: number) {
-  return Math.max((height / 300) * durationBase, durationBase);
+  // return Math.max((height / 300) * durationBase, durationBase);
+  return animationMap(height, 150, 1000, durationBase, durationSlower);
 }
 
 export function Collapsible({id, open, children}: Props) {
@@ -56,6 +60,7 @@ export function Collapsible({id, open, children}: Props) {
   useEffect(
     () => {
       if (!node.current) return;
+      const animationDuration = duration(height || 0);
 
       node.current.style.setProperty(
         CSS_VAR_COLLAPSIBLE_HEIGHT,
@@ -63,7 +68,11 @@ export function Collapsible({id, open, children}: Props) {
       );
       node.current.style.setProperty(
         CSS_VAR_COLLAPSIBLE_TRANSITION_DURATION,
-        `${duration(height || 0)}ms`,
+        `${animationDuration}ms`,
+      );
+      node.current.style.setProperty(
+        CSS_VAR_COLLAPSIBLE_TRANSITION_DELAY,
+        `${animationDuration - durationBase}ms`,
       );
     },
     [height],
