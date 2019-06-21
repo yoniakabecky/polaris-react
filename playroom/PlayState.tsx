@@ -1,11 +1,22 @@
-import React, {useState} from 'react';
+import React, {useState, useCallback} from 'react';
 
-interface Props {
-  state: any;
-  children(state: any, setState: any): React.ReactNode;
+export function PlayState<S>({
+  state: defaultState,
+  children,
+}: {
+  state: S;
+  children(state: S, setState: (newState: S) => void): React.ReactNode;
+}) {
+  const [state, setState] = useState<S>(defaultState);
+  return children(state, setState);
 }
 
-export default function PlayState({state: defaultState, children}: Props) {
-  const [state, setState] = useState(defaultState);
-  return children(state, setState);
+export function PlayToggle({
+  children,
+}: {
+  children(toggled: boolean, toggle: () => void): React.ReactNode;
+}) {
+  const [toggled, setToggled] = useState<boolean>(false);
+  const toggle = useCallback(() => setToggled(!toggled), [toggled]);
+  return children(toggled, toggle);
 }

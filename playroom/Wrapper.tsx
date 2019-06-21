@@ -1,24 +1,30 @@
 import React from 'react';
-import faker from 'faker';
 import {AppProvider} from '../src';
 
 interface Props {
   children: React.ReactNode;
 }
 
-function customers(amount: number) {
-  return Array.from({length: amount}, (_, index) => {
-    return {
-      id: index,
-      url: `#/customers/${index}`,
-      name: faker.name.findName(),
-      location: `${faker.address.city()}, ${faker.address.country()}`,
+const stateStore = {};
+let stateUpdater = () => null;
+function state(name: string, value: boolean | string) {
+  if (typeof value !== 'undefined') {
+    return () => {
+      stateStore[name] = value;
+      stateUpdater();
     };
-  });
+  }
+  return stateStore[name];
 }
+(window as any).state = state;
 
-window.data = {customers};
+export default class PlayroomAppProvider extends React.Component<Props> {
+  componentWillMount() {
+    stateUpdater = () => this.forceUpdate();
+  }
 
-export default function PlayroomAppProvider({children}: Props) {
-  return <AppProvider>{children}</AppProvider>;
+  render() {
+    const {children} = this.props;
+    return <AppProvider>{children}</AppProvider>;
+  }
 }
