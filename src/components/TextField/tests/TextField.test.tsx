@@ -1,5 +1,9 @@
 import React from 'react';
-import {mountWithAppProvider, findByTestID} from 'test-utilities/legacy';
+import {
+  mountWithAppProvider,
+  findByTestID,
+  trigger,
+} from 'test-utilities/legacy';
 import {InlineError, Labelled, Connected, Select} from 'components';
 import {Resizer, Spinner} from '../components';
 import TextField from '../TextField';
@@ -473,15 +477,14 @@ describe('<TextField />', () => {
         />,
       );
 
-      expect(
-        textField.find('#MyFieldCharacterCounter').prop<string>('aria-live'),
-      ).toBe('off');
+      expect(textField.find('#MyFieldCharacterCounter').prop('aria-live')).toBe(
+        'off',
+      );
 
       textField.find('input').simulate('focus');
-
-      expect(
-        textField.find('#MyFieldCharacterCounter').prop<string>('aria-live'),
-      ).toBe('polite');
+      expect(textField.find('#MyFieldCharacterCounter').prop('aria-live')).toBe(
+        'polite',
+      );
     });
   });
 

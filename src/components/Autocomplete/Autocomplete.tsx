@@ -6,7 +6,7 @@ import Popover from '../Popover';
 export interface Props {
   /** A unique identifier for the Autocomplete */
   id?: string;
-  children?: React.ReactNode;
+  children: React.ReactNode;
   loading?: boolean;
   allowMultiple?: boolean;
   onScrolledToBottom?(): void;
@@ -55,23 +55,28 @@ export default function Autocomplete({
   //   }
   // });
 
-  const autoTextField = React.Children && React.Children.toArray(children);
-  console.log(autoTextField);
-  // .filter(
-  //   (child: any) => child.type === TextField,
-  // )[0];
+  let autoTextField;
 
-  const autoDataList =
-    React.Children &&
-    React.Children.toArray(children).filter(
-      (child: any) => child.type === DataList,
-    )[0];
+  let autoDataList;
+
+  React.Children &&
+    React.Children.map(children, (child: React.ReactElement<any>) => {
+      console.log(child.displayName);
+      if (child && child.type && child.type === TextField) {
+        autoTextField = React.cloneElement(child);
+      }
+      if (child && child.type && child.type === DataList) {
+        autoDataList = React.cloneElement(child);
+      }
+    });
+
+  if (!autoTextField) return null;
 
   return (
     <AutoCompleteContext.Provider value={context}>
       <Popover
         active={active}
-        activator={autoTextField as React.ReactElement}
+        activator={autoTextField}
         onClose={() => setActive(false)}
       >
         {autoDataList}
