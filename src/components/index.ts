@@ -10,7 +10,8 @@ export {default as ActionMenu, Props as ActionMenuProps} from './ActionMenu';
 export {default as AppProvider, Props as AppProviderProps} from './AppProvider';
 
 export {
-  default as Autocomplete,
+  Autocomplete,
+  DataList,
   Props as AutocompleteProps,
 } from './Autocomplete';
 

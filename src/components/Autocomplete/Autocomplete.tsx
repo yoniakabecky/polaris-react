@@ -25,7 +25,7 @@ const AutoCompleteContext = React.createContext<AutoCompleteContextType | null>(
   null,
 );
 
-export default function Autocomplete({
+export function Autocomplete({
   id,
   children,
   loading,
@@ -61,11 +61,10 @@ export default function Autocomplete({
 
   React.Children &&
     React.Children.map(children, (child: React.ReactElement<any>) => {
-      console.log(child.displayName);
-      if (child && child.type && child.type === TextField) {
+      if (child && child.type && child.type === <TextField />.type) {
         autoTextField = React.cloneElement(child);
       }
-      if (child && child.type && child.type === DataList) {
+      if (child && child.type && child.type === <DataList />.type) {
         autoDataList = React.cloneElement(child);
       }
     });
@@ -81,28 +80,27 @@ export default function Autocomplete({
       >
         {autoDataList}
       </Popover>
-      {children}
     </AutoCompleteContext.Provider>
   );
 }
 
-function DataList({children}: Props) {
+export function DataList({children}: Props) {
   return <ul>{children}</ul>;
 }
 
-function Title({children}: Props) {
+export function Title({children}: Props) {
   return <li>{children}</li>;
 }
 
-function EmptyState({children}: Props) {
+export function EmptyState({children}: Props) {
   return <li>{children}</li>;
 }
 
-function Action({children}: Props) {
+export function Action({children}: Props) {
   return <li>{children}</li>;
 }
 
-function Option({children}: Props) {
+export function Option({children}: Props) {
   return <li>{children}</li>;
 }
 
