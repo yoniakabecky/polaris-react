@@ -111,8 +111,10 @@ export default class Banner extends React.PureComponent<Props, never> {
     if (title) {
       headingID = `${id}Heading`;
       headingMarkup = (
-        <div className={styles.Heading} id={headingID}>
-          <Heading element="p">{title}</Heading>
+        <div className={styles.Heading}>
+          <Heading element="p" id={headingID}>
+            {title}
+          </Heading>
         </div>
       );
     }
