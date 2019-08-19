@@ -1,10 +1,7 @@
 import React from 'react';
 
 import {ActionListItemDescriptor} from '../../types';
-import {
-  withAppProvider,
-  WithAppProviderProps,
-} from '../../utilities/with-app-provider';
+import {useI18n} from '../../utilities/i18n';
 import {PreferredPosition} from '../PositionedOverlay';
 import {OptionDescriptor} from '../OptionList';
 import Spinner from '../Spinner';
@@ -41,62 +38,56 @@ export interface Props {
   onLoadMoreResults?(): void;
 }
 
-type CombinedProps = Props & WithAppProviderProps;
-
-class Autocomplete extends React.PureComponent<CombinedProps, never> {
-  static TextField = TextField;
-  static ComboBox = ComboBox;
-
-  render() {
-    const {
-      id,
-      options,
-      selected,
-      textField,
-      preferredPosition,
-      listTitle,
-      allowMultiple,
-      loading,
-      actionBefore,
-      willLoadMoreResults,
-      emptyState,
-      onSelect,
-      onLoadMoreResults,
-      polaris: {intl},
-    } = this.props;
-
-    const spinnerMarkup = loading ? (
-      <div className={styles.Loading}>
-        <Spinner
-          size="small"
-          accessibilityLabel={intl.translate(
-            'Polaris.Autocomplete.spinnerAccessibilityLabel',
-          )}
-        />
-      </div>
-    ) : null;
-
-    const conditionalOptions = loading && !willLoadMoreResults ? [] : options;
-    const conditionalAction =
-      actionBefore && actionBefore !== [] ? [actionBefore] : undefined;
-
-    return (
-      <ComboBox
-        id={id}
-        options={conditionalOptions}
-        selected={selected}
-        textField={textField}
-        preferredPosition={preferredPosition}
-        listTitle={listTitle}
-        allowMultiple={allowMultiple}
-        contentAfter={spinnerMarkup}
-        actionsBefore={conditionalAction}
-        onSelect={onSelect}
-        onEndReached={onLoadMoreResults}
-        emptyState={emptyState}
+function Autocomplete({
+  id,
+  options,
+  selected,
+  textField,
+  preferredPosition,
+  listTitle,
+  allowMultiple,
+  loading,
+  actionBefore,
+  willLoadMoreResults,
+  emptyState,
+  onSelect,
+  onLoadMoreResults,
+}: Props) {
+  const {translate} = useI18n();
+  const spinnerMarkup = loading ? (
+    <div className={styles.Loading}>
+      <Spinner
+        size="small"
+        accessibilityLabel={translate(
+          'Polaris.Autocomplete.spinnerAccessibilityLabel',
+        )}
       />
-    );
-  }
+    </div>
+  ) : null;
+
+  const conditionalOptions = loading && !willLoadMoreResults ? [] : options;
+  const conditionalAction =
+    actionBefore && actionBefore !== [] ? [actionBefore] : undefined;
+
+  return (
+    <ComboBox
+      id={id}
+      options={conditionalOptions}
+      selected={selected}
+      textField={textField}
+      preferredPosition={preferredPosition}
+      listTitle={listTitle}
+      allowMultiple={allowMultiple}
+      contentAfter={spinnerMarkup}
+      actionsBefore={conditionalAction}
+      onSelect={onSelect}
+      onEndReached={onLoadMoreResults}
+      emptyState={emptyState}
+    />
+  );
 }
 
-export default withAppProvider<Props>()(Autocomplete);
+Autocomplete.TextField = TextField;
+Autocomplete.ComboBox = ComboBox;
+
+export default Autocomplete;

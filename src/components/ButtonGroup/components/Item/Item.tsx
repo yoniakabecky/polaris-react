@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, memo} from 'react';
 
 import {classNames} from '../../../../utilities/css';
 import {Props as ButtonProps} from '../../../Button';
@@ -9,39 +9,28 @@ export interface Props {
   button: React.ReactElement<ButtonProps>;
 }
 
-interface State {
-  focused: boolean;
-}
+function Item({button}: Props) {
+  const [focused, setFocused] = useState(false);
 
-export default class Item extends React.PureComponent<Props, State> {
-  state: State = {focused: false};
+  const className = classNames(
+    styles.Item,
+    focused && styles['Item-focused'],
+    button.props.plain && styles['Item-plain'],
+  );
 
-  render() {
-    const {button} = this.props;
-    const {focused} = this.state;
+  return (
+    <div className={className} onFocus={handleFocus} onBlur={handleBlur}>
+      {button}
+    </div>
+  );
 
-    const className = classNames(
-      styles.Item,
-      focused && styles['Item-focused'],
-      button.props.plain && styles['Item-plain'],
-    );
-
-    return (
-      <div
-        className={className}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
-      >
-        {button}
-      </div>
-    );
+  function handleFocus() {
+    setFocused(true);
   }
 
-  private handleFocus = () => {
-    this.setState({focused: true});
-  };
-
-  private handleBlur = () => {
-    this.setState({focused: false});
-  };
+  function handleBlur() {
+    setFocused(false);
+  }
 }
+
+export default memo(Item);

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo, useCallback} from 'react';
 
 import {classNames} from '../../../../utilities/css';
 import {layer} from '../../../shared';
@@ -19,53 +19,57 @@ export interface Props {
   onClose(): void;
 }
 
-export default class TooltipOverlay extends React.PureComponent<Props, never> {
-  render() {
-    const markup = this.props.active ? this.renderOverlay() : null;
+function TooltipOverlay({
+  active,
+  id,
+  children,
+  light,
+  activator,
+  preferredPosition = 'below',
+}: Props) {
+  const renderTooltip = useCallback(
+    (overlayDetails: OverlayDetails) => {
+      const {measuring, desiredHeight, positioning} = overlayDetails;
 
-    return markup;
-  }
+      const containerClassName = classNames(
+        styles.Tooltip,
+        light && styles.light,
+        measuring && styles.measuring,
+        positioning === 'above' && styles.positionedAbove,
+      );
 
-  private renderOverlay = () => {
-    const {active, activator, preferredPosition = 'below'} = this.props;
+      const contentStyles = measuring ? undefined : {minHeight: desiredHeight};
 
+      return (
+        <div className={containerClassName} {...layer.props}>
+          <div className={styles.Wrapper}>
+            <div
+              id={id}
+              role="tooltip"
+              className={styles.Content}
+              style={contentStyles}
+            >
+              {children}
+            </div>
+          </div>
+        </div>
+      );
+    },
+    [children, id, light],
+  );
+
+  return active ? renderOverlay() : null;
+
+  function renderOverlay() {
     return (
       <PositionedOverlay
         active={active}
         activator={activator}
         preferredPosition={preferredPosition}
-        render={this.renderTooltip}
+        render={renderTooltip}
       />
     );
-  };
-
-  private renderTooltip = (overlayDetails: OverlayDetails) => {
-    const {measuring, desiredHeight, positioning} = overlayDetails;
-
-    const {id, children, light} = this.props;
-
-    const containerClassName = classNames(
-      styles.Tooltip,
-      light && styles.light,
-      measuring && styles.measuring,
-      positioning === 'above' && styles.positionedAbove,
-    );
-
-    const contentStyles = measuring ? undefined : {minHeight: desiredHeight};
-
-    return (
-      <div className={containerClassName} {...layer.props}>
-        <div className={styles.Wrapper}>
-          <div
-            id={id}
-            role="tooltip"
-            className={styles.Content}
-            style={contentStyles}
-          >
-            {children}
-          </div>
-        </div>
-      </div>
-    );
-  };
+  }
 }
+
+export default memo(TooltipOverlay);

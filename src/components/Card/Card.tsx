@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo, useState, useCallback} from 'react';
 import {classNames} from '../../utilities/css';
 
 import ButtonGroup from '../ButtonGroup';
@@ -8,10 +8,7 @@ import ActionList from '../ActionList';
 import Button, {buttonFrom} from '../Button';
 import Popover from '../Popover';
 
-import {
-  withAppProvider,
-  WithAppProviderProps,
-} from '../../utilities/with-app-provider';
+import {useI18n} from '../../utilities/i18n';
 
 import {Header, Section, Subsection} from './components';
 import styles from './Card.scss';
@@ -35,97 +32,87 @@ export interface Props {
   secondaryFooterActionsDisclosureText?: string;
 }
 
-export type CombinedProps = Props & WithAppProviderProps;
+function Card({
+  children,
+  title,
+  subdued,
+  sectioned,
+  actions,
+  primaryFooterAction,
+  secondaryFooterActions,
+  secondaryFooterActionsDisclosureText,
+}: Props) {
+  const {translate} = useI18n();
+  const [
+    secondaryFooterActionsPopoverOpen,
+    setSecondaryFooterActionsPopoverOpen,
+  ] = useState(false);
 
-interface State {
-  secondaryFooterActionsPopoverOpen: boolean;
-}
+  const toggleSecondaryActionsPopover = useCallback(
+    () => {
+      setSecondaryFooterActionsPopoverOpen(!secondaryFooterActionsPopoverOpen);
+    },
+    [secondaryFooterActionsPopoverOpen],
+  );
 
-class Card extends React.PureComponent<CombinedProps, State> {
-  static Section = Section;
-  static Header = Header;
-  static Subsection = Subsection;
+  const className = classNames(styles.Card, subdued && styles.subdued);
 
-  state: State = {
-    secondaryFooterActionsPopoverOpen: false,
-  };
+  const headerMarkup =
+    title || actions ? <Header actions={actions} title={title} /> : null;
 
-  render() {
-    const {
-      children,
-      title,
-      subdued,
-      sectioned,
-      actions,
-      primaryFooterAction,
-      secondaryFooterActions,
-      secondaryFooterActionsDisclosureText,
-      polaris: {intl},
-    } = this.props;
+  const content = sectioned ? <Section>{children}</Section> : children;
 
-    const className = classNames(styles.Card, subdued && styles.subdued);
+  const primaryFooterActionMarkup = primaryFooterAction
+    ? buttonFrom(primaryFooterAction, {primary: true})
+    : null;
 
-    const headerMarkup =
-      title || actions ? <Header actions={actions} title={title} /> : null;
-
-    const content = sectioned ? <Section>{children}</Section> : children;
-
-    const primaryFooterActionMarkup = primaryFooterAction
-      ? buttonFrom(primaryFooterAction, {primary: true})
-      : null;
-
-    let secondaryFooterActionsMarkup = null;
-    if (secondaryFooterActions && secondaryFooterActions.length) {
-      if (secondaryFooterActions.length === 1) {
-        secondaryFooterActionsMarkup = buttonFrom(secondaryFooterActions[0]);
-      } else {
-        secondaryFooterActionsMarkup = (
-          <React.Fragment>
-            <Popover
-              active={this.state.secondaryFooterActionsPopoverOpen}
-              activator={
-                <Button disclosure onClick={this.toggleSecondaryActionsPopover}>
-                  {secondaryFooterActionsDisclosureText ||
-                    intl.translate('Polaris.Common.more')}
-                </Button>
-              }
-              onClose={this.toggleSecondaryActionsPopover}
-            >
-              <ActionList items={secondaryFooterActions} />
-            </Popover>
-          </React.Fragment>
-        );
-      }
+  let secondaryFooterActionsMarkup = null;
+  if (secondaryFooterActions && secondaryFooterActions.length) {
+    if (secondaryFooterActions.length === 1) {
+      secondaryFooterActionsMarkup = buttonFrom(secondaryFooterActions[0]);
+    } else {
+      secondaryFooterActionsMarkup = (
+        <React.Fragment>
+          <Popover
+            active={secondaryFooterActionsPopoverOpen}
+            activator={
+              <Button disclosure onClick={toggleSecondaryActionsPopover}>
+                {secondaryFooterActionsDisclosureText ||
+                  translate('Polaris.Common.more')}
+              </Button>
+            }
+            onClose={toggleSecondaryActionsPopover}
+          >
+            <ActionList items={secondaryFooterActions} />
+          </Popover>
+        </React.Fragment>
+      );
     }
-
-    const footerMarkup =
-      primaryFooterActionMarkup || secondaryFooterActionsMarkup ? (
-        <div className={styles.Footer}>
-          <ButtonGroup>
-            {secondaryFooterActionsMarkup}
-            {primaryFooterActionMarkup}
-          </ButtonGroup>
-        </div>
-      ) : null;
-
-    return (
-      <WithinContentContext.Provider value>
-        <div className={className}>
-          {headerMarkup}
-          {content}
-          {footerMarkup}
-        </div>
-      </WithinContentContext.Provider>
-    );
   }
 
-  private toggleSecondaryActionsPopover = () => {
-    this.setState(({secondaryFooterActionsPopoverOpen}) => {
-      return {
-        secondaryFooterActionsPopoverOpen: !secondaryFooterActionsPopoverOpen,
-      };
-    });
-  };
+  const footerMarkup =
+    primaryFooterActionMarkup || secondaryFooterActionsMarkup ? (
+      <div className={styles.Footer}>
+        <ButtonGroup>
+          {secondaryFooterActionsMarkup}
+          {primaryFooterActionMarkup}
+        </ButtonGroup>
+      </div>
+    ) : null;
+
+  return (
+    <WithinContentContext.Provider value>
+      <div className={className}>
+        {headerMarkup}
+        {content}
+        {footerMarkup}
+      </div>
+    </WithinContentContext.Provider>
+  );
 }
 
-export default withAppProvider<Props>()(Card);
+Card.Section = Section;
+Card.Header = Header;
+Card.Subsection = Subsection;
+
+export default memo(Card);

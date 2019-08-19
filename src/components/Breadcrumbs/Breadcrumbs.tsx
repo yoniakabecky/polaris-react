@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {ChevronLeftMinor} from '@shopify/polaris-icons';
 
 import Icon from '../Icon';
@@ -13,47 +13,46 @@ export interface Props {
   breadcrumbs: Array<CallbackAction | LinkAction>;
 }
 
-export default class Breadcrumbs extends React.PureComponent<Props, never> {
-  render() {
-    const {breadcrumbs} = this.props;
-    const breadcrumb = breadcrumbs[breadcrumbs.length - 1];
-    if (breadcrumb == null) {
-      return null;
-    }
+function Breadcrumbs({breadcrumbs}: Props) {
+  const breadcrumb = breadcrumbs[breadcrumbs.length - 1];
+  if (breadcrumb == null) {
+    return null;
+  }
 
-    const {content} = breadcrumb;
+  const {content} = breadcrumb;
 
-    const contentMarkup = (
-      <React.Fragment>
-        <span className={styles.Icon}>
-          <Icon source={ChevronLeftMinor} />
-        </span>
-        <span className={styles.Content}>{content}</span>
-      </React.Fragment>
+  const contentMarkup = (
+    <React.Fragment>
+      <span className={styles.Icon}>
+        <Icon source={ChevronLeftMinor} />
+      </span>
+      <span className={styles.Content}>{content}</span>
+    </React.Fragment>
+  );
+
+  const breadcrumbMarkup =
+    'url' in breadcrumb ? (
+      <UnstyledLink
+        key={content}
+        url={breadcrumb.url}
+        className={styles.Breadcrumb}
+        onMouseUp={handleMouseUpByBlurring}
+      >
+        {contentMarkup}
+      </UnstyledLink>
+    ) : (
+      <button
+        key={content}
+        className={styles.Breadcrumb}
+        onClick={breadcrumb.onAction}
+        onMouseUp={handleMouseUpByBlurring}
+        type="button"
+      >
+        {contentMarkup}
+      </button>
     );
 
-    const breadcrumbMarkup =
-      'url' in breadcrumb ? (
-        <UnstyledLink
-          key={content}
-          url={breadcrumb.url}
-          className={styles.Breadcrumb}
-          onMouseUp={handleMouseUpByBlurring}
-        >
-          {contentMarkup}
-        </UnstyledLink>
-      ) : (
-        <button
-          key={content}
-          className={styles.Breadcrumb}
-          onClick={breadcrumb.onAction}
-          onMouseUp={handleMouseUpByBlurring}
-          type="button"
-        >
-          {contentMarkup}
-        </button>
-      );
-
-    return <nav role="navigation">{breadcrumbMarkup}</nav>;
-  }
+  return <nav role="navigation">{breadcrumbMarkup}</nav>;
 }
+
+export default memo(Breadcrumbs);

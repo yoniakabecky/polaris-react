@@ -24,6 +24,7 @@ export {
   default as Banner,
   Props as BannerProps,
   Status as BannerStatus,
+  ImperativeHandle as BannerImperativeHandle,
 } from './Banner';
 
 export {default as Breadcrumbs, Props as BreadcrumbsProps} from './Breadcrumbs';

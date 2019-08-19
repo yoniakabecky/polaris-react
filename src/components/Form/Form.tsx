@@ -1,10 +1,7 @@
-import React from 'react';
+import React, {memo} from 'react';
 
 import VisuallyHidden from '../VisuallyHidden';
-import {
-  withAppProvider,
-  WithAppProviderProps,
-} from '../../utilities/with-app-provider';
+import {useI18n} from '../../utilities/i18n';
 
 export type Enctype =
   | 'application/x-www-form-urlencoded'
@@ -40,61 +37,56 @@ export interface Props {
   onSubmit(event: React.FormEvent<HTMLFormElement>): void;
 }
 
-type CombinedProps = Props & WithAppProviderProps;
+function Form({
+  acceptCharset,
+  action,
+  autoComplete,
+  children,
+  encType,
+  implicitSubmit = true,
+  method = 'post',
+  name,
+  noValidate,
+  target,
+  preventDefault = true,
+  onSubmit,
+}: Props) {
+  const {translate} = useI18n();
+  const autoCompleteInputs = normalizeAutoComplete(autoComplete);
 
-class Form extends React.PureComponent<CombinedProps, never> {
-  render() {
-    const {
-      acceptCharset,
-      action,
-      autoComplete,
-      children,
-      encType,
-      implicitSubmit = true,
-      method = 'post',
-      name,
-      noValidate,
-      target,
-      polaris: {intl},
-    } = this.props;
-    const autoCompleteInputs = normalizeAutoComplete(autoComplete);
+  const submitMarkup = implicitSubmit ? (
+    <VisuallyHidden>
+      <button type="submit" aria-hidden="true">
+        {translate('Polaris.Common.submit')}
+      </button>
+    </VisuallyHidden>
+  ) : null;
 
-    const submitMarkup = implicitSubmit ? (
-      <VisuallyHidden>
-        <button type="submit" aria-hidden="true">
-          {intl.translate('Polaris.Common.submit')}
-        </button>
-      </VisuallyHidden>
-    ) : null;
+  return (
+    <form
+      acceptCharset={acceptCharset}
+      action={action}
+      autoComplete={autoCompleteInputs}
+      encType={encType}
+      method={method}
+      name={name}
+      noValidate={noValidate}
+      target={target}
+      onSubmit={handleSubmit}
+    >
+      {children}
+      {submitMarkup}
+    </form>
+  );
 
-    return (
-      <form
-        acceptCharset={acceptCharset}
-        action={action}
-        autoComplete={autoCompleteInputs}
-        encType={encType}
-        method={method}
-        name={name}
-        noValidate={noValidate}
-        target={target}
-        onSubmit={this.handleSubmit}
-      >
-        {children}
-        {submitMarkup}
-      </form>
-    );
-  }
-
-  private handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    const {preventDefault = true, onSubmit} = this.props;
-
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     if (!preventDefault) {
       return;
     }
 
     event.preventDefault();
     onSubmit(event);
-  };
+  }
 }
 
 function normalizeAutoComplete(autoComplete?: boolean) {
@@ -105,4 +97,4 @@ function normalizeAutoComplete(autoComplete?: boolean) {
   return autoComplete ? 'on' : 'off';
 }
 
-export default withAppProvider<Props>()(Form);
+export default memo(Form);

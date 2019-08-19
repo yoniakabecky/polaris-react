@@ -1,15 +1,12 @@
-import React from 'react';
+import React, {useState, memo, useCallback} from 'react';
 import {HorizontalDotsMinor} from '@shopify/polaris-icons';
 
 import {ActionListSection, ActionListItemDescriptor} from '../../../../types';
 
-import {
-  withAppProvider,
-  WithAppProviderProps,
-} from '../../../../utilities/with-app-provider';
 import ActionList from '../../../ActionList';
 import Button from '../../../Button';
 import Popover from '../../../Popover';
+import {useI18n} from '../../../../utilities/i18n';
 
 import styles from './RollupActions.scss';
 
@@ -20,61 +17,48 @@ export interface Props {
   sections?: ActionListSection[];
 }
 
-type ComposedProps = Props & WithAppProviderProps;
+function RollupActions({items = [], sections = []}: Props) {
+  const [rollupOpen, setRollupOpen] = useState(false);
+  const {translate} = useI18n();
 
-interface State {
-  rollupOpen: boolean;
-}
+  const handleRollupToggle = useCallback(
+    () => {
+      setRollupOpen(!rollupOpen);
+    },
+    [rollupOpen],
+  );
 
-class RollupActions extends React.PureComponent<ComposedProps, State> {
-  state: State = {
-    rollupOpen: false,
-  };
-
-  render() {
-    const {
-      items = [],
-      sections = [],
-      polaris: {intl},
-    } = this.props;
-    const {rollupOpen} = this.state;
-
-    if (items.length === 0 && sections.length === 0) {
-      return null;
-    }
-
-    const activatorMarkup = (
-      <div className={styles.RollupActivator}>
-        <Button
-          plain
-          icon={HorizontalDotsMinor}
-          accessibilityLabel={intl.translate(
-            'Polaris.ActionMenu.RollupActions.rollupButton',
-          )}
-          onClick={this.handleRollupToggle}
-        />
-      </div>
-    );
-
-    return (
-      <Popover
-        active={rollupOpen}
-        activator={activatorMarkup}
-        preferredAlignment="right"
-        onClose={this.handleRollupToggle}
-      >
-        <ActionList
-          items={items}
-          sections={sections}
-          onActionAnyItem={this.handleRollupToggle}
-        />
-      </Popover>
-    );
+  if (items.length === 0 && sections.length === 0) {
+    return null;
   }
 
-  private handleRollupToggle = () => {
-    this.setState(({rollupOpen}) => ({rollupOpen: !rollupOpen}));
-  };
+  const activatorMarkup = (
+    <div className={styles.RollupActivator}>
+      <Button
+        plain
+        icon={HorizontalDotsMinor}
+        accessibilityLabel={translate(
+          'Polaris.ActionMenu.RollupActions.rollupButton',
+        )}
+        onClick={handleRollupToggle}
+      />
+    </div>
+  );
+
+  return (
+    <Popover
+      active={rollupOpen}
+      activator={activatorMarkup}
+      preferredAlignment="right"
+      onClose={handleRollupToggle}
+    >
+      <ActionList
+        items={items}
+        sections={sections}
+        onActionAnyItem={handleRollupToggle}
+      />
+    </Popover>
+  );
 }
 
-export default withAppProvider<Props>()(RollupActions);
+export default memo(RollupActions);

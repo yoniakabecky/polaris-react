@@ -1,13 +1,11 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {classNames} from '../../utilities/css';
 import DisplayText from '../DisplayText';
 import SkeletonDisplayText from '../SkeletonDisplayText';
 import SkeletonBodyText from '../SkeletonBodyText';
+import {useI18n} from '../../utilities/i18n';
+import {useAppBridge} from '../../utilities/app-bridge';
 
-import {
-  withAppProvider,
-  WithAppProviderProps,
-} from '../../utilities/with-app-provider';
 import styles from './SkeletonPage.scss';
 
 export interface Props {
@@ -34,81 +32,76 @@ interface DeprecatedProps {
   singleColumn?: boolean;
 }
 
-export type CombinedProps = Props & DeprecatedProps & WithAppProviderProps;
-
-class SkeletonPage extends React.PureComponent<CombinedProps, never> {
-  render() {
-    const {
-      children,
-      fullWidth,
-      narrowWidth,
-      singleColumn,
-      primaryAction,
-      secondaryActions,
-      title = '',
-      breadcrumbs,
-      polaris: {intl},
-    } = this.props;
-
-    if (singleColumn) {
-      // eslint-disable-next-line no-console
-      console.warn(
-        'Deprecation: The singleColumn prop has been renamed to narrowWidth to better represents its use and will be removed in v5.0.',
-      );
-    }
-
-    const className = classNames(
-      styles.Page,
-      fullWidth && styles.fullWidth,
-      (narrowWidth || singleColumn) && styles.narrowWidth,
-    );
-
-    const headerClassName = classNames(
-      styles.Header,
-      breadcrumbs && styles['Header-hasBreadcrumbs'],
-      secondaryActions && styles['Header-hasSecondaryActions'],
-    );
-
-    const titleMarkup = title !== null ? renderTitle(title) : null;
-
-    const primaryActionMarkup = primaryAction ? (
-      <div className={styles.PrimaryAction}>
-        <SkeletonDisplayText size="large" />
-      </div>
-    ) : null;
-
-    const secondaryActionsMarkup = secondaryActions
-      ? renderSecondaryActions(secondaryActions)
-      : null;
-
-    const breadcrumbMarkup = breadcrumbs ? (
-      <div className={styles.BreadcrumbAction} style={{width: 60}}>
-        <SkeletonBodyText lines={1} />
-      </div>
-    ) : null;
-
-    const headerMarkup = !this.props.polaris.appBridge ? (
-      <div className={headerClassName}>
-        {breadcrumbMarkup}
-        <div className={styles.TitleAndPrimaryAction}>
-          {titleMarkup}
-          {primaryActionMarkup}
-        </div>
-        {secondaryActionsMarkup}
-      </div>
-    ) : null;
-
-    return (
-      <div
-        className={className}
-        role="status"
-        aria-label={intl.translate('Polaris.SkeletonPage.loadingLabel')}
-      >
-        {headerMarkup}
-        <div className={styles.Content}>{children}</div>
-      </div>
+function SkeletonPage({
+  children,
+  fullWidth,
+  narrowWidth,
+  singleColumn,
+  primaryAction,
+  secondaryActions,
+  title = '',
+  breadcrumbs,
+}: Props & DeprecatedProps) {
+  const {translate} = useI18n();
+  const appBridge = useAppBridge();
+  if (singleColumn) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      'Deprecation: The singleColumn prop has been renamed to narrowWidth to better represents its use and will be removed in v5.0.',
     );
   }
+
+  const className = classNames(
+    styles.Page,
+    fullWidth && styles.fullWidth,
+    (narrowWidth || singleColumn) && styles.narrowWidth,
+  );
+
+  const headerClassName = classNames(
+    styles.Header,
+    breadcrumbs && styles['Header-hasBreadcrumbs'],
+    secondaryActions && styles['Header-hasSecondaryActions'],
+  );
+
+  const titleMarkup = title !== null ? renderTitle(title) : null;
+
+  const primaryActionMarkup = primaryAction ? (
+    <div className={styles.PrimaryAction}>
+      <SkeletonDisplayText size="large" />
+    </div>
+  ) : null;
+
+  const secondaryActionsMarkup = secondaryActions
+    ? renderSecondaryActions(secondaryActions)
+    : null;
+
+  const breadcrumbMarkup = breadcrumbs ? (
+    <div className={styles.BreadcrumbAction} style={{width: 60}}>
+      <SkeletonBodyText lines={1} />
+    </div>
+  ) : null;
+
+  const headerMarkup = !appBridge ? (
+    <div className={headerClassName}>
+      {breadcrumbMarkup}
+      <div className={styles.TitleAndPrimaryAction}>
+        {titleMarkup}
+        {primaryActionMarkup}
+      </div>
+      {secondaryActionsMarkup}
+    </div>
+  ) : null;
+
+  return (
+    <div
+      className={className}
+      role="status"
+      aria-label={translate('Polaris.SkeletonPage.loadingLabel')}
+    >
+      {headerMarkup}
+      <div className={styles.Content}>{children}</div>
+    </div>
+  );
 }
 
 function renderSecondaryActions(actionCount: number) {
@@ -136,4 +129,4 @@ function renderTitle(title: string) {
   return <div className={styles.Title}>{titleContent}</div>;
 }
 
-export default withAppProvider<Props & DeprecatedProps>()(SkeletonPage);
+export default memo(SkeletonPage);

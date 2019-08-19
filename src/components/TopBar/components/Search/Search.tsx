@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useRef, memo} from 'react';
 import {classNames} from '../../../../utilities/css';
 import styles from './Search.scss';
 
@@ -11,33 +11,22 @@ export interface Props {
   onDismiss?(): void;
 }
 
-export default class Search extends React.PureComponent<Props, never> {
-  private node = React.createRef<HTMLDivElement>();
+function Search({visible, children, onDismiss}: Props) {
+  const node = useRef<HTMLDivElement>(null);
 
-  render() {
-    const {visible, children} = this.props;
+  const searchClassName = classNames(styles.Search, visible && styles.visible);
 
-    const searchClassName = classNames(
-      styles.Search,
-      visible && styles.visible,
-    );
+  return (
+    <div ref={node} className={searchClassName} onClick={handleDismiss}>
+      <div className={styles.Overlay}>{children}</div>
+    </div>
+  );
 
-    return (
-      <div
-        ref={this.node}
-        className={searchClassName}
-        onClick={this.handleDismiss}
-      >
-        <div className={styles.Overlay}>{children}</div>
-      </div>
-    );
-  }
-
-  private handleDismiss = ({target}: React.MouseEvent<HTMLElement>) => {
-    const {onDismiss} = this.props;
-
-    if (onDismiss != null && target === this.node.current) {
+  function handleDismiss({target}: React.MouseEvent<HTMLElement>) {
+    if (onDismiss != null && target === node.current) {
       onDismiss();
     }
-  };
+  }
 }
+
+export default memo(Search);

@@ -1,12 +1,10 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {MobileHamburgerMajorMonotone} from '@shopify/polaris-icons';
 import {classNames} from '../../utilities/css';
 
 import {getWidth} from '../../utilities/get-width';
-import {
-  withAppProvider,
-  WithAppProviderProps,
-} from '../../utilities/with-app-provider';
+import {useI18n} from '../../utilities/i18n';
+import {useTheme} from '../../utilities/theme';
 import Icon from '../Icon';
 import Image from '../Image';
 import UnstyledLink from '../UnstyledLink';
@@ -35,120 +33,104 @@ export interface Props {
   onNavigationToggle?(): void;
 }
 
-export type ComposedProps = Props & WithAppProviderProps;
+function TopBar({
+  showNavigationToggle,
+  userMenu,
+  searchResults,
+  searchField,
+  secondaryMenu,
+  searchResultsVisible,
+  onNavigationToggle,
+  onSearchResultsDismiss,
+  contextControl,
+}: Props) {
+  const {translate} = useI18n();
+  const {logo} = useTheme();
+  const [focused, setFocused] = useState(false);
 
-interface State {
-  focused: boolean;
-}
+  const className = classNames(
+    styles.NavigationIcon,
+    focused && styles.focused,
+  );
 
-class TopBar extends React.PureComponent<ComposedProps, State> {
-  static UserMenu = UserMenu;
-  static SearchField = SearchField;
-  static Menu = Menu;
+  const navigationButtonMarkup = showNavigationToggle ? (
+    <button
+      type="button"
+      className={className}
+      onClick={onNavigationToggle}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      aria-label={translate('Polaris.TopBar.toggleMenuLabel')}
+    >
+      <Icon source={MobileHamburgerMajorMonotone} color="white" />
+    </button>
+  ) : null;
 
-  state: State = {
-    focused: false,
-  };
+  const width = getWidth(logo, 104);
+  let contextMarkup;
 
-  render() {
-    const {
-      showNavigationToggle,
-      userMenu,
-      searchResults,
-      searchField,
-      secondaryMenu,
-      searchResultsVisible,
-      onNavigationToggle,
-      onSearchResultsDismiss,
-      contextControl,
-      polaris: {intl, theme},
-    } = this.props;
-    const logo = theme && theme.logo;
-    const {focused} = this.state;
-
-    const className = classNames(
-      styles.NavigationIcon,
-      focused && styles.focused,
+  if (contextControl) {
+    contextMarkup = (
+      <div testID="ContextControl" className={styles.ContextControl}>
+        {contextControl}
+      </div>
     );
-
-    const navigationButtonMarkup = showNavigationToggle ? (
-      <button
-        type="button"
-        className={className}
-        onClick={onNavigationToggle}
-        onFocus={this.handleFocus}
-        onBlur={this.handleBlur}
-        aria-label={intl.translate('Polaris.TopBar.toggleMenuLabel')}
-      >
-        <Icon source={MobileHamburgerMajorMonotone} color="white" />
-      </button>
-    ) : null;
-
-    const width = getWidth(logo, 104);
-    let contextMarkup;
-
-    if (contextControl) {
-      contextMarkup = (
-        <div testID="ContextControl" className={styles.ContextControl}>
-          {contextControl}
-        </div>
-      );
-    } else if (logo) {
-      contextMarkup = (
-        <div className={styles.LogoContainer}>
-          <UnstyledLink
-            url={logo.url || ''}
-            className={styles.LogoLink}
-            style={{width}}
-          >
-            <Image
-              source={logo.topBarSource || ''}
-              alt={logo.accessibilityLabel || ''}
-              className={styles.Logo}
-              style={{width}}
-            />
-          </UnstyledLink>
-        </div>
-      );
-    }
-
-    const searchResultsMarkup =
-      searchResults && searchResultsVisible ? (
-        <Search
-          visible={searchResultsVisible}
-          onDismiss={onSearchResultsDismiss}
+  } else if (logo) {
+    contextMarkup = (
+      <div className={styles.LogoContainer}>
+        <UnstyledLink
+          url={logo.url || ''}
+          className={styles.LogoLink}
+          style={{width}}
         >
-          {searchResults}
-        </Search>
-      ) : null;
-
-    const searchMarkup = searchField ? (
-      <React.Fragment>
-        {searchField}
-        {searchResultsMarkup}
-      </React.Fragment>
-    ) : null;
-
-    return (
-      <div className={styles.TopBar}>
-        {navigationButtonMarkup}
-        {contextMarkup}
-        <div className={styles.Contents}>
-          <div className={styles.SearchField}>{searchMarkup}</div>
-          <div className={styles.SecondaryMenu}>{secondaryMenu}</div>
-          {userMenu}
-        </div>
+          <Image
+            source={logo.topBarSource || ''}
+            alt={logo.accessibilityLabel || ''}
+            className={styles.Logo}
+            style={{width}}
+          />
+        </UnstyledLink>
       </div>
     );
   }
 
-  private handleFocus = () => {
-    this.setState({focused: true});
-  };
+  const searchResultsMarkup =
+    searchResults && searchResultsVisible ? (
+      <Search visible={searchResultsVisible} onDismiss={onSearchResultsDismiss}>
+        {searchResults}
+      </Search>
+    ) : null;
 
-  private handleBlur = () => {
-    this.setState({focused: false});
-  };
+  const searchMarkup = searchField ? (
+    <React.Fragment>
+      {searchField}
+      {searchResultsMarkup}
+    </React.Fragment>
+  ) : null;
+
+  return (
+    <div className={styles.TopBar}>
+      {navigationButtonMarkup}
+      {contextMarkup}
+      <div className={styles.Contents}>
+        <div className={styles.SearchField}>{searchMarkup}</div>
+        <div className={styles.SecondaryMenu}>{secondaryMenu}</div>
+        {userMenu}
+      </div>
+    </div>
+  );
+
+  function handleFocus() {
+    setFocused(true);
+  }
+
+  function handleBlur() {
+    setFocused(false);
+  }
 }
 
-export default withAppProvider<Props>()(TopBar);
+TopBar.UserMenu = UserMenu;
+TopBar.SearchField = SearchField;
+TopBar.Menu = Menu;
+
+export default TopBar;

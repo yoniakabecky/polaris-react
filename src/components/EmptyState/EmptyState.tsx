@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {memo} from 'react';
 import {classNames} from '../../utilities/css';
 
 import {Action} from '../../types';
@@ -29,105 +29,98 @@ export interface Props {
   footerContent?: React.ReactNode;
 }
 
-export default class EmptyState extends React.PureComponent<Props, never> {
-  render() {
-    const {
-      children,
-      heading,
-      image,
-      largeImage,
-      imageContained,
-      action,
-      secondaryAction,
-      footerContent,
-    } = this.props;
+function EmptyState({
+  children,
+  heading,
+  image,
+  largeImage,
+  imageContained,
+  action,
+  secondaryAction,
+  footerContent,
+}: Props) {
+  const className = classNames(
+    styles.EmptyState,
+    imageContained && styles.imageContained,
+  );
 
-    const className = classNames(
-      styles.EmptyState,
-      imageContained && styles.imageContained,
-    );
+  const imageMarkup = largeImage ? (
+    <Image
+      alt=""
+      role="presentation"
+      className={styles.Image}
+      source={largeImage}
+      sourceSet={[
+        {source: image, descriptor: '568w'},
+        {source: largeImage, descriptor: '1136w'},
+      ]}
+      sizes="(max-width: 568px) 60vw"
+    />
+  ) : (
+    <Image role="presentation" alt="" className={styles.Image} source={image} />
+  );
 
-    const imageMarkup = largeImage ? (
-      <Image
-        alt=""
-        role="presentation"
-        className={styles.Image}
-        source={largeImage}
-        sourceSet={[
-          {source: image, descriptor: '568w'},
-          {source: largeImage, descriptor: '1136w'},
-        ]}
-        sizes="(max-width: 568px) 60vw"
-      />
+  const secondaryActionMarkup = secondaryAction
+    ? buttonFrom(secondaryAction, {plain: true})
+    : null;
+
+  const footerContentMarkup = footerContent ? (
+    <div className={styles.FooterContent}>
+      <TextContainer>{footerContent}</TextContainer>
+    </div>
+  ) : null;
+
+  const primaryActionMarkup = action
+    ? buttonFrom(action, {primary: true, size: 'large'})
+    : null;
+
+  const headingMarkup = heading ? (
+    <DisplayText size="medium">{heading}</DisplayText>
+  ) : null;
+
+  const childrenMarkup = children ? (
+    <div className={styles.Content}>{children}</div>
+  ) : null;
+
+  const textContentMarkup =
+    headingMarkup || children ? (
+      <TextContainer>
+        {headingMarkup}
+        {childrenMarkup}
+      </TextContainer>
+    ) : null;
+
+  const actionsMarkup =
+    primaryActionMarkup || secondaryActionMarkup ? (
+      <div className={styles.Actions}>
+        <Stack alignment="center">
+          {primaryActionMarkup}
+          {secondaryActionMarkup}
+        </Stack>
+      </div>
+    ) : null;
+
+  const detailsMarkup =
+    textContentMarkup || actionsMarkup || footerContentMarkup ? (
+      <div className={styles.DetailsContainer}>
+        <div className={styles.Details}>
+          {textContentMarkup}
+          {actionsMarkup}
+          {footerContentMarkup}
+        </div>
+      </div>
     ) : (
-      <Image
-        role="presentation"
-        alt=""
-        className={styles.Image}
-        source={image}
-      />
+      <div className={styles.DetailsContainer} />
     );
 
-    const secondaryActionMarkup = secondaryAction
-      ? buttonFrom(secondaryAction, {plain: true})
-      : null;
-
-    const footerContentMarkup = footerContent ? (
-      <div className={styles.FooterContent}>
-        <TextContainer>{footerContent}</TextContainer>
+  return (
+    <div className={className}>
+      <div className={styles.Section}>
+        {detailsMarkup}
+        <div className={styles.ImageContainer}>{imageMarkup}</div>
       </div>
-    ) : null;
-
-    const primaryActionMarkup = action
-      ? buttonFrom(action, {primary: true, size: 'large'})
-      : null;
-
-    const headingMarkup = heading ? (
-      <DisplayText size="medium">{heading}</DisplayText>
-    ) : null;
-
-    const childrenMarkup = children ? (
-      <div className={styles.Content}>{children}</div>
-    ) : null;
-
-    const textContentMarkup =
-      headingMarkup || children ? (
-        <TextContainer>
-          {headingMarkup}
-          {childrenMarkup}
-        </TextContainer>
-      ) : null;
-
-    const actionsMarkup =
-      primaryActionMarkup || secondaryActionMarkup ? (
-        <div className={styles.Actions}>
-          <Stack alignment="center">
-            {primaryActionMarkup}
-            {secondaryActionMarkup}
-          </Stack>
-        </div>
-      ) : null;
-
-    const detailsMarkup =
-      textContentMarkup || actionsMarkup || footerContentMarkup ? (
-        <div className={styles.DetailsContainer}>
-          <div className={styles.Details}>
-            {textContentMarkup}
-            {actionsMarkup}
-            {footerContentMarkup}
-          </div>
-        </div>
-      ) : (
-        <div className={styles.DetailsContainer} />
-      );
-
-    return (
-      <div className={className}>
-        <div className={styles.Section}>
-          {detailsMarkup}
-          <div className={styles.ImageContainer}>{imageMarkup}</div>
-        </div>
-      </div>
-    );
-  }
+    </div>
+  );
 }
+
+export default memo(EmptyState);

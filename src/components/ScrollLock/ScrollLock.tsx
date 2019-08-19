@@ -1,27 +1,24 @@
-import React from 'react';
+import {useEffect} from 'react';
+import {useScrollLockManager} from '../../utilities/scroll-lock-manager';
+
 import './ScrollLock.scss';
-import {
-  WithAppProviderProps,
-  withAppProvider,
-} from '../../utilities/with-app-provider';
 
 export interface Props {}
+// useScrollLock -> ????????
+function ScrollLock() {
+  const scrollLockManager = useScrollLockManager();
 
-type CombinedProps = Props & WithAppProviderProps;
-class ScrollLock extends React.Component<CombinedProps, never> {
-  componentDidMount() {
-    const {scrollLockManager} = this.props.polaris;
-    scrollLockManager.registerScrollLock();
-  }
+  useEffect(
+    () => {
+      scrollLockManager.registerScrollLock();
+      return () => {
+        scrollLockManager.unregisterScrollLock();
+      };
+    },
+    [scrollLockManager],
+  );
 
-  componentWillUnmount() {
-    const {scrollLockManager} = this.props.polaris;
-    scrollLockManager.unregisterScrollLock();
-  }
-
-  render() {
-    return null;
-  }
+  return null;
 }
 
-export default withAppProvider<Props>()(ScrollLock);
+export default ScrollLock;
