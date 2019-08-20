@@ -6,9 +6,7 @@ import DisplayText from '../../../../../DisplayText';
 
 import styles from './Title.scss';
 
-export interface Props {
-  /** Page title, in large type */
-  title: string;
+export interface BaseProps {
   /** Page subtitle, in regular type*/
   subtitle?: string;
   /** Important and non-interactive status information shown immediately after the title. (stand-alone app use only) */
@@ -19,8 +17,13 @@ export interface Props {
     | React.SFC<React.SVGProps<SVGSVGElement>>;
 }
 
+interface Props extends BaseProps {
+  /** Page title, in large type */
+  children: string;
+}
+
 export default function Title({
-  title,
+  children,
   subtitle,
   titleMetadata,
   thumbnail,
@@ -28,7 +31,7 @@ export default function Title({
   const titleMarkup = (
     <div className={styles.Title}>
       <DisplayText size="large" element="h1">
-        {title}
+        {children}
       </DisplayText>
     </div>
   );

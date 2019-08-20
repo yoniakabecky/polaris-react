@@ -3,18 +3,27 @@ import debounce from 'lodash/debounce';
 import {classNames} from '../../../../utilities/css';
 import {buttonsFrom} from '../../../Button';
 import {navigationBarCollapsed} from '../../../../utilities/breakpoints';
+import {isElementOfType} from '../../../../utilities/components';
 import EventListener from '../../../EventListener';
 import {ComplexAction, MenuGroupDescriptor} from '../../../../types';
 import Breadcrumbs, {Props as BreadcrumbsProps} from '../../../Breadcrumbs';
-
+import ActionMenu, {
+  hasGroupsWithActions,
+  Props as ActionMenuProps,
+} from '../../../ActionMenu';
 import Pagination, {PaginationDescriptor} from '../../../Pagination';
-import ActionMenu, {hasGroupsWithActions} from '../../../ActionMenu';
 
 import {HeaderPrimaryAction} from '../../types';
 import {Title, TitleProps} from './components';
 import styles from './Header.scss';
 
 export interface Props extends TitleProps {
+  /** Compose a custom header by nesting Page.Title, ActionMenu, or custom components */
+  children?:
+    | React.ReactElement<ActionMenuProps | TitleProps>
+    | React.ReactElement<ActionMenuProps | TitleProps>[];
+  /** The page title */
+  title?: string | React.ReactElement<TitleProps>;
   /** Visually hide the title (stand-alone app use only) */
   titleHidden?: boolean;
   /** Adds a border to the bottom of the page header (stand-alone app use only) */
@@ -68,6 +77,7 @@ export default class Header extends React.PureComponent<Props, State> {
 
   render() {
     const {
+      children,
       title,
       subtitle,
       titleMetadata,
@@ -105,15 +115,6 @@ export default class Header extends React.PureComponent<Props, State> {
         </div>
       ) : null;
 
-    const pageTitleMarkup = (
-      <Title
-        title={title}
-        subtitle={subtitle}
-        titleMetadata={titleMetadata}
-        thumbnail={thumbnail}
-      />
-    );
-
     const primaryActionMarkup = primaryAction ? (
       <div className={styles.PrimaryActionWrapper}>
         {buttonsFrom(primaryAction, {
@@ -122,8 +123,25 @@ export default class Header extends React.PureComponent<Props, State> {
       </div>
     ) : null;
 
-    const actionMenuMarkup =
-      secondaryActions.length > 0 || hasGroupsWithActions(actionGroups) ? (
+    let actionMenuMarkup = null;
+    let titleMarkup = null;
+
+    if (children) {
+      React.Children.forEach(children, (child) => {
+        if (isElementOfType(child, ActionMenu)) {
+          actionMenuMarkup = (
+            <div className={styles.ActionMenuWrapper}>{child}</div>
+          );
+        }
+
+        if (isElementOfType(child, Title)) {
+          titleMarkup = child;
+        }
+      });
+    }
+
+    if (secondaryActions.length > 0 || hasGroupsWithActions(actionGroups)) {
+      actionMenuMarkup = (
         <div className={styles.ActionMenuWrapper}>
           <ActionMenu
             actions={secondaryActions}
@@ -131,7 +149,20 @@ export default class Header extends React.PureComponent<Props, State> {
             rollup={mobileView}
           />
         </div>
-      ) : null;
+      );
+    }
+
+    if (!titleMarkup && this.hasTitleContent && typeof title === 'string') {
+      titleMarkup = (
+        <Title
+          subtitle={subtitle}
+          titleMetadata={titleMetadata}
+          thumbnail={thumbnail}
+        >
+          {title}
+        </Title>
+      );
+    }
 
     const headerClassNames = classNames(
       styles.Header,
@@ -148,7 +179,7 @@ export default class Header extends React.PureComponent<Props, State> {
 
         <div className={styles.MainContent}>
           <div className={styles.TitleActionMenuWrapper}>
-            {pageTitleMarkup}
+            {titleMarkup}
             {actionMenuMarkup}
           </div>
 
@@ -157,6 +188,16 @@ export default class Header extends React.PureComponent<Props, State> {
 
         <EventListener event="resize" handler={this.handleResize} passive />
       </div>
+    );
+  }
+
+  private get hasTitleContent(): boolean {
+    const {title, subtitle, titleMetadata} = this.props;
+
+    return (
+      (title != null && title !== '') ||
+      (subtitle != null && subtitle !== '') ||
+      (titleMetadata != null && titleMetadata !== '')
     );
   }
 

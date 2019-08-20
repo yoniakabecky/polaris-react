@@ -4,53 +4,54 @@ import {Badge, DisplayText, Avatar} from 'components';
 import Title from '..';
 
 describe('<Title />', () => {
-  const mockProps = {
-    title: 'Test',
-  };
-
-  describe('title', () => {
-    it('renders a DisplayText with the title', () => {
-      const pageTitle = mountWithAppProvider(<Title {...mockProps} />);
-      expect(pageTitle.find(DisplayText).text()).toBe(mockProps.title);
+  const children = 'Test';
+  describe('children', () => {
+    it('renders a DisplayText with the children', () => {
+      const pageTitle = mountWithAppProvider(<Title>{children}</Title>);
+      expect(pageTitle.find(DisplayText).text()).toBe(children);
     });
   });
 
   describe('subtitle', () => {
     const propsWithSubtitle = {
-      ...mockProps,
       subtitle: 'Subtitle',
     };
 
     it('renders a paragaph when defined', () => {
-      const pageTitle = mountWithAppProvider(<Title {...propsWithSubtitle} />);
+      const pageTitle = mountWithAppProvider(
+        <Title {...propsWithSubtitle}>{children}</Title>,
+      );
       expect(pageTitle.find('p').text()).toBe(propsWithSubtitle.subtitle);
     });
 
     it('does not render a paragraph when not defined', () => {
-      const pageTitle = mountWithAppProvider(<Title {...mockProps} />);
+      const pageTitle = mountWithAppProvider(<Title>{children}</Title>);
       expect(pageTitle.find('p').exists()).toBe(false);
     });
   });
 
   describe('titleMetadata', () => {
     const propsWithMetadata = {
-      ...mockProps,
       titleMetadata: <Badge>Sold</Badge>,
     };
+
     it('renders the titleMetadata when defined', () => {
-      const pageTitle = mountWithAppProvider(<Title {...propsWithMetadata} />);
+      const pageTitle = mountWithAppProvider(
+        <Title {...propsWithMetadata}>{children}</Title>,
+      );
       expect(pageTitle.find(Badge).exists()).toBe(true);
     });
   });
 
   describe('thumbail', () => {
     const propsWithThumbail = {
-      ...mockProps,
       thumbnail: <Avatar customer />,
     };
 
     it('renders the thumbnail when defined', () => {
-      const pageTitle = mountWithAppProvider(<Title {...propsWithThumbail} />);
+      const pageTitle = mountWithAppProvider(
+        <Title {...propsWithThumbail}>{children}</Title>,
+      );
       expect(pageTitle.find(Avatar).exists()).toBe(true);
     });
   });

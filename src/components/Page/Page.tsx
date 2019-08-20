@@ -16,11 +16,12 @@ import {
   WithAppProviderProps,
 } from '../../utilities/with-app-provider';
 
-import {Header, HeaderProps, Content} from './components';
+import {Content, Header, HeaderProps, Title} from './components';
+
 import styles from './Page.scss';
 
 export interface Props extends HeaderProps {
-  /** The contents of the page */
+  /** The contents of the page. Include a custom header using the Page.Header subcomponent. */
   children?: React.ReactNode;
   /** Remove the normal max-width on the page */
   fullWidth?: boolean;
@@ -53,7 +54,9 @@ const APP_BRIDGE_PROPS: (keyof Props)[] = [
 ];
 
 class Page extends React.PureComponent<ComposedProps, never> {
+  static Header = Header;
   static Content = Content;
+  static Title = Title;
 
   private titlebar: AppBridgeTitleBar.TitleBar | undefined;
 
@@ -131,7 +134,7 @@ class Page extends React.PureComponent<ComposedProps, never> {
     return (
       <div className={className}>
         {headerMarkup}
-        <Content>{children}</Content>
+        {children}
       </div>
     );
   }
@@ -148,6 +151,8 @@ class Page extends React.PureComponent<ComposedProps, never> {
   private hasHeaderContent(): boolean {
     const {
       title,
+      subtitle,
+      titleMetadata,
       primaryAction,
       secondaryActions,
       actionGroups,
@@ -156,6 +161,8 @@ class Page extends React.PureComponent<ComposedProps, never> {
 
     return (
       (title != null && title !== '') ||
+      (subtitle != null && subtitle !== '') ||
+      (titleMetadata != null && titleMetadata !== '') ||
       primaryAction != null ||
       (secondaryActions != null && secondaryActions.length > 0) ||
       (actionGroups != null && actionGroups.length > 0) ||

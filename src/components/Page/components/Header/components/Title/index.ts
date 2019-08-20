@@ -1,4 +1,1 @@
-import Title from './Title';
-
-export {Props} from './Title';
-export default Title;
+export {default, BaseProps as Props} from './Title';

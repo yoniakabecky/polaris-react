@@ -11,6 +11,8 @@ import ActionList from '../../../ActionList';
 import Button from '../../../Button';
 import Popover from '../../../Popover';
 
+import {ActionMenuContext} from '../../ActionMenu';
+
 import styles from './RollupActions.scss';
 
 export interface Props {
@@ -20,13 +22,13 @@ export interface Props {
   sections?: ActionListSection[];
 }
 
-type ComposedProps = Props & WithAppProviderProps;
+export type CombinedProps = Props & WithAppProviderProps;
 
 interface State {
   rollupOpen: boolean;
 }
 
-class RollupActions extends React.PureComponent<ComposedProps, State> {
+class RollupActions extends React.PureComponent<CombinedProps, State> {
   state: State = {
     rollupOpen: false,
   };
@@ -57,18 +59,24 @@ class RollupActions extends React.PureComponent<ComposedProps, State> {
     );
 
     return (
-      <Popover
-        active={rollupOpen}
-        activator={activatorMarkup}
-        preferredAlignment="right"
-        onClose={this.handleRollupToggle}
-      >
-        <ActionList
-          items={items}
-          sections={sections}
-          onActionAnyItem={this.handleRollupToggle}
-        />
-      </Popover>
+      <ActionMenuContext.Consumer>
+        {({rollup}) => {
+          return rollup ? (
+            <Popover
+              active={rollupOpen}
+              activator={activatorMarkup}
+              preferredAlignment="right"
+              onClose={this.handleRollupToggle}
+            >
+              <ActionList
+                items={items}
+                sections={sections}
+                onActionAnyItem={this.handleRollupToggle}
+              />
+            </Popover>
+          ) : null;
+        }}
+      </ActionMenuContext.Consumer>
     );
   }
 
