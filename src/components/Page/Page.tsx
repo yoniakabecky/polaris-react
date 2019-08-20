@@ -16,7 +16,7 @@ import {
   WithAppProviderProps,
 } from '../../utilities/with-app-provider';
 
-import {Header, HeaderProps} from './components';
+import {Header, HeaderProps, Content} from './components';
 import styles from './Page.scss';
 
 export interface Props extends HeaderProps {
@@ -53,6 +53,8 @@ const APP_BRIDGE_PROPS: (keyof Props)[] = [
 ];
 
 class Page extends React.PureComponent<ComposedProps, never> {
+  static Content = Content;
+
   private titlebar: AppBridgeTitleBar.TitleBar | undefined;
 
   componentDidMount() {
@@ -129,7 +131,7 @@ class Page extends React.PureComponent<ComposedProps, never> {
     return (
       <div className={className}>
         {headerMarkup}
-        <div className={styles.Content}>{children}</div>
+        <Content>{children}</Content>
       </div>
     );
   }
