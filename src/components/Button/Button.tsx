@@ -224,7 +224,6 @@ export function Button({
       aria-expanded={ariaExpanded}
       aria-pressed={ariaPressed}
       role={loading ? 'alert' : undefined}
-      aria-busy={loading ? true : undefined}
     >
       {content}
     </button>
