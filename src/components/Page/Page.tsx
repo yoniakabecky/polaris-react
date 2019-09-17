@@ -52,15 +52,28 @@ const APP_BRIDGE_PROPS: (keyof PageProps)[] = [
   'primaryAction',
 ];
 
-class Page extends React.PureComponent<ComposedProps, never> {
-  private titlebar: AppBridgeTitleBar.TitleBar | undefined;
+function Page({
+  children,
+  fullWidth,
+  narrowWidth,
+  singleColumn,
+  title,
+  primaryAction,
+  secondaryActions,
+  actionGroups,
+  breadcrumbs,
+  polaris: {appBridge},
+  forceRender = false,
+  ...rest,
+}: ComposedProps) {
+  let titlebar: AppBridgeTitleBar.TitleBar | undefined;
 
-  componentDidMount() {
-    if (this.delegateToAppbridge === false || !this.props.polaris.appBridge) {
+  useEffect(() => {
+    if (delegateToAppbridge() === false || !appBridge) {
       return;
     }
 
-    const transformedProps = this.transformProps();
+    const transformedProps = transformProps();
     if (!transformedProps) return;
 
     // eslint-disable-next-line no-console
@@ -68,14 +81,11 @@ class Page extends React.PureComponent<ComposedProps, never> {
       'Deprecation: Using `Page` to render an embedded app title bar is deprecated and will be removed in v5.0. Use `TitleBar` from `@shopify/app-bridge-react` instead: https://help.shopify.com/en/api/embedded-apps/app-bridge/react-components/titlebar',
     );
 
-    this.titlebar = AppBridgeTitleBar.create(
-      this.props.polaris.appBridge,
-      transformedProps,
-    );
+    titlebar = AppBridgeTitleBar.create(appBridge, transformedProps);
   }
 
-  componentDidUpdate(prevProps: ComposedProps) {
-    if (this.titlebar == null || this.delegateToAppbridge === false) {
+  useEffect(() => {
+    if (titlebar == null || delegateToAppbridge() === false) {
       return;
     }
 
@@ -89,22 +99,22 @@ class Page extends React.PureComponent<ComposedProps, never> {
       this.titlebar.unsubscribe();
       this.titlebar.set(transformedProps);
     }
-  }
 
-  componentWillUnmount() {
-    if (this.titlebar == null || this.delegateToAppbridge === false) {
+    return 
+  }, [])
+
+  useEffect(() {
+    if (titlebar == null || delegateToAppbridge() === false) {
       return;
     }
 
     this.titlebar.unsubscribe();
-  }
+  }, [])
 
-  render() {
+
     const {
-      children,
-      fullWidth,
-      narrowWidth,
-      singleColumn,
+
+
       ...rest
     } = this.props;
 
@@ -134,16 +144,11 @@ class Page extends React.PureComponent<ComposedProps, never> {
     );
   }
 
-  private get delegateToAppbridge(): boolean {
-    const {
-      polaris: {appBridge},
-      forceRender = false,
-    } = this.props;
-
+  const delegateToAppbridge = useCallback(() => {
     return appBridge != null && forceRender === false;
   }
 
-  private hasHeaderContent(): boolean {
+  const hasHeaderContent = useCallback(() => {
     const {
       title,
       primaryAction,
@@ -161,7 +166,7 @@ class Page extends React.PureComponent<ComposedProps, never> {
     );
   }
 
-  private transformProps(): AppBridgeTitleBar.Options | void {
+  const transformProps = useCallba(): AppBridgeTitleBar.Options | void {
     const {appBridge} = this.props.polaris;
     if (!appBridge) return;
     const {title, primaryAction, secondaryActions, actionGroups} = this.props;
@@ -177,7 +182,7 @@ class Page extends React.PureComponent<ComposedProps, never> {
     };
   }
 
-  private transformBreadcrumbs(): AppBridgeButton.Button | undefined {
+  const transformBreadcrumbs = useCallba(): AppBridgeButton.Button | undefined {
     const {appBridge} = this.props.polaris;
     if (!appBridge) return;
     const {breadcrumbs} = this.props;
