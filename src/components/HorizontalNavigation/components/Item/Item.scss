@@ -1,0 +1,117 @@
+@import '../../../../styles/common';
+@import '../../../../styles/foundation';
+
+$item-font-size: rem(16px);
+$item-font-size-small: rem(14px);
+$item-line-height-small: rem(32px);
+
+.link {
+  @include unstyled-button;
+  font-size: $item-font-size;
+  font-weight: 400;
+  line-height: rem(40px);
+  display: flex;
+  padding: 0 spacing(base);
+  border-radius: border-radius();
+  color: color('ink');
+  text-decoration: none;
+  width: 100%;
+  justify-content: center;
+  text-align: center;
+
+  &.fitted {
+    padding: 0;
+  }
+
+  &:hover,
+  &:focus {
+    @include state(hover);
+    color: color('indigo', 'dark');
+    text-decoration: none;
+
+    .Icon {
+      @include recolor-icon(color('indigo'), color('white'), filter('indigo'));
+    }
+  }
+
+  @include breakpoint-after(nav-min-window-corrected()) {
+    font-size: $item-font-size-small;
+    font-weight: 500;
+    line-height: $item-line-height-small;
+  }
+  &::-moz-focus-inner {
+    border: 0;
+  }
+}
+
+.Icon {
+  @include recolor-icon(
+    color('ink', 'lightest'),
+    color('white'),
+    filter('ink', 'lightest')
+  );
+  flex-shrink: 0;
+  align-self: flex-start;
+  width: rem(20px);
+  height: rem(20px);
+  margin-top: rem(10px);
+  // margin-right: spacing(loose);
+  margin-bottom: rem(10px);
+  @include breakpoint-after(nav-min-window-corrected()) {
+    margin-top: rem(6px);
+    // margin-right: spacing();
+    margin-bottom: rem(6px);
+  }
+  .selected &,
+  .selected:hover & {
+    @include recolor-icon(color('indigo'), color('white'), filter('indigo'));
+  } // The regular nav items are wrapped in polaris icon components which add
+  // the styles we're missing which causes the channel items to shift down
+  svg {
+    display: block;
+  }
+}
+
+.selected {
+  font-weight: 600;
+  color: color('indigo', 'dark');
+  background-color: rgba(color('indigo'), 0.12);
+  @media (-ms-high-contrast: active) {
+    background-color: ms-high-contrast-color('selected-text-background');
+  }
+  // stylelint-disable selector-max-specificity
+  .Icon,
+  &:focus .Icon {
+    @include recolor-icon(color('indigo'), color('white'));
+  }
+  // stylelint-enable selector-max-specificity
+}
+
+.Item {
+  display: inline-flex;
+
+  &:nth-of-type(1) {
+    margin-left: -103px;
+  }
+}
+
+.fitted {
+  flex: 1 1 100%;
+}
+
+.title {
+  display: block;
+  // padding: 1.6rem 0 1.3rem;
+  // border-bottom: 0.3rem solid transparent;
+  min-width: 5rem;
+  color: color('indigo', 'dark');
+
+  .fitted & {
+    // width: 100%;
+    // padding: spacing(tight) spacing();
+  }
+}
+
+.hidden {
+  visibility: hidden;
+}

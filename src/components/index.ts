@@ -106,6 +106,11 @@ export {
 
 export {Heading, HeadingProps} from './Heading';
 
+export {
+  HorizontalNavigation,
+  HorizontalNavigationProps,
+} from './HorizontalNavigation';
+
 export {Icon} from './Icon';
 
 export {Image, ImageProps} from './Image';

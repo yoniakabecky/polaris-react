@@ -1,0 +1,80 @@
+@import '../../../../styles/common';
+
+.Wrapper {
+  position: sticky;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  min-width: 103px;
+  max-width: 103px;
+  background: linear-gradient(
+    to right,
+    color('sky', 'light') 60.22%,
+    rgba(color('sky', 'light'), 0) 100%
+  );
+  transition-property: transform, right;
+  transition-duration: duration(slow);
+}
+
+.hidden {
+  position: relative;
+}
+
+.directionLeft {
+  left: 0;
+  background: linear-gradient(
+    to right,
+    color('sky', 'light') 60.22%,
+    rgba(color('sky', 'light'), 0) 100%
+  );
+
+  &.hidden {
+    transform: translateX(-103px);
+  }
+}
+
+.directionRight {
+  right: 0;
+  justify-content: flex-end;
+  // move this style into Item.scss with the other one??
+  margin-left: -103px;
+  background: linear-gradient(
+    to left,
+    color('sky', 'light') 60.22%,
+    rgba(color('sky', 'light'), 0) 100%
+  );
+
+  &.hidden {
+    position: fixed;
+    transform: translateX(103px);
+    // use offsetY
+    right: 40px;
+  }
+}
+
+.Pagination {
+  min-width: 30px;
+  min-height: 30px;
+  max-height: 30px;
+  display: flex;
+  border-radius: 50%;
+  background-color: color('indigo');
+}
+
+.paginationLeft {
+  margin-left: 16px;
+}
+
+.paginationRight {
+  margin-right: 16px;
+}
+
+.absoluteWrapper {
+  position: absolute;
+  width: var(--pagination-width);
+}
+
+.absoluteWrapperRight {
+  display: flex;
+  justify-content: flex-end;
+}

@@ -1,0 +1,35 @@
+@import '../../styles/common';
+@import '../../styles/foundation';
+
+$item-font-size: rem(16px);
+$item-font-size-small: rem(14px);
+$item-line-height-small: rem(32px);
+
+.HorizontalNavigation {
+  // added right
+  position: relative;
+
+  margin: 0;
+  list-style-type: none;
+  padding: spacing(loose);
+  padding-left: 0;
+  padding-right: 0;
+  display: flex;
+  flex: 1 1 auto;
+  // overflow: scroll;
+
+  // delete
+  // border: 1px pink solid;
+}
+
+.wrapper {
+  position: relative;
+  display: flex;
+  overflow-y: auto;
+}
+
+.OuterWrapper {
+  position: relative;
+  // display: flex;
+  overflow: hidden;
+}
