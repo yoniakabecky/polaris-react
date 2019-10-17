@@ -45,10 +45,11 @@
   );
 
   &.hidden {
-    position: fixed;
+    // comment out fixed and right
+    // position: fixed;
     transform: translateX(103px);
     // use offsetY
-    right: 40px;
+    // right: 40px;
   }
 }
 
@@ -77,4 +78,22 @@
 .absoluteWrapperRight {
   display: flex;
   justify-content: flex-end;
+}
+
+// new styles
+
+.overflowWrapper {
+  position: sticky;
+  right: 0;
+  min-width: 103px;
+  max-width: 103px;
+  margin-left: -103px;
+  cursor: pointer;
+  transition-property: transform, right;
+  transition-duration: 300ms;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  overflow: hidden;
+  pointer-events: none;
 }

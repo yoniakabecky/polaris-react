@@ -31,10 +31,18 @@ export function Pagination({direction, onClick, visible}: PaginationProps) {
     styles[variationName('pagination', direction)],
   );
 
-  return (
+  return direction === PaginationDirection.Left ? (
     <div className={wrapperClassNames}>
       <div className={paginationClassNames} onClick={onClick}>
         <Icon source={iconSource} color="white" />
+      </div>
+    </div>
+  ) : (
+    <div className={styles.overflowWrapper}>
+      <div className={wrapperClassNames}>
+        <div className={paginationClassNames} onClick={onClick}>
+          <Icon source={iconSource} color="white" />
+        </div>
       </div>
     </div>
   );

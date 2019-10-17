@@ -91,6 +91,7 @@ export function HorizontalNavigation({
     console.log('Scrolling to: ', nextListItem);
 
     const {x: navLeftOffset} = nav.current!.getBoundingClientRect() as DOMRect;
+    console.log('Scrolling too: ', nextListItem);
     nav.current!.scrollBy({
       left: nextListItem.getBoundingClientRect().left - 103 - navLeftOffset,
       behavior: 'smooth',
@@ -125,16 +126,34 @@ export function HorizontalNavigation({
       // Ignore pagination button
       const [, ...children] = element.children;
       // Previous child we can return when we've gone to far
-      let previousChild = null;
-
       for (const child of children) {
-        if (child.getBoundingClientRect().right > 899 - 103) return child;
-        previousChild = child;
+        if (
+          Math.round(
+            child.getBoundingClientRect().right -
+              nav.current!.getBoundingClientRect().x,
+          ) >
+          nav.current!.getBoundingClientRect().width - 103
+        ) {
+          return child;
+        }
       }
 
       return null;
     }
   }, []);
+
+  /**
+ *         // Getting very inexact measuremts that were a hundreth or thousands off e.g
+        // 102.984375 or 102.997332
+        Math.round(
+          // current list items left position
+          child.getBoundingClientRect().left -
+            // container distance from edge of screen
+            nav.current!.getBoundingClientRect().x,
+        ) >=
+        // pagiation overlay length
+        103
+ */
 
   const paginationleftMarkup = (
     <Pagination
@@ -173,7 +192,20 @@ export function HorizontalNavigation({
     let previousChild = null;
 
     for (const child of children) {
-      if (child.getBoundingClientRect().left > 103) return previousChild;
+      if (
+        // Getting very inexact measuremts that were a hundreth or thousands off e.g
+        // 102.984375 or 102.997332
+        Math.round(
+          // current list items left position
+          child.getBoundingClientRect().left -
+            // container distance from edge of screen
+            nav.current!.getBoundingClientRect().x,
+        ) >=
+        // pagiation overlay length
+        103
+      )
+        return previousChild;
+      // if (child.getBoundingClientRect().left > 103) return previousChild;
       previousChild = child;
     }
 
