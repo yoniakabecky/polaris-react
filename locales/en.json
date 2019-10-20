@@ -212,7 +212,8 @@
           "ComingQuarter": "in the next 3 months",
           "ComingYear": "in the next year",
           "OnOrBefore": "on or before",
-          "OnOrAfter": "on or after"
+          "OnOrAfter": "on or after",
+          "dateFilterLabel": "Polaris.ResourceList.DateSelector.SelectOptions.dateFilterLabel PLACEHOLDER"
         },
         "FilterLabelForValue": {
           "past_week": "in the last week",

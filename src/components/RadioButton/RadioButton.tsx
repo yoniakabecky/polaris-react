@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHiddenNotBlank} from '../../utilities/a11y';
 import {useUniqueId} from '../../utilities/unique-id';
 import {useFeatures} from '../../utilities/features';
 import {classNames} from '../../utilities/css';
@@ -75,6 +76,8 @@ export function RadioButton({
     styles.RadioButton,
     unstableGlobalTheming && styles.globalTheming,
   );
+
+  useHiddenNotBlank({propName: 'label', value: label});
 
   return (
     <Choice

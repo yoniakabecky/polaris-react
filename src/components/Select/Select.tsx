@@ -1,5 +1,6 @@
 import React from 'react';
 import {ArrowUpDownMinor} from '@shopify/polaris-icons';
+import {useHiddenNotBlank} from '../../utilities/a11y';
 import {classNames} from '../../utilities/css';
 import {useUniqueId} from '../../utilities/unique-id';
 import {Labelled, Action, helpTextID} from '../Labelled';
@@ -143,6 +144,8 @@ export function Select({
   );
 
   const optionsMarkup = normalizedOptions.map(renderOption);
+
+  useHiddenNotBlank({propName: 'label', value: label});
 
   return (
     <Labelled

@@ -19,6 +19,8 @@ interface State {
   trackWidth: number;
   trackLeft: number;
   prevValue?: DualValue;
+  // As this is a class component, we must re-implement useHiddenNotBlank without hooks
+  loggedHiddenNotBlank: boolean;
 }
 
 export interface DualThumbProps extends RangeSliderProps {
@@ -70,6 +72,7 @@ export class DualThumb extends React.Component<DualThumbProps, State> {
     ),
     trackWidth: 0,
     trackLeft: 0,
+    loggedHiddenNotBlank: false,
   };
 
   private track = React.createRef<HTMLDivElement>();
@@ -104,6 +107,12 @@ export class DualThumb extends React.Component<DualThumbProps, State> {
         {passive: false},
       );
     }
+
+    this.checkLabelHiddenNotBlank();
+  }
+
+  componentDidUpdate() {
+    this.checkLabelHiddenNotBlank();
   }
 
   componentWillUnmount() {
@@ -518,6 +527,28 @@ export class DualThumb extends React.Component<DualThumbProps, State> {
       return percentageOfTrack * (max - min);
     } else {
       return 0;
+    }
+  };
+
+  private checkLabelHiddenNotBlank = () => {
+    const {loggedHiddenNotBlank} = this.state;
+    const value = this.props.label;
+
+    if (!loggedHiddenNotBlank && value === '') {
+      const error = new Error(
+        // FIXME: We probably want more info here. Ideally a link to A11y info and why we use the labelHidden props.
+        `'label' prop must not be empty string! If you want to hide it, use the 'labelHidden' prop.`,
+      );
+
+      if (
+        process.env.NODE_ENV === 'development' ||
+        process.env.NODE_ENV === 'test'
+      ) {
+        throw error;
+      } else {
+        console.error(error); // eslint-disable-line no-console
+        this.setState({loggedHiddenNotBlank: true});
+      }
     }
   };
 }

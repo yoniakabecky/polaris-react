@@ -1,5 +1,6 @@
 import React, {useRef, useImperativeHandle} from 'react';
 import {MinusMinor, TickSmallMinor} from '@shopify/polaris-icons';
+import {useHiddenNotBlank} from '../../utilities/a11y';
 import {classNames} from '../../utilities/css';
 import {useFeatures} from '../../utilities/features';
 import {useToggle} from '../../utilities/use-toggle';
@@ -131,6 +132,8 @@ export const Checkbox = React.forwardRef<CheckboxHandles, CheckboxProps>(
       styles.Input,
       isIndeterminate && styles['Input-indeterminate'],
     );
+
+    useHiddenNotBlank({propName: 'label', value: label});
 
     return (
       /* eslint-disable jsx-a11y/no-redundant-roles */

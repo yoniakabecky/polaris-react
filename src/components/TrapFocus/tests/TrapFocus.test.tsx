@@ -104,7 +104,7 @@ describe('<TrapFocus />', () => {
   it('keeps focus on nodes contained inside trap focus during mount', () => {
     const trapFocus = mountWithAppProvider(
       <TrapFocus>
-        <TextField label="" value="" onChange={noop} autoFocus />
+        <TextField label="Test field" value="" onChange={noop} autoFocus />
       </TrapFocus>,
     );
     const input = trapFocus.find('input').getDOMNode();
@@ -115,7 +115,7 @@ describe('<TrapFocus />', () => {
     const trapFocus = mountWithAppProvider(
       <TrapFocus>
         <a href="/">
-          <TextField label="" value="" onChange={noop} />
+          <TextField label="Test field" value="" onChange={noop} />
         </a>
       </TrapFocus>,
     );
@@ -137,7 +137,7 @@ describe('<TrapFocus />', () => {
     it('allows default when trapping is false', () => {
       const trapFocus = mountWithAppProvider(
         <TrapFocus trapping={false}>
-          <TextField label="" value="" onChange={noop} autoFocus />
+          <TextField label="Test Field" value="" onChange={noop} autoFocus />
         </TrapFocus>,
       );
 
@@ -154,7 +154,7 @@ describe('<TrapFocus />', () => {
     it('allows default when the related target is a child', () => {
       const trapFocus = mountWithAppProvider(
         <TrapFocus>
-          <TextField label="" value="" onChange={noop} autoFocus />
+          <TextField label="Test Field" value="" onChange={noop} autoFocus />
         </TrapFocus>,
       );
 

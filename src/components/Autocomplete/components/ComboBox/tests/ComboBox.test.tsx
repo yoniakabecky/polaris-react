@@ -592,7 +592,7 @@ describe('<ComboBox/>', () => {
 function noop() {}
 
 function renderTextField() {
-  return <TextField label="" onChange={noop} />;
+  return <TextField label="Test field" onChange={noop} />;
 }
 
 function renderNodeWithId() {

@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHiddenNotBlank} from '../../../../utilities/a11y';
 import {classNames} from '../../../../utilities/css';
 import {buttonsFrom} from '../../../Button';
 import {useMediaQuery} from '../../../../utilities/media-query';
@@ -104,6 +105,8 @@ export function Header({
     actionMenuMarkup && styles.hasActionMenu,
     isNavigationCollapsed && styles.mobileView,
   );
+
+  useHiddenNotBlank({propName: 'title', value: title});
 
   return (
     <div className={headerClassNames}>

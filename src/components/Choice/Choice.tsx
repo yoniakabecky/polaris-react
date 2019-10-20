@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHiddenNotBlank} from '../../utilities/a11y';
 import {classNames} from '../../utilities/css';
 import {Error} from '../../types';
 import {InlineError} from '../InlineError';
@@ -77,6 +78,8 @@ export function Choice({
         {helpTextMarkup}
       </div>
     ) : null;
+
+  useHiddenNotBlank({propName: 'label', value: label});
 
   return descriptionMarkup ? (
     <div>

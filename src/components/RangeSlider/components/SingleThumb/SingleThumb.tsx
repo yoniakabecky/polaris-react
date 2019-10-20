@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHiddenNotBlank} from '../../../../utilities/a11y';
 import {classNames} from '../../../../utilities/css';
 import {clamp} from '../../../../utilities/clamp';
 import {Labelled, helpTextID} from '../../../Labelled';
@@ -78,6 +79,8 @@ export function SingleThumb(props: SingleThumbProps) {
     error && styles.error,
     disabled && styles.disabled,
   );
+
+  useHiddenNotBlank({propName: 'label', value: label});
 
   return (
     <Labelled

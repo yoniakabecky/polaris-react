@@ -11,6 +11,7 @@ import {
 import styles from './CheckableButton.scss';
 
 export interface CheckableButtonProps {
+  // accessibilityLabel can't be optional, since it is the fallback for the label being empty/missing
   accessibilityLabel?: string;
   label?: string;
   selected?: boolean | 'indeterminate';
@@ -23,7 +24,7 @@ export interface CheckableButtonProps {
 }
 
 export function CheckableButton({
-  accessibilityLabel,
+  accessibilityLabel = 'ACCESSIBILITY LABEL PLACEHOLDER',
   label = '',
   onToggleAll,
   selected,

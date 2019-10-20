@@ -32,6 +32,7 @@ export interface BulkActionsProps {
   smallScreen?: boolean;
   /** Label for the bulk actions */
   label?: string;
+  // FIXME: Label should not optional. Instead of accessibilityLabel and label, it should be label and labelHidden
   /** State of the bulk actions checkbox */
   selected?: boolean | 'indeterminate';
   /** List is in a selectable state */

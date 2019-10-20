@@ -8,6 +8,7 @@ import React, {
   Component,
 } from 'react';
 import debounce from 'lodash/debounce';
+import {useHiddenNotBlank} from '../../utilities/a11y';
 import {
   addEventListener,
   removeEventListener,
@@ -374,6 +375,8 @@ export const DropZone: React.FunctionComponent<DropZoneProps> & {
     dragging &&
     (internalError || error) &&
     overlayMarkup(CircleAlertMajorMonotone, 'red', errorOverlayTextWithDefault);
+
+  useHiddenNotBlank({propName: 'label', value: label});
 
   const labelValue =
     label || i18n.translate('Polaris.DropZone.FileUpload.label');

@@ -181,6 +181,7 @@ describe('<FilterValueSelector />', () => {
         expect(textField.exists()).toBe(true);
       });
 
+      // FIXME: Labels should never be empty strings.
       it('renders label as empty string if operatorText does not exist', () => {
         const wrapper = mountWithAppProvider(
           <FilterValueSelector
@@ -191,7 +192,7 @@ describe('<FilterValueSelector />', () => {
         );
 
         const textField = wrapper.find(TextField);
-        expect(textField.prop('label')).toBe('');
+        expect(textField.prop('label')).toBe('EMPTY OPERATOR TEXT PLACEHOLDER');
       });
 
       it('renders a Select with options using operatorText when it is a list of operators', () => {

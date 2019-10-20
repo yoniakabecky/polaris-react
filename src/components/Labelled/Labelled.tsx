@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHiddenNotBlank} from '../../utilities/a11y';
 import {classNames} from '../../utilities/css';
 
 import {Action, Error} from '../../types';
@@ -65,6 +66,8 @@ export function Labelled({
       {actionMarkup}
     </div>
   ) : null;
+
+  useHiddenNotBlank({propName: 'label', value: label});
 
   return (
     <div className={className}>

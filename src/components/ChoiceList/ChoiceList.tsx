@@ -1,4 +1,5 @@
 import React from 'react';
+import {useHiddenNotBlank} from '../../utilities/a11y';
 
 import {classNames} from '../../utilities/css';
 import {useUniqueId} from '../../utilities/unique-id';
@@ -74,6 +75,8 @@ export function ChoiceList({
   const titleMarkup = title ? (
     <legend className={styles.Title}>{title}</legend>
   ) : null;
+
+  useHiddenNotBlank({propName: 'title', value: title});
 
   const choicesMarkup = choices.map((choice) => {
     const {
