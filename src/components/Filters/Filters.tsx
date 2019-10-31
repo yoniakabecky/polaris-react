@@ -20,7 +20,7 @@ import {ScrollLock} from '../ScrollLock';
 import {Icon} from '../Icon';
 import {TextField} from '../TextField';
 import {Tag} from '../Tag';
-import {TextStyle} from '../TextStyle';
+import {TextStyle, Variation} from '../TextStyle';
 import {Badge} from '../Badge';
 import {Focus} from '../Focus';
 import {Sheet} from '../Sheet';
@@ -75,6 +75,8 @@ export interface FiltersProps {
   onQueryFocus?(): void;
   /** The content to display inline with the controls */
   children?: React.ReactNode;
+  /** Disables the filters when set to true */
+  disabled?: boolean;
 }
 
 type ComposedProps = FiltersProps & WithAppProviderProps;
@@ -126,6 +128,7 @@ class Filters extends React.Component<ComposedProps, State> {
       onQueryClear,
       queryPlaceholder,
       children,
+      disabled = false,
     } = this.props;
     const {resourceName} = this.context;
     const {open, readyForFocus} = this.state;
@@ -161,6 +164,11 @@ class Filters extends React.Component<ComposedProps, State> {
       ) : null;
 
       const collapsibleID = `${filter.key}Collapsible`;
+      const filterTriggerTitleTextStyle: {variation: Variation} | {} = disabled
+        ? {
+            variation: 'subdued',
+          }
+        : {};
 
       return (
         <div key={filter.key} className={className}>
@@ -171,9 +179,14 @@ class Filters extends React.Component<ComposedProps, State> {
             type="button"
             aria-controls={collapsibleID}
             aria-expanded={filterIsOpen}
+            disabled={disabled}
           >
             <div className={styles.FilterTriggerLabelContainer}>
-              <h2 className={styles.FilterTriggerTitle}>{filter.label}</h2>
+              <h2 className={styles.FilterTriggerTitle}>
+                <TextStyle {...filterTriggerTitleTextStyle}>
+                  {filter.label}
+                </TextStyle>
+              </h2>
               <span className={styles.FilterTriggerIcon}>
                 <Icon source={icon} color="inkLightest" />
               </span>
@@ -196,7 +209,11 @@ class Filters extends React.Component<ComposedProps, State> {
 
     const rightActionMarkup = (
       <div ref={this.moreFiltersButtonContainer}>
-        <Button onClick={this.toggleFilters} testID="SheetToggleButton">
+        <Button
+          onClick={this.toggleFilters}
+          testID="SheetToggleButton"
+          disabled={disabled}
+        >
           {intl.translate('Polaris.Filters.moreFilters')}
         </Button>
       </div>
@@ -212,6 +229,7 @@ class Filters extends React.Component<ComposedProps, State> {
         rightPopoverableActions={this.transformFilters(filters)}
         rightAction={rightActionMarkup}
         auxiliary={children}
+        disabled={disabled}
       >
         <TextField
           placeholder={
@@ -239,6 +257,7 @@ class Filters extends React.Component<ComposedProps, State> {
           }
           clearButton
           onClearButtonClick={onQueryClear}
+          disabled={disabled}
         />
       </ConnectedFilterControl>
     );

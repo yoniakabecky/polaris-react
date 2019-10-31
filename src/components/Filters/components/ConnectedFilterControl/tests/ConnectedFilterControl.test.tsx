@@ -108,6 +108,41 @@ describe('<ConnectedFilterControl />', () => {
 
     expect(connectedFilterControl.find(MockAux).exists()).toBe(true);
   });
+
+  it('disables activator buttons when prop disabled is passed', () => {
+    const connectedFilterControl = mountWithAppProvider(
+      <ConnectedFilterControl
+        rightPopoverableActions={[
+          mockRightOpenPopoverableAction,
+          mockRightClosedPopoverableAction,
+        ]}
+      >
+        <MockChild />
+      </ConnectedFilterControl>,
+    );
+
+    connectedFilterControl.find(Popover).forEach((popover) => {
+      const activator = popover.prop('activator');
+      expect(activator.props()).toHaveProperty('active', false);
+    });
+  });
+
+  it('closes open popovers when disabled prop is set to true', () => {
+    const connectedFilterControl = mountWithAppProvider(
+      <ConnectedFilterControl
+        rightPopoverableActions={[
+          mockRightOpenPopoverableAction,
+          mockRightClosedPopoverableAction,
+        ]}
+      >
+        <MockChild />
+      </ConnectedFilterControl>,
+    );
+
+    connectedFilterControl.find(Popover).forEach((popover) => {
+      expect(popover.props()).toHaveProperty('active', false);
+    });
+  });
 });
 
 function noop() {}

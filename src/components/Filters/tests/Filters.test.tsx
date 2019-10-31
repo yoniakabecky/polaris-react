@@ -1,7 +1,7 @@
 import React from 'react';
 import {ReactWrapper} from 'enzyme';
 import {matchMedia} from '@shopify/jest-dom-mocks';
-import {Button, Popover, Sheet, Tag, TextField} from 'components';
+import {Button, Popover, Sheet, Tag, TextField, TextStyle} from 'components';
 
 import {
   mountWithAppProvider,
@@ -291,6 +291,74 @@ describe('<Filters />', () => {
 
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith('filterOne');
+    });
+  });
+
+  describe('disabled prop is passed as true', () => {
+    it('filters search field is diabled', () => {
+      const resourceFilters = mountWithAppProvider(
+        <Filters {...mockProps} queryValue="bar" disabled />,
+      );
+
+      expect(resourceFilters.find(TextField).prop('disabled')).toBe(true);
+    });
+
+    it('sheet toggle button is disabled', () => {
+      const resourceFilters = mountWithAppProvider(
+        <Filters {...mockProps} disabled />,
+      );
+      const rightActionButton = findByTestID(
+        resourceFilters,
+        'SheetToggleButton',
+      );
+
+      expect(rightActionButton.prop('disabled')).toBe(true);
+    });
+
+    it('passes disabled prop to connected filters as true', () => {
+      const resourceFilters = mountWithAppProvider(
+        <Filters {...mockProps} queryValue="bar" disabled />,
+      );
+
+      expect(
+        resourceFilters.find(ConnectedFilterControl).prop('disabled'),
+      ).toBe(true);
+    });
+
+    it('sheet filter toggle button is disabled', () => {
+      const resourceFilters = mountWithAppProvider(
+        <Filters {...mockProps} disabled />,
+      );
+
+      trigger(findByTestID(resourceFilters, 'SheetToggleButton'), 'onClick');
+      jest.runAllTimers();
+
+      mockProps.filters.forEach((filter) => {
+        const toggleButton = findById(
+          resourceFilters,
+          `${filter.key}ToggleButton`,
+        );
+
+        expect(toggleButton.prop('disabled')).toBe(true);
+      });
+    });
+
+    it('sheet filters heading text is subdued', () => {
+      const resourceFilters = mountWithAppProvider(
+        <Filters {...mockProps} disabled />,
+      );
+
+      trigger(findByTestID(resourceFilters, 'SheetToggleButton'), 'onClick');
+      jest.runAllTimers();
+
+      mockProps.filters.forEach((filter) => {
+        const toggleButton = findById(
+          resourceFilters,
+          `${filter.key}ToggleButton`,
+        );
+
+        expect(toggleButton.find(TextStyle).prop('variation')).toBe('subdued');
+      });
     });
   });
 });
