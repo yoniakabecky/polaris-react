@@ -331,7 +331,6 @@ describe('<Filters />', () => {
       );
 
       trigger(findByTestID(resourceFilters, 'SheetToggleButton'), 'onClick');
-      jest.runAllTimers();
 
       mockProps.filters.forEach((filter) => {
         const toggleButton = findById(
@@ -349,7 +348,6 @@ describe('<Filters />', () => {
       );
 
       trigger(findByTestID(resourceFilters, 'SheetToggleButton'), 'onClick');
-      jest.runAllTimers();
 
       mockProps.filters.forEach((filter) => {
         const toggleButton = findById(
