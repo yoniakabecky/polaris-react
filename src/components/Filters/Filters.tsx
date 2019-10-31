@@ -20,7 +20,7 @@ import {ScrollLock} from '../ScrollLock';
 import {Icon} from '../Icon';
 import {TextField} from '../TextField';
 import {Tag} from '../Tag';
-import {TextStyle, Variation} from '../TextStyle';
+import {TextStyle, VariationValue} from '../TextStyle';
 import {Badge} from '../Badge';
 import {Focus} from '../Focus';
 import {Sheet} from '../Sheet';
@@ -164,9 +164,9 @@ class Filters extends React.Component<ComposedProps, State> {
       ) : null;
 
       const collapsibleID = `${filter.key}Collapsible`;
-      const filterTriggerTitleTextStyle: {variation: Variation} | {} = disabled
+      const filterTriggerTitleTextStyle = disabled
         ? {
-            variation: 'subdued',
+            variation: VariationValue.Subdued,
           }
         : {};
 
