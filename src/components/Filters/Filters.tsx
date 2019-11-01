@@ -164,11 +164,6 @@ class Filters extends React.Component<ComposedProps, State> {
       ) : null;
 
       const collapsibleID = `${filter.key}Collapsible`;
-      const filterTriggerTitleTextStyle = disabled
-        ? {
-            variation: VariationValue.Subdued,
-          }
-        : {};
 
       return (
         <div key={filter.key} className={className}>
@@ -183,7 +178,9 @@ class Filters extends React.Component<ComposedProps, State> {
           >
             <div className={styles.FilterTriggerLabelContainer}>
               <h2 className={styles.FilterTriggerTitle}>
-                <TextStyle {...filterTriggerTitleTextStyle}>
+                <TextStyle
+                  variation={disabled ? VariationValue.Subdued : undefined}
+                >
                   {filter.label}
                 </TextStyle>
               </h2>

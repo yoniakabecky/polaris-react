@@ -651,7 +651,7 @@ function FiltersExample() {
 }
 ```
 
-### Disabling filters
+### Disabled filters
 
 ```jsx
 function FiltersExample() {
