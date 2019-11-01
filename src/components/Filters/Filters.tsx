@@ -327,6 +327,7 @@ class Filters extends React.Component<ComposedProps, State> {
                 onRemove={() => {
                   filter.onRemove(filter.key);
                 }}
+                disabled={disabled}
               >
                 {filter.label}
               </Tag>

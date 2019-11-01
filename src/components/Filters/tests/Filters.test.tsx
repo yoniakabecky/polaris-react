@@ -358,6 +358,18 @@ describe('<Filters />', () => {
         expect(toggleButton.find(TextStyle).prop('variation')).toBe('subdued');
       });
     });
+
+    it('passes disabled prop to tags', () => {
+      const appliedFilters = [{key: 'filterOne', label: 'foo', onRemove: noop}];
+
+      const resourceFilters = mountWithAppProvider(
+        <Filters {...mockProps} appliedFilters={appliedFilters} disabled />,
+      );
+
+      resourceFilters.find(Tag).forEach((tag) => {
+        expect(tag.prop('disabled')).toBe(true);
+      });
+    });
   });
 });
 
