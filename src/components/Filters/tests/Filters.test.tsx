@@ -28,6 +28,7 @@ const mockProps: FiltersProps = {
       key: 'filterTwo',
       label: 'Filter Two',
       filter: <MockFilter id="filterTwo" />,
+      disabled: true,
     },
     {
       key: 'filterThree',
@@ -294,8 +295,8 @@ describe('<Filters />', () => {
     });
   });
 
-  describe('disabled prop is passed as true', () => {
-    it('filters search field is diabled', () => {
+  describe('disabled', () => {
+    it('disables the search field when true', () => {
       const resourceFilters = mountWithAppProvider(
         <Filters {...mockProps} queryValue="bar" disabled />,
       );
@@ -303,7 +304,7 @@ describe('<Filters />', () => {
       expect(resourceFilters.find(TextField).prop('disabled')).toBe(true);
     });
 
-    it('sheet toggle button is disabled', () => {
+    it('disables <ConnectedFilterControl /> when true', () => {
       const resourceFilters = mountWithAppProvider(
         <Filters {...mockProps} disabled />,
       );
@@ -315,7 +316,7 @@ describe('<Filters />', () => {
       expect(rightActionButton.prop('disabled')).toBe(true);
     });
 
-    it('passes disabled prop to connected filters as true', () => {
+    it('passes disabled prop to connected filters', () => {
       const resourceFilters = mountWithAppProvider(
         <Filters {...mockProps} queryValue="bar" disabled />,
       );
@@ -325,41 +326,66 @@ describe('<Filters />', () => {
       ).toBe(true);
     });
 
-    it('sheet filter toggle button is disabled', () => {
+    it('disables sheet filter toggle button when true', () => {
       const resourceFilters = mountWithAppProvider(
         <Filters {...mockProps} disabled />,
       );
 
       trigger(findByTestID(resourceFilters, 'SheetToggleButton'), 'onClick');
 
-      mockProps.filters.forEach((filter) => {
-        const toggleButton = findById(
-          resourceFilters,
-          `${filter.key}ToggleButton`,
-        );
+      mockProps.filters
+        .filter(({disabled}) => disabled)
+        .forEach((filter) => {
+          const toggleButton = findById(
+            resourceFilters,
+            `${filter.key}ToggleButton`,
+          );
 
-        expect(toggleButton.prop('disabled')).toBe(true);
-      });
+          expect(toggleButton.prop('disabled')).toBe(true);
+        });
     });
 
-    it('sheet filters heading text is subdued', () => {
+    it('subdues the filter heading when the filter is disabled', () => {
       const resourceFilters = mountWithAppProvider(
         <Filters {...mockProps} disabled />,
       );
 
       trigger(findByTestID(resourceFilters, 'SheetToggleButton'), 'onClick');
 
-      mockProps.filters.forEach((filter) => {
-        const toggleButton = findById(
-          resourceFilters,
-          `${filter.key}ToggleButton`,
-        );
+      mockProps.filters
+        .filter(({disabled}) => disabled)
+        .forEach((filter) => {
+          const toggleButton = findById(
+            resourceFilters,
+            `${filter.key}ToggleButton`,
+          );
 
-        expect(toggleButton.find(TextStyle).prop('variation')).toBe('subdued');
-      });
+          expect(toggleButton.find(TextStyle).prop('variation')).toBe(
+            'subdued',
+          );
+        });
     });
 
-    it('passes disabled prop to tags', () => {
+    it('does not subdue the filter heading when the filter is disabled', () => {
+      const resourceFilters = mountWithAppProvider(<Filters {...mockProps} />);
+
+      trigger(findByTestID(resourceFilters, 'SheetToggleButton'), 'onClick');
+
+      mockProps.filters
+        .filter(({disabled}) => !disabled)
+        .forEach((filter) => {
+          const toggleButton = findById(
+            resourceFilters,
+            `${filter.key}ToggleButton`,
+          );
+
+          expect(
+            toggleButton.find(TextStyle).prop('variation'),
+          ).toBeUndefined();
+        });
+    });
+
+    it('is passed to <Tag /> with set value', () => {
       const appliedFilters = [{key: 'filterOne', label: 'foo', onRemove: noop}];
 
       const resourceFilters = mountWithAppProvider(
@@ -369,6 +395,26 @@ describe('<Filters />', () => {
       resourceFilters.find(Tag).forEach((tag) => {
         expect(tag.prop('disabled')).toBe(true);
       });
+    });
+  });
+
+  describe('helpText', () => {
+    it('is rendered when passed as prop to <Filter />', () => {
+      const helpText = 'Important filters information';
+      const resourceFilters = mountWithAppProvider(
+        <Filters {...mockProps} helpText={helpText} />,
+      );
+
+      const helpTextMarkup = findById(resourceFilters, 'FiltersHelpText');
+      expect(helpTextMarkup).toHaveLength(1);
+      expect(helpTextMarkup.text()).toBe(helpText);
+    });
+
+    it('is not rendered when not passed as prop to <Filter />', () => {
+      const resourceFilters = mountWithAppProvider(<Filters {...mockProps} />);
+
+      const helpTextMarkup = findById(resourceFilters, 'FiltersHelpText');
+      expect(helpTextMarkup).toHaveLength(0);
     });
   });
 });

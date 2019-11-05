@@ -50,6 +50,8 @@ export interface FilterInterface {
   filter: React.ReactNode;
   /** Whether or not the filter should have a shortcut popover displayed */
   shortcut?: boolean;
+  /** Whether or not this particular filter is disabled */
+  disabled?: boolean;
 }
 
 export interface FiltersProps {
@@ -75,8 +77,10 @@ export interface FiltersProps {
   onQueryFocus?(): void;
   /** The content to display inline with the controls */
   children?: React.ReactNode;
-  /** Disables the filters when set to true */
+  /** Disable all filters */
   disabled?: boolean;
+  /** Help text string */
+  helpText?: string;
 }
 
 type ComposedProps = FiltersProps & WithAppProviderProps;
@@ -129,6 +133,7 @@ class Filters extends React.Component<ComposedProps, State> {
       queryPlaceholder,
       children,
       disabled = false,
+      helpText,
     } = this.props;
     const {resourceName} = this.context;
     const {open, readyForFocus} = this.state;
@@ -174,12 +179,14 @@ class Filters extends React.Component<ComposedProps, State> {
             type="button"
             aria-controls={collapsibleID}
             aria-expanded={filterIsOpen}
-            disabled={disabled}
+            disabled={filter.disabled}
           >
             <div className={styles.FilterTriggerLabelContainer}>
               <h2 className={styles.FilterTriggerTitle}>
                 <TextStyle
-                  variation={disabled ? VariationValue.Subdued : undefined}
+                  variation={
+                    filter.disabled ? VariationValue.Subdued : undefined
+                  }
                 >
                   {filter.label}
                 </TextStyle>
@@ -366,9 +373,16 @@ class Filters extends React.Component<ComposedProps, State> {
       </Sheet>
     );
 
+    const helpTextMarkup = helpText ? (
+      <div id="FiltersHelpText" className={styles.FiltersHelpText}>
+        <TextStyle variation="subdued">{helpText}</TextStyle>
+      </div>
+    ) : null;
+
     return (
       <div className={styles.Filters}>
         {filtersControlMarkup}
+        {helpTextMarkup}
         {filtersContainerMarkup}
         {tagsMarkup}
         {backdropMarkup}
