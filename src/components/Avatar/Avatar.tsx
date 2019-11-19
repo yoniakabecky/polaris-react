@@ -15,7 +15,7 @@ enum Status {
   Errored = 'ERRORED',
 }
 
-const STYLE_CLASSES = ['one', 'two', 'three', 'four', 'five', 'six'];
+const STYLE_CLASSES = ['one', 'two', 'three', 'four', 'five'];
 
 export interface AvatarProps {
   /**
