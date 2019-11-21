@@ -4,6 +4,7 @@
 
 ### Enhancements
 
+- Replaced customer avatar images with a single gray version ([#2453](https://github.com/Shopify/polaris-react/pull/2453))
 - Added `external` prop to `ResourceList` ([#2408](https://github.com/Shopify/polaris-react/pull/2408))
 - Added `onMouseEnter` and `onTouchStart` props to `Button` ([#2409](https://github.com/Shopify/polaris-react/pull/2409))
 - Added `ariaHaspopup` prop to `Popover` ([#2248](https://github.com/Shopify/polaris-react/pull/2248))
