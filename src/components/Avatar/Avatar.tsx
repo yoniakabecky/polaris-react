@@ -80,12 +80,14 @@ export function Avatar({
 
   const className = classNames(
     styles.Avatar,
-    styles[variationName('style', styleClass(nameString))],
     size && styles[variationName('size', size)],
+    !initials && styles[variationName('style', styleClass(nameString))],
+    hasImage && styles.hasImage,
+    customer && styles.Customer,
+    !initials && !hasImage && styles.CustomerIcon,
     (hasImage || (initials && initials.length === 0)) &&
       status !== Status.Loaded &&
       styles.hidden,
-    hasImage && styles.hasImage,
   );
 
   const imageMarkUp =

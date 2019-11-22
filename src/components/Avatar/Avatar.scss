@@ -39,27 +39,52 @@ $large-size: rem(60px);
 
 .styleOne {
   color: var(--p-decorative-one-text, color('white'));
-  background: var(--p-decorative-one-surface, color('teal'));
+  background: var(--p-decorative-one-background, color('teal'));
+
+  &.CustomerIcon {
+    color: var(--p-decorative-one-background, color('teal'));
+    background: var(--p-decorative-one-foreground, color('teal'));
+  }
 }
 
 .styleTwo {
   color: var(--p-decorative-two-text, color('white'));
-  background: var(--p-decorative-two-surface, color('red'));
+  background: var(--p-decorative-two-background, color('red'));
+
+  &.CustomerIcon {
+    color: var(--p-decorative-two-background, color('red'));
+    background: var(--p-decorative-two-foreground, color('red'));
+  }
 }
 
 .styleThree {
   color: var(--p-decorative-three-text, color('white'));
   background: var(--p-decorative-three-surface, color('orange'));
+
+  &.CustomerIcon {
+    color: var(--p-decorative-three-background, color('orange'));
+    background: var(--p-decorative-three-foreground, color('orange'));
+  }
 }
 
 .styleFour {
   color: var(--p-decorative-four-text, color('white'));
   background: var(--p-decorative-four-surface, color('green'));
+
+  &.CustomerIcon {
+    color: var(--p-decorative-four-background, color('green'));
+    background: var(--p-decorative-four-foreground, color('green'));
+  }
 }
 
 .styleFive {
   color: var(--p-decorative-five-text, color('white'));
   background: var(--p-decorative-five-surface, color('blue'));
+
+  &.CustomerIcon {
+    color: var(--p-decorative-five-background, color('orange'));
+    background: var(--p-decorative-five-foreground, color('orange'));
+  }
 }
 
 .hasImage {
@@ -72,11 +97,14 @@ $large-size: rem(60px);
   left: 50%;
   width: 100%;
   height: 100%;
-  background-color: var(--p-neutral, color('sky'));
   border-radius: $large-size / 2;
-  // background-color: var(--p-neutral, color('sky'));
   transform: translate(-50%, -50%);
   object-fit: cover;
+}
+
+.Customer {
+  color: var(--p-text-disabled-on-surface, color('ink', 'lightest'));
+  background-color: var(--p-neutral, color('sky'));
 }
 
 .Initials {

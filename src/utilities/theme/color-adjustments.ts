@@ -680,7 +680,20 @@ export const colorAdjustments: ColorAdjustments = {
       alpha: 0.15,
     },
   },
-  decorativeOneSurface: {
+  decorativeOneBackground: {
+    baseColor: 'decorative',
+    light: {
+      hue: 54,
+      saturation: 98,
+      lightness: 46,
+    },
+    dark: {
+      hue: 56,
+      saturation: 100,
+      lightness: 84,
+    },
+  },
+  decorativeOneForeground: {
     baseColor: 'decorative',
     light: {
       hue: 56,
@@ -702,7 +715,20 @@ export const colorAdjustments: ColorAdjustments = {
     },
     dark: {lightness: 100},
   },
-  decorativeTwoSurface: {
+  decorativeTwoBackground: {
+    baseColor: 'decorative',
+    light: {
+      hue: 24,
+      saturation: 96,
+      lightness: 52,
+    },
+    dark: {
+      hue: 30,
+      saturation: 100,
+      lightness: 84,
+    },
+  },
+  decorativeTwoForeground: {
     baseColor: 'decorative',
     light: {
       hue: 30,
@@ -724,7 +750,20 @@ export const colorAdjustments: ColorAdjustments = {
     },
     dark: {lightness: 100},
   },
-  decorativeThreeSurface: {
+  decorativeThreeBackground: {
+    baseColor: 'decorative',
+    light: {
+      hue: 154,
+      saturation: 100,
+      lightness: 46,
+    },
+    dark: {
+      hue: 144,
+      saturation: 54,
+      lightness: 84,
+    },
+  },
+  decorativeThreeForeground: {
     baseColor: 'decorative',
     light: {
       hue: 144,
@@ -746,7 +785,20 @@ export const colorAdjustments: ColorAdjustments = {
     },
     dark: {lightness: 100},
   },
-  decorativeFourSurface: {
+  decorativeFourBackground: {
+    baseColor: 'decorative',
+    light: {
+      hue: 188,
+      saturation: 95,
+      lightness: 47,
+    },
+    dark: {
+      hue: 180,
+      saturation: 56,
+      lightness: 84,
+    },
+  },
+  decorativeFourForeground: {
     baseColor: 'decorative',
     light: {
       hue: 180,
@@ -768,7 +820,16 @@ export const colorAdjustments: ColorAdjustments = {
     },
     dark: {lightness: 100},
   },
-  decorativeFiveSurface: {
+  decorativeFiveBackground: {
+    baseColor: 'decorative',
+    light: {
+      hue: 363,
+      saturation: 77,
+      lightness: 45,
+    },
+    dark: {},
+  },
+  decorativeFiveForeground: {
     baseColor: 'decorative',
     light: {},
     dark: {
