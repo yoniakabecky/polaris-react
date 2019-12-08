@@ -12,6 +12,8 @@ The color system is made up of 9 color roles: `surface`, `onSurface`, `action`, 
 
 Tokens are used to give colors semantic meaning based on how they’re used in the UI. They’re used in place of hard-coded values in order to ensure flexibility and unity across all product experiences.
 
+![Color role and assosicated tokens](/interactive.png)
+
 ## Table of contents
 
 - [surface](#surface)
