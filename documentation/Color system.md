@@ -2,20 +2,10 @@
 
 ⚠️ The color system is currently an unstable API, and is subject to change in non-major releases of Polaris react. Please use with caution.
 
----
-
-## Roles
-
-The color system is made up of 9 color roles: `surface`, `onSurface`, `action`, `primary`, `secondary`, `critical`,`warning`, `highlight`, and `success`. These roles generate a series of tokens relative to their color roles.
-
-## Tokens
-
-Tokens are used to give colors semantic meaning based on how they’re used in the UI. They’re used in place of hard-coded values in order to ensure flexibility and unity across all product experiences.
-
-![Color role and assosicated tokens](images/interactive.png)
-
 ## Table of contents
 
+- [Design tokens](#what are design tokens?)
+- [Color roles and tokens](#color roles and tokens)
 - [surface](#surface)
 - [onSurface](#onSurface)
 - [action](#action)
@@ -27,6 +17,26 @@ Tokens are used to give colors semantic meaning based on how they’re used in t
 - [success](#success)
 - [decorative](#decorative)
 - [Overrides](#Overrides)
+
+---
+
+## What are design tokens?
+
+Design tokens are all the visual design attributes needed to construct and maintain a design system. These can represent anything defined by design, such as a color’s hex value, a font’s size, and an animation’s easing properties. They’re used in place of hard-coded values to ensure flexibility and cohesion across all product experiences.
+
+## Color roles and tokens
+
+### Roles
+
+The color system is made up of 9 color roles: `surface`, `onSurface`, `action`, `primary`, `secondary`, `critical`,`warning`, `highlight`, and `success`. These roles are used to generate a series of tokens relative to their color roles.
+
+### Tokens
+
+Tokens are used to give color semantic meaning based on how they’re used in the UI. They’re used in place of hard-coded values in order to ensure flexibility and unity across all product experiences.
+
+![Color role and assosicated tokens](images/interactive.png)
+
+---
 
 ## surface
 
