@@ -2,6 +2,8 @@
 
 ⚠️ The color system is currently an unstable API, and is subject to change in non-major releases of Polaris react. Please use with caution.
 
+The color system is made up of 9 color roles.
+
 ## Table of contents
 
 - [surface](#surface)
