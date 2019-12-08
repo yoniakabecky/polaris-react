@@ -6,15 +6,11 @@
 
 ## Roles
 
-The color system is made up of 9 main color roles: `surface`, `onSurface`, `action`, `primary`, `secondary`, `critical`,`warning`, `highlight`, and `success`. These roles generate a series of tokens based on the shared color.
+The color system is made up of 9 color roles: `surface`, `onSurface`, `action`, `primary`, `secondary`, `critical`,`warning`, `highlight`, and `success`. These roles generate a series of tokens relative to their color roles.
 
 ## Tokens
 
-Color in Polaris is managed using color tokens. Tokens are a method of abstracting color by role or usage, independent of the actual color values. This allows us to give semantic meaning to color based on how they're used in the UI.
-
-A single token can be associated with multiple roles, but only if the color value is used consistently across those roles. This allows for uniform color application across themes while maintaining full styling flexibility.
-
-With this system, anyone consuming Polaris can create their own themes by assigning new values to the established color tokens.
+Tokens are used to give colors semantic meaning based on how they’re used in the UI. They’re used in place of hard-coded values in order to ensure flexibility and unity across all product experiences.
 
 ## Table of contents
 
