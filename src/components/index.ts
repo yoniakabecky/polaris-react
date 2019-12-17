@@ -180,6 +180,8 @@ export {
 
 export {ResourceListSelectedItems} from '../utilities/resource-list';
 
+export {ResourceManager, ResourceManagerProps} from './ResourceManager';
+
 export {ResourcePicker, ResourcePickerProps} from './ResourcePicker';
 
 export {Scrollable, ScrollableProps} from './Scrollable';
@@ -210,6 +212,12 @@ export {Spinner, SpinnerProps} from './Spinner';
 export {Stack, StackProps} from './Stack';
 
 export {Sticky, StickyProps} from './Sticky';
+
+export {StyledHeader, StyledHeaderProps} from './StyledHeader';
+
+export {StyledItem, StyledItemProps} from './StyledItem';
+
+export {StyledList, StyledListProps} from './StyledList';
 
 export {Subheading, SubheadingProps} from './Subheading';
 

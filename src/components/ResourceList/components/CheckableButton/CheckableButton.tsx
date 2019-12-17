@@ -19,6 +19,7 @@ export interface CheckableButtonProps {
   plain?: boolean;
   measuring?: boolean;
   disabled?: boolean;
+  labelHidden?: boolean;
   onToggleAll?(): void;
 }
 
@@ -31,6 +32,7 @@ export function CheckableButton({
   plain,
   measuring,
   disabled,
+  labelHidden,
   smallScreen,
 }: CheckableButtonProps) {
   const checkBoxRef = useRef<CheckboxHandles>(null);
@@ -66,6 +68,10 @@ export function CheckableButton({
         measuring && styles['CheckableButton-measuring'],
       );
 
+  const labelMarkup = !labelHidden && (
+    <span className={styles.Label}>{label}</span>
+  );
+
   return (
     <div className={className} onClick={onToggleAll}>
       <div className={styles.Checkbox}>
@@ -78,7 +84,7 @@ export function CheckableButton({
           ref={checkBoxRef}
         />
       </div>
-      <span className={styles.Label}>{label}</span>
+      {labelMarkup}
     </div>
   );
 }

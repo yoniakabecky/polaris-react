@@ -4,7 +4,7 @@ import {Box, Text, Color, render} from 'ink';
 import sortBy from 'lodash/sortBy';
 import {getGitStagedFiles, getDependencies} from '@shopify/splash';
 
-if (process.env.DISABLE_SPLASH) {
+if (true) {
   process.exit(0);
 }
 
