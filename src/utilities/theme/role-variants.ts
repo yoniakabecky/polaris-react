@@ -187,19 +187,19 @@ export const roleVariants: RoleVariants = {
     {
       name: 'text',
       description: 'For use as a secondary text color.',
-      light: {lightness: 13.1},
+      light: {lightness: 13},
       dark: {lightness: 90.8},
     },
     {
       name: 'textDisabled',
       description: 'For use as a disabled secondary text color.',
-      light: {lightness: 61.3},
+      light: {lightness: 60.0},
       dark: {lightness: 48.2},
     },
     {
       name: 'textSubdued',
       description: 'For use as a subdued secondary text color.',
-      light: {lightness: 47.4},
+      light: {lightness: 47.3},
       dark: {lightness: 65.1},
     },
   ],
@@ -346,14 +346,14 @@ export const roleVariants: RoleVariants = {
       name: 'actionPrimaryHovered',
       description:
         'Used as the background color for hovered primary actions, and as the fill color for icons and the text color in navigation and tabs to communicate interaction states.',
-      light: {lightness: 42.3},
+      light: {lightness: 41.3},
       dark: {lightness: 55},
     },
     {
       name: 'actionPrimaryPressed',
       description:
         'Used as the background color for pressed primary actions, and as the fill color for icons and the text color in navigation and tabs to communicate interaction states.',
-      light: {lightness: 37.3},
+      light: {lightness: 35.3},
       dark: {lightness: 60},
     },
     {
@@ -466,14 +466,14 @@ export const roleVariants: RoleVariants = {
       name: 'actionCriticalHovered',
       description:
         'For use as the background color for hovered destructive buttons, and as the background color for error toast messages.',
-      light: {lightness: 42.5},
+      light: {lightness: 41.3},
       dark: {lightness: 50},
     },
     {
       name: 'actionCriticalPressed',
       description:
         'For use as the background color for pressed destructive buttons, and as the background color for error toast messages.',
-      light: {lightness: 37.5},
+      light: {lightness: 35.3},
       dark: {lightness: 55},
     },
     {
