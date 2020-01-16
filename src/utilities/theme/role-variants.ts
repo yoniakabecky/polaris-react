@@ -51,14 +51,14 @@ export const roleVariants: RoleVariants = {
       name: 'surfaceHovered',
       description:
         'For use as a surface color on interactive elements such as resource list items and action list items when in a hovered state.',
-      light: {lightness: 96},
+      light: {lightness: 97},
       dark: {lightness: 20},
     },
     {
       name: 'surfacePressed',
       description:
         'For use as a surface color on interactive elements such as resource list items and action list items when in a pressed state.',
-      light: {lightness: 90},
+      light: {lightness: 95.5},
       dark: {lightness: 27},
     },
     {
@@ -150,20 +150,20 @@ export const roleVariants: RoleVariants = {
     {
       name: 'border',
       description: 'For use as a border (border or interactive outline).',
-      light: {lightness: 75},
+      light: {lightness: 60},
       dark: {lightness: 35},
     },
     {
       name: 'borderDisabled',
       description: 'For use as a an interactive outline on disabled elements.',
-      light: {lightness: 95},
+      light: {lightness: 77},
       dark: {lightness: 70},
     },
     {
       name: 'borderSubdued',
       description:
         'For use as a subdued border (border or interactive outline).',
-      light: {lightness: 85},
+      light: {lightness: 94},
       dark: {lightness: 32},
     },
     {
@@ -251,28 +251,28 @@ export const roleVariants: RoleVariants = {
     {
       name: 'focused',
       description: 'For use in the focus ring on interactive elements.',
-      light: {lightness: 58},
+      light: {lightness: 60, saturation: 100},
       dark: {lightness: 42},
     },
     {
       name: 'surfaceSelected',
       description:
         'For use as a surface color in selected interactive elements, in components such as option list and resource list.',
-      light: {lightness: 96},
+      light: {lightness: 97, hue: 240},
       dark: {lightness: 4},
     },
     {
       name: 'surfaceSelectedHovered',
       description:
         'For use as a surface color in selected interactive elements that are hovered, in components such as option list and resource list.',
-      light: {lightness: 89},
+      light: {lightness: 95.5, hue: 240},
       dark: {lightness: 11},
     },
     {
       name: 'surfaceSelectedPressed',
       description:
         'For use as a surface color in selected interactive elements that are pressed, in components such as option list and resource list.',
-      light: {lightness: 82},
+      light: {lightness: 94, hue: 240},
       dark: {lightness: 18},
     },
     {
@@ -287,7 +287,7 @@ export const roleVariants: RoleVariants = {
       name: 'actionSecondary',
       description:
         'Used for secondary buttons and tertiary buttons, as well as in form elements as a background color and pontentially other secondary surfaces.',
-      light: {lightness: 93},
+      light: {lightness: 94},
       dark: {lightness: 22},
     },
     {
@@ -299,13 +299,13 @@ export const roleVariants: RoleVariants = {
     {
       name: 'actionSecondaryHovered',
       description: 'Used as a hovered state for secondary buttons',
-      light: {lightness: 90},
+      light: {lightness: 91},
       dark: {lightness: 37},
     },
     {
       name: 'actionSecondaryPressed',
       description: 'Used as a pressed state for secondary buttons',
-      light: {lightness: 87},
+      light: {lightness: 88},
       dark: {lightness: 42},
     },
     {
@@ -397,48 +397,48 @@ export const roleVariants: RoleVariants = {
       name: 'borderCritical',
       description:
         'For use as a border on critical components such as banners, and as an outline on interactive elements in an error state.',
-      light: {lightness: 50},
+      light: {lightness: 47.3},
       dark: {lightness: 50},
     },
     {
       name: 'borderCriticalDisabled',
       description:
         'For use as a disabled border on critical components such as banners, and as an outline on interactive elements in an error state.',
-      light: {lightness: 82},
+      light: {lightness: 77},
       dark: {lightness: 28},
     },
     {
       name: 'iconCritical',
       description: 'For use as an icon fill color on top of critical elements.',
-      light: {lightness: 52},
+      light: {lightness: 47.3},
       dark: {lightness: 48},
     },
     {
       name: 'surfaceCritical',
       description:
         'For use as a surface color on critical elements including badges.',
-      light: {lightness: 98.6},
+      light: {lightness: 88},
       dark: {lightness: 12},
     },
     {
       name: 'surfaceCriticalSubdued',
       description:
         'For use as a subdued surface color on critical elements including banners.',
-      light: {lightness: 98},
+      light: {lightness: 97},
       dark: {lightness: 12},
     },
     {
       name: 'surfaceCriticalSubduedHovered',
       description:
         'For use as a surface color on critical interactive elements including action list items in a hovered state.',
-      light: {lightness: 96},
+      light: {lightness: 97},
       dark: {lightness: 15, saturation: 60},
     },
     {
       name: 'surfaceCriticalSubduedPressed',
       description:
         'For use as a surface color on critical interactive elements including action list items in a pressed state.',
-      light: {lightness: 88},
+      light: {lightness: 95.5},
       dark: {lightness: 22},
     },
     {
@@ -521,7 +521,7 @@ export const roleVariants: RoleVariants = {
     {
       name: 'borderWarning',
       description: 'For use as a border on warning components such as banners.',
-      light: {lightness: 76.6},
+      light: {lightness: 60},
       dark: {lightness: 50},
     },
     {
@@ -534,14 +534,14 @@ export const roleVariants: RoleVariants = {
       name: 'surfaceWarning',
       description:
         'For use as a surface color on warning elements including badges.',
-      light: {lightness: 84.5},
+      light: {lightness: 88},
       dark: {lightness: 50},
     },
     {
       name: 'surfaceWarningSubdued',
       description:
         'For use as a subdued surface color on warning elements including banners.',
-      light: {lightness: 96},
+      light: {lightness: 97},
       dark: {lightness: 26, saturation: 71},
     },
     {
@@ -571,14 +571,14 @@ export const roleVariants: RoleVariants = {
       name: 'surfaceHighlight',
       description:
         'For use as a surface color on information elements including badges.',
-      light: {lightness: 84.5, saturation: 60},
+      light: {lightness: 88, saturation: 60},
       dark: {lightness: 40, saturation: 100},
     },
     {
       name: 'surfaceHighlightSubdued',
       description:
         'For use as a surface color on information elements including banners.',
-      light: {lightness: 98.6},
+      light: {lightness: 97, saturation: 65},
       dark: {lightness: 20},
     },
     {
@@ -593,7 +593,7 @@ export const roleVariants: RoleVariants = {
     {
       name: 'borderSuccess',
       description: 'For use as a border on success components such as banners.',
-      light: {lightness: 50},
+      light: {lightness: 47.3},
       dark: {lightness: 50},
     },
     {
@@ -606,14 +606,14 @@ export const roleVariants: RoleVariants = {
       name: 'surfaceSuccess',
       description:
         'For use as a surface color on success elements including badges.',
-      light: {lightness: 84.5, saturation: 60},
+      light: {lightness: 88, saturation: 40},
       dark: {lightness: 35},
     },
     {
       name: 'surfaceSuccessSubdued',
       description:
         'For use as a surface color on information elements including banners.',
-      light: {lightness: 99, saturation: 60},
+      light: {lightness: 97, saturation: 20},
       dark: {lightness: 20, saturation: 60},
     },
     {
