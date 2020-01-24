@@ -9,7 +9,7 @@ import {
   ReactWrapper,
 } from 'test-utilities/legacy';
 
-import {Filters, FiltersProps} from '../Filters';
+import {Filters, FiltersProps, FilterInterface} from '../Filters';
 import {ConnectedFilterControl} from '../components';
 
 const MockFilter = (props: {id: string}) => <div id={props.id} />;
@@ -265,6 +265,18 @@ describe('<Filters />', () => {
         resourceFilters.find(ConnectedFilterControl).props()
           .rightPopoverableActions,
       ).toHaveLength(0);
+    });
+
+    it('does not render rightAction when there are no filters', () => {
+      const filters: FilterInterface[] = [];
+
+      const resourceFilters = mountWithAppProvider(
+        <Filters {...mockProps} filters={filters} />,
+      );
+
+      expect(
+        resourceFilters.find(ConnectedFilterControl).prop('rightAction'),
+      ).toBe(false);
     });
   });
 

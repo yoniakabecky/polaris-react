@@ -218,7 +218,8 @@ class FiltersInner extends React.Component<ComposedProps, State> {
           })
         : intl.translate('Polaris.Filters.moreFilters');
 
-    const rightActionMarkup = (
+    const hasFilters = filters.length > 0;
+    const rightActionMarkup = hasFilters && (
       <div ref={this.moreFiltersButtonContainer}>
         <Button
           onClick={this.toggleFilters}
