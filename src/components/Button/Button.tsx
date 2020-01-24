@@ -11,6 +11,7 @@ import {IconProps, ConnectedDisclosure} from '../../types';
 import {Spinner} from '../Spinner';
 import {Popover} from '../Popover';
 import {ActionList} from '../ActionList';
+import {IconWrapper} from './components';
 
 import styles from './Button.scss';
 
@@ -348,10 +349,6 @@ export function Button({
   ) : (
     buttonMarkup
   );
-}
-
-function IconWrapper({children}: any) {
-  return <span className={styles.Icon}>{children}</span>;
 }
 
 function isIconSource(x: any): x is IconSource {
