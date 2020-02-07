@@ -2,12 +2,17 @@
 
 ### Breaking changes
 
+### New components
+
+- Added new components `VideoCard` and `VideoThumbnail` ([#2725](https://github.com/Shopify/polaris-react/pull/2725))
+
 ### Enhancements
 
 - Added high contrast outline to `ActionList` ([#2713](https://github.com/Shopify/polaris-react/pull/2713))
 - Added high contrast border to `Button` ([#2712](https://github.com/Shopify/polaris-react/pull/2712))
 - Added styled placeholder image to `Avatar` when initials are blank ([#2693](https://github.com/Shopify/polaris-react/pull/2693))
 - Added a `preferInputActivator` prop to `Popover` to allow better positioning of the overlay ([#2754](https://github.com/Shopify/polaris-react/pull/2754))
+- Added new components `VideoCard` and `VideoThumbnail` ([#2725](https://github.com/Shopify/polaris-react/pull/2725))
 
 ### Bug fixes
 

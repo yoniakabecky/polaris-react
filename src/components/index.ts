@@ -222,3 +222,7 @@ export {Truncate, TruncateProps} from './Truncate';
 export {UnstyledLink, UnstyledLinkProps} from './UnstyledLink';
 
 export {VisuallyHidden, VisuallyHiddenProps} from './VisuallyHidden';
+
+export {VideoCard} from './VideoCard';
+
+export {VideoThumbnail} from './VideoThumbnail';
