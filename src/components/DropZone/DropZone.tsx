@@ -76,7 +76,7 @@ export interface DropZoneProps {
   /** Text that appears in the overlay when set in error state */
   errorOverlayText?: string;
   /**
-   * Allows multiple files to be uploaded
+   * Allows multiple files to be uploaded at once
    * @default true
    */
   allowMultiple?: boolean;
