@@ -155,7 +155,7 @@ describe('<DropZone />', () => {
     expect(spy).not.toHaveBeenCalled();
   });
 
-  it('does not call callbacks when not allowed multiple and a file is uploaded', () => {
+  it('calls callbacks when not allowed multiple and a replacement file is uploaded', () => {
     const dropZone = mountWithAppProvider(
       <DropZone
         allowMultiple={false}
@@ -171,15 +171,9 @@ describe('<DropZone />', () => {
     fireEvent({element: dropZone, spy});
     expect(spy).toHaveBeenCalledWith(files, acceptedFiles, rejectedFiles);
 
-    // All events should now be ignored
+    // Attempt to replace the current file
     fireEvent({element: dropZone, spy});
-    expect(spy).not.toHaveBeenCalled();
-    fireEvent({element: dropZone, eventType: 'dragenter', spy});
-    expect(spy).not.toHaveBeenCalled();
-    fireEvent({element: dropZone, eventType: 'dragleave', spy});
-    expect(spy).not.toHaveBeenCalled();
-    fireEvent({element: dropZone, eventType: 'dragover', spy});
-    expect(spy).not.toHaveBeenCalled();
+    expect(spy).toHaveBeenCalledWith(files, acceptedFiles, rejectedFiles);
   });
 
   it('renders <Labelled /> when `label` is provided', () => {
