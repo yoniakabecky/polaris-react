@@ -25,6 +25,14 @@ $stacking-order: (
       .Button {
         flex: 1 0 auto;
       }
+
+      span {
+        flex: 1 0 auto;
+
+        .Button {
+          width: 100%;
+        }
+      }
     }
   }
 }
