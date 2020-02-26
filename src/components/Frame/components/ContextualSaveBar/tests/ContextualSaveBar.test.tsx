@@ -7,6 +7,37 @@ import {ContextualSaveBar} from '../ContextualSaveBar';
 import {DiscardConfirmationModal} from '../components';
 
 describe('<ContextualSaveBar />', () => {
+  describe('secondaryAction', () => {
+    it('renders a button with the discardAction details', () => {
+      const secondaryAction = {
+        content: 'Secondary Action',
+        onAction: jest.fn(),
+      };
+
+      const contextualSaveBar = mountWithAppProvider(
+        <ContextualSaveBar secondaryAction={secondaryAction} />,
+      );
+
+      const button = contextualSaveBar.find(Button);
+      expect(button.prop('onClick')).toBe(secondaryAction.onAction);
+      expect(button.prop('children')).toBe(secondaryAction.content);
+    });
+
+    it('calls the secondaryAction when the secondary button is clicked', () => {
+      const secondaryAction = {
+        content: 'Secondary',
+        onAction: jest.fn(),
+      };
+
+      const contextualSaveBar = mountWithAppProvider(
+        <ContextualSaveBar secondaryAction={secondaryAction} />,
+      );
+
+      contextualSaveBar.find(Button).simulate('click');
+      expect(secondaryAction.onAction).toHaveBeenCalled();
+    });
+  });
+
   describe('discardAction', () => {
     it('renders a button with the discardAction details', () => {
       const discardAction = {

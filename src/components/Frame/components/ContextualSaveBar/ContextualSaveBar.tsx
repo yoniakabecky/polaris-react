@@ -19,8 +19,10 @@ import styles from './ContextualSaveBar.scss';
 export function ContextualSaveBar({
   alignContentFlush,
   message,
+  content,
   saveAction,
   discardAction,
+  secondaryAction,
 }: ContextualSaveBarProps) {
   const i18n = useI18n();
   const {logo} = useTheme();
@@ -72,6 +74,18 @@ export function ContextualSaveBar({
     </Button>
   );
 
+  const secondaryActionMarkup = secondaryAction && (
+    <Button
+      url={secondaryAction.url}
+      onClick={secondaryAction.onAction}
+      loading={secondaryAction.loading}
+      disabled={secondaryAction.disabled}
+      accessibilityLabel={secondaryAction.content}
+    >
+      {secondaryAction.content}
+    </Button>
+  );
+
   const saveActionContent =
     saveAction && saveAction.content
       ? saveAction.content
@@ -112,10 +126,14 @@ export function ContextualSaveBar({
       <div className={contexualSaveBarClassName}>
         {logoMarkup}
         <div className={styles.Contents}>
-          <h2 className={styles.Message}>{message}</h2>
+          <h2 className={styles.Message}>
+            {content}
+            {message}
+          </h2>
           <div className={styles.ActionContainer}>
             <Stack spacing="tight" wrap={false}>
               {discardActionMarkup}
+              {secondaryActionMarkup}
               {saveActionMarkup}
             </Stack>
           </div>

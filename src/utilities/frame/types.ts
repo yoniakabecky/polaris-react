@@ -1,3 +1,4 @@
+import React from 'react';
 import {Action} from '../../types';
 
 interface ContextualSaveBarAction {
@@ -18,6 +19,11 @@ interface ContextualSaveBarDiscardActionProps {
   discardConfirmationModal?: boolean;
 }
 
+interface ContextualSaveBarSecondaryActionProps
+  extends ContextualSaveBarAction {
+  content: string;
+}
+
 type ContextualSaveBarCombinedActionProps = ContextualSaveBarDiscardActionProps &
   ContextualSaveBarAction;
 
@@ -26,10 +32,14 @@ export interface ContextualSaveBarProps {
   alignContentFlush?: boolean;
   /** Accepts a string of content that will be rendered to the left of the actions */
   message?: string;
+  /** Accepts arbitrary content that will be rendered to the left of the actions */
+  content?: string | React.ReactNode;
   /** Save or commit contextual save bar action with text defaulting to 'Save' */
   saveAction?: ContextualSaveBarAction;
   /** Discard or cancel contextual save bar action with text defaulting to 'Discard' */
   discardAction?: ContextualSaveBarCombinedActionProps;
+  /** Secondary contextual save bar action */
+  secondaryAction?: ContextualSaveBarSecondaryActionProps;
 }
 
 // Toast
