@@ -12,7 +12,7 @@ steps:
   - label: 'Web integration test'
     trigger: 'web-polaris-builder'
     build:
-      branch: polaris-dedupe-test-branch
+      branch: polaris-dedupe-test-branch-2
       commit: HEAD
       env:
         POLARIS_ARTIFACT_FILENAME: 'shopify-polaris-${BUILDKITE_COMMIT}.tgz'
