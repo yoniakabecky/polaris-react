@@ -43,6 +43,9 @@ export type {CaptionProps} from './Caption';
 export {Card} from './Card';
 export type {CardProps} from './Card';
 
+export {CustomCard} from './CustomCard';
+export type {CustomCardProps} from './CustomCard';
+
 export {Checkbox} from './Checkbox';
 export type {CheckboxProps} from './Checkbox';
 
