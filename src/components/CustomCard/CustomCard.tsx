@@ -1,6 +1,5 @@
 import React from 'react';
 
-import {TextContainer} from '../TextContainer';
 import {UnstyledLink} from '../UnstyledLink';
 import {Subheading} from '../Subheading';
 import {Thumbnail} from '../Thumbnail';
@@ -34,24 +33,30 @@ export const CustomCard: React.FunctionComponent<CustomCardProps> = ({
     >
       <Card title={title}>
         <Card.Section>
-          <TextContainer spacing="loose">
-            <Subheading>Unfulfilled</Subheading>
-          </TextContainer>
-          <Stack alignment="center">
+          <Stack vertical spacing="tight">
             <Stack.Item>
-              <Thumbnail
-                source="https://burst.shopifycdn.com/photos/black-leather-choker-necklace_373x@2x.jpg"
-                alt="Black choker necklace"
-              />
+              <Subheading>Unfulfilled</Subheading>
             </Stack.Item>
-            <Stack.Item fill>
-              <div className={styles.interactiveLink}>
-                <UnstyledLink url="https://help.shopify.com/manual">
-                  Enamel pin
-                </UnstyledLink>
-              </div>
+            <Stack.Item>
+              <Stack alignment="center">
+                <Stack.Item>
+                  <div className={styles.productThumbnail}>
+                    <Thumbnail
+                      source="https://cdn.shopify.com/s/files/1/0262/2521/3462/products/liverpool-2_1296x.png?v=1590081855"
+                      alt="Liverpool kit"
+                    />
+                  </div>
+                </Stack.Item>
+                <Stack.Item fill>
+                  <div className={styles.interactiveLink}>
+                    <UnstyledLink url="https://help.shopify.com/manual">
+                      Enamel pin
+                    </UnstyledLink>
+                  </div>
+                </Stack.Item>
+                <Stack.Item>$9.99</Stack.Item>
+              </Stack>
             </Stack.Item>
-            <Stack.Item>$9.99</Stack.Item>
           </Stack>
         </Card.Section>
         <Card.Section>
