@@ -8,9 +8,12 @@ steps:
     run:
       - yarn: ~
       - ./.shopify-build/build-and-upload-to-gcp.sh
+      - cp /app/*.tgz /artifacts/
       - pwd
     artifact_paths:
-      - /app/*.tgz
+    - /artifacts
+    - artifacts
+    - *.tgz
   - wait: ~
   - label: 'Web integration test'
     trigger: 'web-polaris-builder'
