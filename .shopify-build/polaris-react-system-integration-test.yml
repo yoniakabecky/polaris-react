@@ -8,7 +8,7 @@ steps:
     run:
       - yarn: ~
       - ./.shopify-build/build-and-upload-to-gcp.sh
-      - cp /app/*.tgz /artifacts/
+      - cp *.tgz /artifacts/
       - pwd
     artifact_paths:
       - /artifacts
