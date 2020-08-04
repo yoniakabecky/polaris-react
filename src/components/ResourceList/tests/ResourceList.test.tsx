@@ -1197,6 +1197,48 @@ describe('<ResourceList />', () => {
       expect(resourceList.find(BulkActions).prop('selectMode')).toBe(false);
     });
   });
+
+  describe('isFiltered', () => {
+    it('renders `selectAllFilteredItems` label if true', () => {
+      const resourceList = mountWithAppProvider(
+        <ResourceList
+          items={itemsNoID}
+          resourceName={{singular: 'customer', plural: 'customers'}}
+          hasMoreItems
+          renderItem={renderItem}
+          bulkActions={bulkActions}
+          isFiltered
+        />,
+      );
+
+      expect(
+        resourceList.find(BulkActions).prop('paginatedSelectAllAction'),
+      ).toStrictEqual({
+        content: 'Select all 2+ customers in this filter',
+        onAction: expect.any(Function),
+      });
+    });
+
+    it('renders `selectAllItems` label if false', () => {
+      const resourceList = mountWithAppProvider(
+        <ResourceList
+          items={itemsNoID}
+          resourceName={{singular: 'customer', plural: 'customers'}}
+          hasMoreItems
+          renderItem={renderItem}
+          bulkActions={bulkActions}
+          isFiltered={false}
+        />,
+      );
+
+      expect(
+        resourceList.find(BulkActions).prop('paginatedSelectAllAction'),
+      ).toStrictEqual({
+        content: 'Select all 2+ customers in your store',
+        onAction: expect.any(Function),
+      });
+    });
+  });
 });
 
 function noop() {}
