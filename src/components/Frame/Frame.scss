@@ -21,25 +21,29 @@ $skip-vertical-offset: rem(10px);
 
 .Navigation {
   @include hidden-when-printing;
-  position: fixed;
-  z-index: z-index(nav, $fixed-element-stacking-order);
-  top: 0;
-  left: 0;
   display: none;
   flex: 0 0 auto;
   align-items: stretch;
-  height: 100%;
   outline: none;
   transform: translateX(0%);
 
+  @include breakpoint-before(nav-min-window-corrected()) {
+    top: 0;
+    left: 0;
+    position: fixed;
+    height: 100%;
+    z-index: z-index(nav, $fixed-element-stacking-order);
+  }
+
   @include frame-when-nav-displayed {
+    position: sticky;
     z-index: 1;
     left: var(--p-frame-offset);
     display: flex;
 
     .hasTopBar & {
       top: top-bar-height();
-      height: calc(100% - #{top-bar-height()});
+      height: calc(100vh - #{top-bar-height()});
     }
   }
 
@@ -165,11 +169,9 @@ $skip-vertical-offset: rem(10px);
 
   @include frame-when-nav-displayed {
     .hasNav & {
-      padding-left: layout-width(nav);
       @include when-printing {
         padding-left: 0;
       }
-      @include safe-area-for(padding-left, layout-width(nav), left);
     }
   }
 
