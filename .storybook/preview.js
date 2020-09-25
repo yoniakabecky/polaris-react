@@ -6,7 +6,14 @@ import DefaultThemeColors from '@shopify/polaris-tokens/dist-modern/theme/base.j
 
 import {AppProvider} from '../src';
 import enTranslations from '../locales/en.json';
+import zhTranslations from '../locales/zh-CN.json';
+import deTranslations from '../locales/de.json';
 
+const translations = {
+  en: enTranslations,
+  de: deTranslations,
+  'zh-CN': zhTranslations,
+}
 export const parameters = {
   percy: {
     skip: true,
@@ -20,8 +27,8 @@ function StrictModeToggle({isStrict = false, children}) {
 }
 
 function AppProviderWithKnobs(
-  {newDesignLanguage, colorScheme, children},
-  context,
+  {locale, newDesignLanguage, colorScheme, children},
+  context
 ) {
   const omitAppProvider = (() => {
     try {
@@ -43,7 +50,7 @@ function AppProviderWithKnobs(
 
   return (
     <AppProvider
-      i18n={enTranslations}
+      i18n={translations[locale]}
       features={{newDesignLanguage}}
       theme={{
         colors,
@@ -80,6 +87,25 @@ const withContextsDecorator = withContexts([
       {
         name: 'Enabled - Dark Mode',
         props: {newDesignLanguage: true, colorScheme: 'dark'},
+      },
+    ],
+  },
+  {
+    title: 'Locale',
+    components: [AppProviderWithKnobs],
+    params: [
+      {
+        name: 'English',
+        default: true,
+        props: {locale: 'en'},
+      },
+      {
+        name: '中文',
+        props: {locale: 'zh-CN'},
+      },
+      {
+        name: 'Deutsch',
+        props: {locale: 'de'},
       },
     ],
   },
