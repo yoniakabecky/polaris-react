@@ -146,16 +146,75 @@ Add a menu item
 Use to let merchants know about a feature or opportunity where there is a clear, single action they need to take to move to the next step.
 
 ```jsx
-<CalloutCard
-  title="Customize the style of your checkout"
-  illustration="https://cdn.shopify.com/s/assets/admin/checkout/settings-customizecart-705f57c725ac05be5a34ec20c05b94298cb8afd10aac7bd9c7ad02030f48cfa0.svg"
-  primaryAction={{
-    content: 'Customize checkout',
-    url: 'https://www.shopify.com',
+<ThemeProvider
+  theme={{
+    colorScheme: 'dark',
+    colors: {
+      surface: '#020c1d',
+      secondary: '#103560',
+      interactive: '#009973',
+    },
   }}
 >
-  <p>Upload your store’s logo, change colors and fonts, and more.</p>
-</CalloutCard>
+  <CalloutCard
+    title="Customize the style of your checkout"
+    primaryAction={{
+      content: 'Customize checkout',
+      url: 'https://www.shopify.com',
+    }}
+    actionsDescription="Upload your store’s logo, change colors and fonts, and more."
+  >
+    <ResourceList
+      resourceName={{singular: 'product', plural: 'products'}}
+      items={[
+        {
+          id: 341,
+          url: 'produdcts/341',
+          name: 'Black & orange scarf',
+          price: '9.99',
+          media: (
+            <Thumbnail
+              source="https://burst.shopifycdn.com/photos/black-orange-stripes_373x@2x.jpg"
+              alt="Black orange scarf"
+            />
+          ),
+        },
+        {
+          id: 256,
+          url: 'produdcts/256',
+          name: 'Tucan scarf',
+          price: '9.99',
+          media: (
+            <Thumbnail
+              source="https://burst.shopifycdn.com/photos/tucan-scarf_373x@2x.jpg"
+              alt="Tucan scarf"
+            />
+          ),
+        },
+      ]}
+      renderItem={(item) => {
+        const {id, url, name, price, media} = item;
+
+        return (
+          <ResourceList.Item
+            verticalAlignment="center"
+            id={id}
+            url={url}
+            media={media}
+            accessibilityLabel={`View details for ${name}`}
+          >
+            <div style={{display: 'flex', justifyContent: 'space-between'}}>
+              <h3>
+                <TextStyle variation="positive">{name}</TextStyle>
+              </h3>
+              <TextStyle>{price}</TextStyle>
+            </div>
+          </ResourceList.Item>
+        );
+      }}
+    />
+  </CalloutCard>
+</ThemeProvider>
 ```
 
 ### Callout card with secondary action
