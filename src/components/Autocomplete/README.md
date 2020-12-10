@@ -76,7 +76,7 @@ function AutocompleteExample() {
         return matchedOption && matchedOption.label;
       });
 
-      setSelectedOptions(selected);
+      setSelectedOptions(selected[0]);
       setInputValue(selectedValue);
     },
     [options],
@@ -252,7 +252,7 @@ function AutocompleteExample() {
         return matchedOption && matchedOption.label;
       });
       setSelectedOptions(selected);
-      setInputValue(selectedText);
+      setInputValue(selectedText[0]);
     },
     [options],
   );
@@ -366,18 +366,20 @@ function AutoCompleteLazyLoadExample() {
   ) : null;
 
   return (
-    <Stack vertical>
-      {selectedTagMarkup}
-      <Autocomplete
-        allowMultiple
-        options={optionList}
-        selected={selectedOptions}
-        textField={textField}
-        onSelect={setSelectedOptions}
-        listTitle="Suggested Tags"
-        onLoadMoreResults={handleLoadMoreResults}
-      />
-    </Stack>
+    <div style={{height: '225px'}}>
+      <Stack vertical>
+        {selectedTagMarkup}
+        <Autocomplete
+          allowMultiple
+          options={optionList}
+          selected={selectedOptions}
+          textField={textField}
+          onSelect={setSelectedOptions}
+          listTitle="Suggested Tags"
+          onLoadMoreResults={handleLoadMoreResults}
+        />
+      </Stack>
+    </div>
   );
 
   function titleCase(string) {
@@ -444,7 +446,7 @@ function AutocompleteExample() {
         return matchedOption && matchedOption.label;
       });
       setSelectedOptions(selected);
-      setInputValue(selectedText);
+      setInputValue(selectedText[0]);
     },
     [options],
   );
