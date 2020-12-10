@@ -4,7 +4,7 @@ import {useUniqueId} from '../../utilities/unique-id';
 import {useFeatures} from '../../utilities/features';
 import {useToggle} from '../../utilities/use-toggle';
 import {classNames} from '../../utilities/css';
-import {Choice, helpTextID} from '../Choice';
+import {Choice, helpTextID, Alignment} from '../Choice';
 
 import styles from './RadioButton.scss';
 
@@ -27,6 +27,10 @@ export interface RadioButtonProps {
   name?: string;
   /** Value for form input */
   value?: string;
+  /** Adjust vertical alignment of radio button and label. Defaults to leading */
+  alignment?: Alignment;
+  /** Stretch radio button to fill the width of its container */
+  fullWidth?: boolean;
   /** Callback when the radio button is toggled */
   onChange?(newValue: boolean, id: string): void;
   /** Callback when radio button is focussed */
@@ -48,6 +52,8 @@ export function RadioButton({
   id: idProp,
   name: nameProp,
   value,
+  alignment,
+  fullWidth,
 }: RadioButtonProps) {
   const id = useUniqueId('RadioButton', idProp);
   const name = nameProp || id;
@@ -107,6 +113,8 @@ export function RadioButton({
       label={label}
       labelHidden={labelHidden}
       disabled={disabled}
+      alignment={alignment}
+      fullWidth={fullWidth}
       id={id}
       helpText={helpText}
       onMouseOver={handleMouseOver}

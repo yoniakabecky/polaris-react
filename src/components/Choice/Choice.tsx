@@ -1,10 +1,12 @@
 import React from 'react';
 
-import {classNames} from '../../utilities/css';
+import {classNames, variationName} from '../../utilities/css';
 import type {Error} from '../../types';
 import {InlineError} from '../InlineError';
 
 import styles from './Choice.scss';
+
+export type Alignment = 'leading' | 'trailing' | 'center';
 
 export interface ChoiceProps {
   /** A unique identifier for the choice */
@@ -21,6 +23,10 @@ export interface ChoiceProps {
   children?: React.ReactNode;
   /** Additional text to aide in use */
   helpText?: React.ReactNode;
+  /** Adjust vertical alignment of choice and label. Defaults to leading */
+  alignment?: Alignment;
+  /** Stretch choice to fill the width of its container */
+  fullWidth?: boolean;
   /** Callback when clicked */
   onClick?(): void;
   /** Callback when mouse over */
@@ -37,6 +43,8 @@ export function Choice({
   children,
   labelHidden,
   helpText,
+  alignment,
+  fullWidth,
   onClick,
   onMouseOut,
   onMouseOver,
@@ -45,6 +53,13 @@ export function Choice({
     styles.Choice,
     labelHidden && styles.labelHidden,
     disabled && styles.disabled,
+    alignment && styles[variationName('alignment', alignment)],
+    fullWidth && styles.fullWidth,
+  );
+
+  const labelClassNames = classNames(
+    styles.Label,
+    fullWidth && styles.fullWidth,
   );
 
   const labelMarkup = (
@@ -56,7 +71,7 @@ export function Choice({
       onMouseOut={onMouseOut}
     >
       <span className={styles.Control}>{children}</span>
-      <span className={styles.Label}>{label}</span>
+      <span className={labelClassNames}>{label}</span>
     </label>
   );
 

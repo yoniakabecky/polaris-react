@@ -76,3 +76,19 @@ $control-vertical-adjustment: rem(2px);
   @include text-emphasis-subdued;
   margin-bottom: spacing(extra-tight);
 }
+
+.alignmentLeading {
+  align-items: flex-start;
+}
+
+.alignmentTrailing {
+  align-items: flex-end;
+}
+
+.alignmentCenter {
+  align-items: center;
+}
+
+.fullWidth {
+  width: 100%;
+}
