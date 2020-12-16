@@ -70,7 +70,7 @@ export function Actions({actions = [], groups = []}: Props) {
 
   const updateActions = useCallback(() => {
     let actionsAndGroups = [...actions, ...groups];
-
+    console.log('update actions');
     if (groups.length > 0) {
       // We don't want to include actions from the last group
       // since it is always rendered with its own actions
@@ -88,55 +88,6 @@ export function Actions({actions = [], groups = []}: Props) {
     setMeasuredActions({showable, rolledUp});
   }, [actions, groups, measuredActions.showable.length]);
 
-  const measureActions = useCallback(() => {
-    if (
-      !newDesignLanguage ||
-      actionWidthsRef.current.length === 0 ||
-      availableWidthRef.current === 0
-    ) {
-      return;
-    }
-
-    const actionsAndGroups = [...actions, ...groups];
-
-    if (actionsAndGroups.length === 1) {
-      setMeasuredActions({showable: actionsAndGroups, rolledUp: []});
-      return;
-    }
-
-    let currentAvailableWidth = availableWidthRef.current;
-    let newShowableActions: MenuActionDescriptor[] = [];
-    let newRolledUpActions: (MenuActionDescriptor | MenuGroupDescriptor)[] = [];
-
-    actionsAndGroups.forEach((action, index) => {
-      const canFitAction =
-        actionWidthsRef.current[index] +
-          menuGroupWidthRef.current +
-          ACTION_SPACING +
-          lastMenuGroupWidth <=
-        currentAvailableWidth;
-
-      if (canFitAction) {
-        currentAvailableWidth -=
-          actionWidthsRef.current[index] + ACTION_SPACING * 2;
-        newShowableActions = [...newShowableActions, action];
-      } else {
-        currentAvailableWidth = 0;
-        // Find last group if it exists and always render it as a rolled up action below
-        if (action === lastMenuGroup) return;
-        newRolledUpActions = [...newRolledUpActions, action];
-      }
-    });
-
-    setMeasuredActions({
-      showable: newShowableActions,
-      rolledUp: newRolledUpActions,
-    });
-
-    timesMeasured.current += 1;
-    actionsAndGroupsLengthRef.current = actionsAndGroups.length;
-  }, [actions, groups, lastMenuGroup, lastMenuGroupWidth, newDesignLanguage]);
-
   const handleResize = useMemo(
     () =>
       debounce(
@@ -145,12 +96,24 @@ export function Actions({actions = [], groups = []}: Props) {
           availableWidthRef.current = actionsLayoutRef.current.offsetWidth;
           // Set timesMeasured to 0 to allow re-measuring
           timesMeasured.current = 0;
-          measureActions();
+          measureActions({
+            newDesignLanguage,
+            actionWidths: actionWidthsRef.current,
+            availableWidth: availableWidthRef.current,
+            actions,
+            groups,
+            lastMenuGroupWidth,
+            menuGroupWidth: menuGroupWidthRef.current,
+            lastMenuGroup,
+            setMeasuredActions,
+          });
+          timesMeasured.current += 1;
+          actionsAndGroupsLengthRef.current = [...actions, ...groups].length;
         },
         50,
         {leading: false, trailing: true},
       ),
-    [newDesignLanguage, measureActions],
+    [newDesignLanguage, actions, groups, lastMenuGroupWidth, lastMenuGroup],
   );
 
   useEffect(() => {
@@ -168,8 +131,27 @@ export function Actions({actions = [], groups = []}: Props) {
       updateActions();
       return;
     }
-    measureActions();
-  }, [actions, groups, measureActions, updateActions]);
+    measureActions({
+      newDesignLanguage,
+      actionWidths: actionWidthsRef.current,
+      availableWidth: availableWidthRef.current,
+      actions,
+      groups,
+      lastMenuGroupWidth,
+      menuGroupWidth: menuGroupWidthRef.current,
+      lastMenuGroup,
+      setMeasuredActions,
+    });
+    timesMeasured.current += 1;
+    actionsAndGroupsLengthRef.current = [...actions, ...groups].length;
+  }, [
+    actions,
+    groups,
+    lastMenuGroup,
+    lastMenuGroupWidth,
+    newDesignLanguage,
+    updateActions,
+  ]);
 
   const className = classNames(
     styles.ActionsLayout,
@@ -316,4 +298,67 @@ function isMenuGroup(
   actionOrMenuGroup: MenuGroupDescriptor | MenuActionDescriptor,
 ): actionOrMenuGroup is MenuGroupDescriptor {
   return 'title' in actionOrMenuGroup;
+}
+
+interface MeasureActions {
+  actions: Props['actions'];
+  groups: Props['groups'];
+  newDesignLanguage?: boolean;
+  availableWidth: number;
+  menuGroupWidth: number;
+  lastMenuGroupWidth: number;
+  actionWidths: number[];
+  lastMenuGroup: MenuGroupDescriptor | undefined;
+  setMeasuredActions: (value: React.SetStateAction<MeasuredActions>) => void;
+}
+
+export function measureActions({
+  newDesignLanguage,
+  actionWidths,
+  availableWidth,
+  actions = [],
+  groups = [],
+  lastMenuGroupWidth,
+  menuGroupWidth,
+  lastMenuGroup,
+  setMeasuredActions,
+}: MeasureActions) {
+  if (!newDesignLanguage || actionWidths.length === 0 || availableWidth === 0) {
+    return;
+  }
+
+  const actionsAndGroups = [...actions, ...groups];
+
+  if (actionsAndGroups.length === 1) {
+    setMeasuredActions({showable: actionsAndGroups, rolledUp: []});
+    return;
+  }
+
+  let currentAvailableWidth = availableWidth;
+  let newShowableActions: MenuActionDescriptor[] = [];
+  let newRolledUpActions: (MenuActionDescriptor | MenuGroupDescriptor)[] = [];
+  console.log('measuring');
+  actionsAndGroups.forEach((action, index) => {
+    const canFitAction =
+      actionWidths[index] +
+        menuGroupWidth +
+        ACTION_SPACING +
+        lastMenuGroupWidth <=
+      currentAvailableWidth;
+
+    if (canFitAction) {
+      currentAvailableWidth -= actionWidths[index] + ACTION_SPACING * 2;
+      newShowableActions = [...newShowableActions, action];
+    } else {
+      currentAvailableWidth = 0;
+      // Find last group if it exists and always render it as a rolled up action below
+      if (action === lastMenuGroup) return;
+      newRolledUpActions = [...newRolledUpActions, action];
+    }
+  });
+
+  setMeasuredActions({
+    showable: newShowableActions,
+    rolledUp: newRolledUpActions,
+  });
 }
