@@ -7,6 +7,8 @@ Use [the changelog guidelines](https://git.io/polaris-changelog-guidelines) to f
 - Remove `light` property from `Tooltip` as it now defaults to a light background ([#3846](https://github.com/Shopify/polaris-react/pull/3846))
 - Made `title` property required in `Modal` for accessibility label, added `hideTitle` property ([#3803](https://github.com/Shopify/polaris-react/pull/3803))
 - Added required `ariaLabel` property in `Sheet` ([#3852](https://github.com/Shopify/polaris-react/pull/3852))
+- Removed `NewDesignLanguage`, `Color`, `AnimationProps` exported types ([#3868](https://github.com/Shopify/polaris-react/pull/3868))
+- Replaced `BaseAction` with `Action` type ([#3868](https://github.com/Shopify/polaris-react/pull/3868))
 
 ### Enhancements
 
@@ -52,6 +54,10 @@ Use [the changelog guidelines](https://git.io/polaris-changelog-guidelines) to f
 - Fixed an incorrect translation key for `accessibilityLabel` in `Tooltip`([#3843](https://github.com/Shopify/polaris-react/pull/3843))
 - Fix shadows on filled `Button`s not touching the bottom edge ([#3841](https://github.com/Shopify/polaris-react/pull/3841))
 - Adjust `Thumbnail` icon color to be subdued ([#3846](https://github.com/Shopify/polaris-react/pull/3846))
+- Updated ToastManager to use aria-live 'assertive' for accessibility ([#3837](https://github.com/Shopify/polaris-react/pull/3837))
+- Fixed responsiveness of empty search state in `ResourceList` to support user text zoom settings ([#2983](https://github.com/Shopify/polaris-react/pull/2983))
+- Fixed `ActionList` not rendering `.active` indicator ([#3854](https://github.com/Shopify/polaris-react/pull/3854))
+- Prevent loss of focus when clicking clear all filters in `Filters` ([#3754](https://github.com/Shopify/polaris-react/pull/3754))
 
 ### Documentation
 
