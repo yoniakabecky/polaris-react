@@ -7,7 +7,8 @@ import {
   PositionedOverlay,
 } from '../../../PositionedOverlay';
 import {useI18n} from '../../../../utilities/i18n';
-import styles from '../../Tooltip.scss';
+
+import styles from './TooltipOverlay.scss';
 
 export interface TooltipOverlayProps {
   id: string;
