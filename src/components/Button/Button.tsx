@@ -46,6 +46,8 @@ export interface ButtonProps extends BaseButton {
   monochrome?: boolean;
   /** Icon to display to the left of the button content */
   icon?: React.ReactElement | IconSource;
+  /** does the icon display on the left or right of the content */
+  iconPlacement?: 'before' | 'after';
   /** Disclosure button connected right of the button. Toggles a popover action list. */
   connectedDisclosure?: ConnectedDisclosure;
 }
@@ -108,6 +110,7 @@ export function Button({
   onMouseEnter,
   onTouchStart,
   icon,
+  iconPlacement = 'before',
   primary,
   outline,
   destructive,
@@ -140,17 +143,23 @@ export function Button({
     connectedDisclosure && styles.connectedDisclosure,
   );
 
-  const disclosureMarkup = disclosure ? (
-    <span className={styles.Icon}>
-      <div
-        className={classNames(styles.DisclosureIcon, loading && styles.hidden)}
-      >
-        <Icon
-          source={loading ? 'placeholder' : getDisclosureIconSource(disclosure)}
-        />
-      </div>
-    </span>
-  ) : null;
+  const disclosureMarkup =
+    disclosure && !connectedDisclosure ? (
+      <span className={styles.Icon}>
+        <div
+          className={classNames(
+            styles.DisclosureIcon,
+            loading && styles.hidden,
+          )}
+        >
+          <Icon
+            source={
+              loading ? 'placeholder' : getDisclosureIconSource(disclosure)
+            }
+          />
+        </div>
+      </span>
+    ) : null;
 
   const iconSource = isIconSource(icon) ? (
     <Icon source={loading ? 'placeholder' : icon} />
@@ -190,6 +199,7 @@ export function Button({
       styles.Button,
       primary && styles.primary,
       outline && styles.outline,
+      isDisabled && styles.disabled,
       size && size !== DEFAULT_SIZE && styles[variationName('size', size)],
       textAlign && styles[variationName('textAlign', textAlign)],
       destructive && styles.destructive,
@@ -204,7 +214,6 @@ export function Button({
     );
 
     const {
-      disabled,
       accessibilityLabel: disclosureLabel = defaultLabel,
     } = connectedDisclosure;
 
@@ -212,7 +221,7 @@ export function Button({
       <button
         type="button"
         className={connectedDisclosureClassName}
-        disabled={disabled}
+        disabled={isDisabled}
         aria-label={disclosureLabel}
         aria-describedby={ariaDescribedBy}
         onClick={toggleDisclosureActive}
@@ -273,8 +282,9 @@ export function Button({
     <UnstyledButton {...commonProps} {...linkProps} {...actionProps}>
       <span className={styles.Content}>
         {spinnerSVGMarkup}
-        {iconMarkup}
+        {iconPlacement === 'before' && iconMarkup}
         {childMarkup}
+        {iconPlacement === 'after' && iconMarkup}
         {disclosureMarkup}
       </span>
     </UnstyledButton>

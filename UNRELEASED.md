@@ -7,6 +7,9 @@ Use [the changelog guidelines](https://git.io/polaris-changelog-guidelines) to f
 ### Enhancements
 
 - Added `focus-visible` polyfill and default styles ([#3695](https://github.com/Shopify/polaris-react/pull/3695))
+- Changed `Label` and `Labelled`’s `label` prop type to `React.ReactNode` instead of `string` ([#3787](https://github.com/Shopify/polaris-react/pull/3787))
+- Button `icon` can now be place `before` or `after` button content by using new `iconPlacement` property
+  - Button connected disclosure now follows loading & disabled states from the attached button
 
 ### Bug fixes
 
