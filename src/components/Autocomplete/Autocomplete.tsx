@@ -153,6 +153,10 @@ export const Autocomplete: React.FunctionComponent<AutocompleteProps> & {
 
   const actionMarkup = actionBefore && <MappedAction {...actionBefore} />;
 
+  const emptyStateMarkup = options.length < 1 && !loading && (
+    <div role="status">{emptyState}</div>
+  );
+
   return (
     <ComboBox
       activator={textField}
@@ -166,7 +170,7 @@ export const Autocomplete: React.FunctionComponent<AutocompleteProps> & {
           ? optionsMarkup
           : null}
         {loadingMarkup}
-        {options.length < 1 && !loading && emptyState}
+        {emptyStateMarkup}
       </ListBox>
     </ComboBox>
   );
