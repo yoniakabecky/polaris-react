@@ -97,7 +97,7 @@ export function ListBox({
           element
         : element;
 
-      scrollIntoView(focusTarget);
+      scrollIntoView(focusTarget, scrollableRef.current);
     }
   };
 
@@ -226,10 +226,12 @@ export function ListBox({
   }
 
   function handleDownArrow(evt: KeyboardEvent) {
+    evt?.preventDefault();
     handleArrow('down', evt);
   }
 
   function handleUpArrow(evt: KeyboardEvent) {
+    evt?.preventDefault();
     handleArrow('up', evt);
   }
 
