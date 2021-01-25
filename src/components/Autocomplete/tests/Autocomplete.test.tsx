@@ -87,6 +87,30 @@ describe('<Autocomplete/>', () => {
             options.length,
           );
         });
+
+        it('passes selected to ListBox.Option', () => {
+          const selected = 'cheese_pizza';
+          const options = [
+            {value: selected, label: 'Cheese Pizza'},
+            {value: 'macaroni_pizza', label: 'Macaroni Pizza'},
+            {value: 'pepperoni_pizza', label: 'Pepperoni Pizza'},
+            {value: 'other_pizza', label: 'Other Pizza'},
+          ];
+          const autocomplete = mountWithApp(
+            <Autocomplete
+              {...defaultProps}
+              options={options}
+              selected={[selected]}
+            />,
+          );
+
+          triggerFocus(autocomplete.find(ComboBox));
+
+          expect(autocomplete).toContainReactComponent(MappedOption, {
+            ...options[0],
+            selected: true,
+          });
+        });
       });
 
       describe('selected', () => {
@@ -249,6 +273,19 @@ describe('<Autocomplete/>', () => {
         function EmptyState() {
           return null;
         }
+
+        it('does not render if an action exists', () => {
+          const autocomplete = mountWithApp(
+            <Autocomplete
+              {...defaultProps}
+              actionBefore={{content: 'action'}}
+            />,
+          );
+
+          triggerFocus(autocomplete.find(ComboBox));
+
+          expect(autocomplete).not.toContainReactComponent(EmptyState);
+        });
 
         it('does not render when options exists', () => {
           const emptyState = <EmptyState />;

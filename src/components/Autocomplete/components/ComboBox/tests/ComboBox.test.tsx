@@ -8,6 +8,7 @@ import {
   ComboBoxTextFieldContext,
   ComboBoxListBoxContext,
 } from '../../../../../utilities/combo-box';
+import {Key} from '../../../../../types';
 
 describe('<ComboBox />', () => {
   const activator = <TextField onChange={noop} label="" value="" />;
@@ -198,6 +199,69 @@ describe('<ComboBox />', () => {
     });
   });
 
+  describe('popover', () => {
+    it('defaults active to false', () => {
+      const combobox = mountWithApp(<ComboBox activator={activator} />);
+
+      expect(combobox).toContainReactComponent(Popover, {
+        active: false,
+      });
+    });
+
+    it('has fullWidth', () => {
+      const combobox = mountWithApp(<ComboBox activator={activator} />);
+
+      expect(combobox).toContainReactComponent(Popover, {
+        fullWidth: true,
+      });
+    });
+
+    it('has preventAutofocus', () => {
+      const combobox = mountWithApp(<ComboBox activator={activator} />);
+
+      expect(combobox).toContainReactComponent(Popover, {
+        preventAutofocus: true,
+      });
+    });
+
+    it('sets active to false when escape is pressed', () => {
+      const activator = (
+        <ComboBox.TextField onChange={noop} label="" value="" />
+      );
+      const combobox = mountWithApp(
+        <ComboBox activator={activator}>
+          <ListBox>
+            <ListBox.Option accessibilityLabel="Option 1" value="option1" />
+          </ListBox>
+        </ComboBox>,
+      );
+
+      triggerFocus(combobox);
+
+      combobox.act(() => {
+        dispatchKeyup(Key.Escape);
+      });
+
+      expect(combobox).toContainReactComponent(Popover, {
+        active: false,
+      });
+    });
+
+    it('passes the preferredPosition', () => {
+      const preferredPosition = 'above';
+      const combobox = mountWithApp(
+        <ComboBox
+          activator={activator}
+          preferredPosition={preferredPosition}
+        />,
+      );
+
+      expect(combobox).toContainReactComponent(Popover, {
+        preferredPosition,
+      });
+    });
+  });
+
   describe('Context', () => {
     it('sets expanded to true on the ComboBoxTextFieldContext when the popover is active', () => {
       const combobox = mountWithApp(
@@ -280,3 +344,8 @@ function triggerOptionSelected(combobox: any) {
 }
 
 function noop() {}
+
+function dispatchKeyup(key: Key) {
+  const event: KeyboardEventInit & {keyCode: Key} = {keyCode: key};
+  document.dispatchEvent(new KeyboardEvent('keyup', event));
+}
