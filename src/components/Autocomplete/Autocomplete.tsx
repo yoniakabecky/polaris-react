@@ -53,7 +53,6 @@ export interface AutocompleteProps {
   listTitle?: string;
   /** Allow more than one option to be selected */
   allowMultiple?: boolean;
-  // TODO handle
   /** An action to render above the list of options */
   actionBefore?: ActionListItemDescriptor;
   /** Display loading state */
@@ -75,7 +74,6 @@ export interface AutocompleteProps {
 
 export const Autocomplete: React.FunctionComponent<AutocompleteProps> & {
   ComboBox: typeof ComboBox;
-  // TODO is this correct?
   TextField: typeof ComboBox.TextField;
 } = function Autocomplete({
   options,
@@ -153,7 +151,7 @@ export const Autocomplete: React.FunctionComponent<AutocompleteProps> & {
 
   const actionMarkup = actionBefore && <MappedAction {...actionBefore} />;
 
-  const emptyStateMarkup = options.length < 1 && !loading && (
+  const emptyStateMarkup = emptyState && options.length < 1 && !loading && (
     <div role="status">{emptyState}</div>
   );
 
@@ -164,17 +162,20 @@ export const Autocomplete: React.FunctionComponent<AutocompleteProps> & {
       onScrolledToBottom={onLoadMoreResults}
       preferredPosition={preferredPosition}
     >
-      <ListBox onSelect={updateSelection}>
-        {actionMarkup}
-        {optionsMarkup && (!loading || willLoadMoreResults)
-          ? optionsMarkup
-          : null}
-        {loadingMarkup}
-        {emptyStateMarkup}
-      </ListBox>
+      {actionMarkup || optionsMarkup || loadingMarkup || emptyStateMarkup ? (
+        <ListBox onSelect={updateSelection}>
+          {actionMarkup}
+          {optionsMarkup && (!loading || willLoadMoreResults)
+            ? optionsMarkup
+            : null}
+          {loadingMarkup}
+          {emptyStateMarkup}
+        </ListBox>
+      ) : null}
     </ComboBox>
   );
 };
 
+// TODO should be ComboBox old?
 Autocomplete.ComboBox = ComboBox;
 Autocomplete.TextField = ComboBox.TextField;

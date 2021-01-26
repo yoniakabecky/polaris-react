@@ -62,7 +62,6 @@ export function ListBox({
   accessibilityLabel,
   onSelect,
 }: ListBoxProps) {
-  // const [, ShareTranslations] = useI18n(); TODO FIGURE OUT
   const listBoxClassName = classNames(styles.ListBox);
   const {
     value: keyboardEventsEnabled,
