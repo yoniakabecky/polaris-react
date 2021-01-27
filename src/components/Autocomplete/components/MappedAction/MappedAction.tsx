@@ -1,36 +1,15 @@
 import React, {useMemo} from 'react';
 
+import type {ActionListItemDescriptor} from '../../../../types';
+import {Badge} from '../../../Badge';
+import {classNames} from '../../../../utilities/css';
 import {MappedActionContext} from '../../context';
 import {ListBox} from '../ListBox';
-import type {ActionListItemDescriptor} from '../../../../types';
 import {Icon} from '../../../Icon';
 import {TextStyle} from '../../../TextStyle';
-import {Badge} from '../../../Badge';
 import {useI18n} from '../../../../utilities/i18n';
 
 import styles from './MappedAction.scss';
-
-/**
- *                   helpText
- *                   icon -> icon
- *                   image
- *                   prefix -> children
- *                   suffix -> children
- *                   ellipsis
- *                   role
- *                  active -> selected
- *
- *                  id
- *                  content -> children
- *                  url
- *                  external
- *                  onAction
- *                  onMouseAction -> noop
- *                  onTouchStart -> noop
- *                  disabled -> disabled
- *                  destructive
- *                  badge {status, content}
- */
 
 interface MappedAction extends ActionListItemDescriptor {}
 
@@ -89,9 +68,15 @@ export function MappedAction({
       : content;
 
   const contentMarkup = (
-    <div>
-      {contentText}
-      <TextStyle variation="subdued">{helpText}</TextStyle>
+    <div className={styles.Text}>
+      {helpText ? (
+        <>
+          <div>{contentText}</div>
+          <TextStyle variation="subdued">{helpText}</TextStyle>
+        </>
+      ) : (
+        contentText
+      )}
     </div>
   );
 
@@ -107,18 +92,31 @@ export function MappedAction({
     [role, url, external, onAction, destructive],
   );
 
+  const actionClassNames = classNames(
+    styles.Action,
+    disabled && styles.disabled,
+    destructive && styles.destructive,
+    active && styles.active,
+  );
+
   return (
     <MappedActionContext.Provider value={context}>
-      <ListBox.Action
-        selected={active}
-        disabled={disabled}
-        value={content || ''}
-      >
-        {prefixMarkup}
-        {contentMarkup}
-        {badgeMarkup}
-        {suffixMarkup}
-      </ListBox.Action>
+      <div className={styles.ActionContainer}>
+        <ListBox.Action
+          selected={active}
+          disabled={disabled}
+          value={content || ''}
+        >
+          <div className={actionClassNames}>
+            <div className={styles.Content}>
+              {prefixMarkup}
+              {contentMarkup}
+              {badgeMarkup}
+              {suffixMarkup}
+            </div>
+          </div>
+        </ListBox.Action>
+      </div>
     </MappedActionContext.Provider>
   );
 }

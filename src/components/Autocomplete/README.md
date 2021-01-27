@@ -288,28 +288,39 @@ function AutocompleteExample() {
 function AutoCompleteLazyLoadExample() {
   const paginationInterval = 25;
   const deselectedOptions = Array.from(Array(100)).map((_, index) => ({
-    value: `rustic ${index}`,
-    label: `Rustic ${index}`,
+    value: `rustic ${index + 1}`,
+    label: `Rustic ${index + 1}`,
   }));
 
   const [selectedOptions, setSelectedOptions] = useState([]);
   const [inputValue, setInputValue] = useState('');
   const [options, setOptions] = useState(deselectedOptions);
   const [isLoading, setIsLoading] = useState(false);
+  const [willLoadMoreResults, setWillLoadMoreResults] = useState(true);
   const [visibleOptionIndex, setVisibleOptionIndex] = useState(
     paginationInterval,
   );
 
   const handleLoadMoreResults = useCallback(() => {
-    setIsLoading(true);
-    const nextVisibleOptionIndex = visibleOptionIndex + paginationInterval;
-    if (nextVisibleOptionIndex <= options.length - 1) {
+    if (willLoadMoreResults) {
+      setIsLoading(true);
+
       setTimeout(() => {
+        const remainingOptionCount = options.length - visibleOptionIndex;
+        const nextVisibleOptionIndex =
+          remainingOptionCount >= paginationInterval
+            ? visibleOptionIndex + paginationInterval
+            : visibleOptionIndex + remainingOptionCount;
+
         setIsLoading(false);
         setVisibleOptionIndex(nextVisibleOptionIndex);
+
+        if (remainingOptionCount <= paginationInterval) {
+          setWillLoadMoreResults(false);
+        }
       }, 1000);
     }
-  }, [visibleOptionIndex, options.length]);
+  }, [willLoadMoreResults, visibleOptionIndex, options.length]);
 
   const removeTag = useCallback(
     (tag) => () => {
@@ -383,6 +394,7 @@ function AutoCompleteLazyLoadExample() {
         listTitle="Suggested Tags"
         loading={isLoading}
         onLoadMoreResults={handleLoadMoreResults}
+        willLoadMoreResults={willLoadMoreResults}
       />
     </Stack>
   );
@@ -482,6 +494,108 @@ function AutocompleteExample() {
         selected={selectedOptions}
         onSelect={updateSelection}
         emptyState={emptyState}
+        loading={loading}
+        textField={textField}
+      />
+    </div>
+  );
+}
+```
+
+### Autocomplete with action before
+
+Use to indicate there are no search results.
+
+```jsx
+function AutocompleteActionBeforeExample() {
+  const deselectedOptions = [
+    {value: 'rustic', label: 'Rustic'},
+    {value: 'antique', label: 'Antique'},
+    {value: 'vinyl', label: 'Vinyl'},
+    {value: 'vintage', label: 'Vintage'},
+    {value: 'refurbished', label: 'Refurbished'},
+  ];
+  const [selectedOptions, setSelectedOptions] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [options, setOptions] = useState(deselectedOptions);
+  const [loading, setLoading] = useState(false);
+
+  const updateText = useCallback(
+    (value) => {
+      setInputValue(value);
+
+      if (!loading) {
+        setLoading(true);
+      }
+
+      setTimeout(() => {
+        if (value === '') {
+          setOptions(deselectedOptions);
+          setLoading(false);
+          return;
+        }
+        const filterRegex = new RegExp(value, 'i');
+        const resultOptions = options.filter((option) =>
+          option.label.match(filterRegex),
+        );
+        setOptions(resultOptions);
+        setLoading(false);
+      }, 300);
+    },
+    [deselectedOptions, loading, options],
+  );
+
+  const updateSelection = useCallback(
+    (selected) => {
+      const selectedText = selected.map((selectedItem) => {
+        const matchedOption = options.find((option) => {
+          return option.value.match(selectedItem);
+        });
+        return matchedOption && matchedOption.label;
+      });
+      setSelectedOptions(selected);
+      setInputValue(selectedText);
+    },
+    [options],
+  );
+
+  const textField = (
+    <Autocomplete.TextField
+      onChange={updateText}
+      label="Tags"
+      value={inputValue}
+      prefix={<Icon source={SearchMinor} color="inkLighter" />}
+      placeholder="Search"
+    />
+  );
+
+  const actionBefore = {
+    accessibilityLabel: 'Action before label',
+    active: true,
+    badge: {
+      status: 'new',
+      content: 'New!',
+    },
+    content: 'Action with long name',
+    disabled: false,
+    destructive: true,
+    ellipsis: true,
+    helpText: 'Help text',
+    image:
+      'https://cdn.shopify.com/s/files/1/0446/6937/files/jaded-pixel-logo-gray.svg?6215648040070010999',
+    icon: CirclePlusMinor,
+    prefix: undefined,
+    role: undefined,
+    suffix: undefined,
+  };
+
+  return (
+    <div style={{height: '225px'}}>
+      <Autocomplete
+        actionBefore={actionBefore}
+        options={options}
+        selected={selectedOptions}
+        onSelect={updateSelection}
         loading={loading}
         textField={textField}
       />

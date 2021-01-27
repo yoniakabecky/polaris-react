@@ -40,7 +40,7 @@ describe('MappedAction', () => {
     expect(mappedAction).toContainReactText(helpText);
   });
 
-  it('renders eillipsis when true', () => {
+  it('renders ellipsis when true', () => {
     const mappedAction = mountWithListBoxProvider(
       <MappedAction ellipsis content="content for ellipsis" />,
     );

@@ -1,6 +1,79 @@
 @import '../../../../styles/common';
 
 $image-size: rem(20px);
+$item-min-height: rem(40px);
+$item-vertical-padding: ($item-min-height - line-height(body)) / 2;
+
+.ActionContainer {
+  margin-bottom: spacing(base-tight);
+}
+
+.Action {
+  @include focus-ring;
+  border-radius: var(--p-border-radius-base);
+  border-top: 1px solid var(--p-surface);
+  cursor: pointer;
+  display: block;
+  min-height: $item-min-height;
+  padding: $item-vertical-padding spacing(tight);
+  text-align: left;
+  width: 100%;
+
+  &:focus:not(:active) {
+    @include focus-ring($style: 'focused');
+  }
+
+  &.active {
+    background-color: var(--p-surface-selected);
+  }
+
+  &:active {
+    background-color: var(--p-surface-pressed);
+  }
+
+  &:hover {
+    background-color: var(--p-surface-hovered);
+    color: inherit;
+    text-decoration: none;
+
+    @media (-ms-high-contrast: active) {
+      outline: 1px solid ms-high-contrast-color('text');
+    }
+  }
+
+  &.destructive {
+    @include recolor-icon(var(--p-icon-critical));
+    color: var(--p-interactive-critical);
+
+    &:hover {
+      background-color: var(--p-surface-critical-subdued-hovered);
+    }
+
+    &:active {
+      background-color: var(--p-surface-critical-subdued-pressed);
+    }
+  }
+
+  &.disabled {
+    color: var(--p-text-disabled);
+    pointer-events: none;
+
+    // stylelint-disable-next-line selector-max-class
+    .Prefix,
+    .Suffix {
+      @include recolor-icon(var(--p-icon-disabled));
+    }
+  }
+
+  &::-moz-focus-inner {
+    border: none;
+  }
+}
+
+.Content {
+  display: flex;
+  align-items: center;
+}
 
 .Prefix {
   @include recolor-icon(var(--p-icon));
@@ -22,4 +95,9 @@ $image-size: rem(20px);
 .Suffix {
   @include recolor-icon(var(--p-icon));
   margin-left: spacing();
+}
+
+.Text {
+  @include layout-flex-fix;
+  flex: 1 1 auto;
 }

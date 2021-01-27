@@ -176,6 +176,6 @@ export const Autocomplete: React.FunctionComponent<AutocompleteProps> & {
   );
 };
 
-// TODO should be ComboBox old?
+// TODO should export old combobox
 Autocomplete.ComboBox = ComboBox;
 Autocomplete.TextField = ComboBox.TextField;
