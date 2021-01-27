@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {mountWithApp} from 'test-utilities';
-import {animationFrame} from '@shopify/jest-dom-mocks';
+import {animationFrame, timer} from '@shopify/jest-dom-mocks';
 import {KeypressListener, Button, Scrollable, VisuallyHidden} from 'components';
 import {Key} from 'types';
 import {
@@ -61,6 +61,14 @@ const keyEnter = new KeyboardEvent('keydown', {
 describe('<ListBox>', () => {
   const defaultOptionProps = {value: 'value 1', accessibilityLabel: 'one'};
   const defaultLoadingProps = {accessibilityLabel: 'accessibility label'};
+
+  beforeEach(() => {
+    timer.mock();
+  });
+
+  afterEach(() => {
+    timer.restore();
+  });
 
   describe('ul', () => {
     it('renders with tab index in order', () => {
@@ -296,22 +304,22 @@ describe('<ListBox>', () => {
 
   it('scrolls selected option into view when outside scrollable view', () => {
     animationFrame.mock();
-    const scrollIntoSpy = jest.fn();
+    const scrollBySpy = jest.fn();
     const wrapper = mountWithApp(<MockComponent />);
     const option3 = wrapper.findAll(ListBox.Option)[2]!;
 
-    option3.domNode!.scrollIntoView = scrollIntoSpy;
     const scrollable = option3.domNode?.closest('[data-polaris-scrollable]')!;
-
-    scrollable.scrollTop = -2;
+    scrollable.scrollBy = scrollBySpy;
 
     triggerUp(wrapper);
 
     expect(option3.domNode!.getAttribute('data-focused')).toBe('true');
 
+    timer.runAllTimers();
+
     animationFrame.runFrame();
 
-    expect(scrollIntoSpy).toHaveBeenCalled();
+    expect(scrollBySpy).toHaveBeenCalled();
 
     animationFrame.restore();
   });

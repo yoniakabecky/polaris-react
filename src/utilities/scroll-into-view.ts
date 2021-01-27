@@ -1,7 +1,8 @@
-export function scrollIntoView(element: HTMLElement) {
+export function scrollIntoView(element: HTMLElement, container: HTMLElement) {
   requestAnimationFrame(() => {
     if (element) {
-      element.scrollIntoView();
+      const offset = element.offsetTop - container.scrollTop;
+      container.scrollBy({top: offset});
     }
   });
 }

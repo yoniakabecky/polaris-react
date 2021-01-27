@@ -6,6 +6,7 @@ import React, {
   ReactNode,
   useMemo,
 } from 'react';
+import debounce from 'lodash/debounce';
 
 import {classNames} from '../../../../utilities/css';
 import {useToggle} from '../../../../utilities/use-toggle';
@@ -87,21 +88,32 @@ export function ListBox({
 
   const inComboBox = Boolean(setActiveOptionId);
 
-  if (setListBoxId && !listBoxId) {
-    setListBoxId(listId);
-  }
-
-  const handleScrollIntoView = (option: NavigableOption, first: boolean) => {
-    if (scrollableRef.current) {
-      const {element} = option;
-      const focusTarget = first
-        ? closestParentMatch(element, listBoxSectionDataSelector.selector) ||
-          element
-        : element;
-
-      scrollIntoView(focusTarget);
+  useEffect(() => {
+    if (setListBoxId && !listBoxId) {
+      setListBoxId(listId);
     }
-  };
+  }, [setListBoxId, listBoxId, listId]);
+
+  useEffect(() => {
+    if (!currentActiveOption || !setActiveOptionId) return;
+    setActiveOptionId(currentActiveOption.domId);
+  }, [currentActiveOption, setActiveOptionId]);
+
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const handleScrollIntoView = useCallback(
+    debounce((option: NavigableOption, first: boolean) => {
+      if (scrollableRef.current) {
+        const {element} = option;
+        const focusTarget = first
+          ? closestParentMatch(element, listBoxSectionDataSelector.selector) ||
+            element
+          : element;
+
+        scrollIntoView(focusTarget, scrollableRef.current);
+      }
+    }, 15),
+    [],
+  );
 
   const handleChangeActiveOption = useCallback(
     (nextOption?: NavigableOption) => {
@@ -111,7 +123,6 @@ export function ListBox({
         }
 
         if (nextOption) {
-          if (setActiveOptionId) setActiveOptionId(nextOption.domId);
           nextOption.element.setAttribute(DATA_ATTRIBUTE, 'true');
           if (scrollableRef.current) {
             const first =
@@ -133,7 +144,7 @@ export function ListBox({
         }
       });
     },
-    [setActiveOptionId],
+    [handleScrollIntoView],
   );
 
   useEffect(() => {
