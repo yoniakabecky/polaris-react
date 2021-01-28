@@ -8,6 +8,16 @@ $item-vertical-padding: ($item-min-height - line-height(body)) / 2;
   margin-bottom: spacing(base-tight);
 }
 
+[data-focused] {
+  .Action {
+    @include recolor-icon(var(--p-interactive));
+
+    &.destructive {
+      background-color: var(--p-surface-critical-subdued-pressed);
+    }
+  }
+}
+
 .Action {
   @include focus-ring;
   border-radius: var(--p-border-radius-base);
@@ -23,7 +33,8 @@ $item-vertical-padding: ($item-min-height - line-height(body)) / 2;
     @include focus-ring($style: 'focused');
   }
 
-  &.active {
+  &.selected {
+    @include recolor-icon(var(--p-interactive));
     background-color: var(--p-surface-selected);
   }
 
@@ -45,12 +56,13 @@ $item-vertical-padding: ($item-min-height - line-height(body)) / 2;
     @include recolor-icon(var(--p-icon-critical));
     color: var(--p-interactive-critical);
 
-    &:hover {
-      background-color: var(--p-surface-critical-subdued-hovered);
+    // stylelint-disable-next-line selector-max-class
+    &.selected {
+      background-color: var(--p-surface-critical-subdued-pressed);
     }
 
-    &:active {
-      background-color: var(--p-surface-critical-subdued-pressed);
+    &:hover {
+      background-color: var(--p-surface-critical-subdued-hovered);
     }
   }
 

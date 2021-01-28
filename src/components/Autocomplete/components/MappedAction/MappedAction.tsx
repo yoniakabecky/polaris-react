@@ -96,7 +96,7 @@ export function MappedAction({
     styles.Action,
     disabled && styles.disabled,
     destructive && styles.destructive,
-    active && styles.active,
+    active && styles.selected,
   );
 
   return (
