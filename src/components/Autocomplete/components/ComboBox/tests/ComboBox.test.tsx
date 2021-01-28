@@ -26,7 +26,7 @@ describe('<ComboBox />', () => {
     expect(combobox).toContainReactComponent(Popover, {
       active: false,
       onClose: expect.any(Function),
-      preventAutofocus: true,
+      autofocusTarget: 'none',
       fullWidth: true,
       preferInputActivator: false,
     });
@@ -216,11 +216,11 @@ describe('<ComboBox />', () => {
       });
     });
 
-    it('has preventAutofocus', () => {
+    it('has autofocusTarget of none', () => {
       const combobox = mountWithApp(<ComboBox activator={activator} />);
 
       expect(combobox).toContainReactComponent(Popover, {
-        preventAutofocus: true,
+        autofocusTarget: 'none',
       });
     });
 

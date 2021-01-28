@@ -39,6 +39,7 @@ $item-vertical-padding: ($item-min-height - line-height(body)) / 2;
   }
 
   &:active {
+    @include recolor-icon(var(--p-interactive));
     background-color: var(--p-surface-pressed);
   }
 

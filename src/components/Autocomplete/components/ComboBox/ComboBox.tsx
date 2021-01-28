@@ -129,7 +129,7 @@ export function ComboBox({
           {activator}
         </ComboBoxTextFieldContext.Provider>
       }
-      preventAutofocus
+      autofocusTarget="none"
       preventFocusOnClose
       fullWidth
       preferInputActivator={false}
