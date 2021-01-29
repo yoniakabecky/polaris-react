@@ -170,7 +170,6 @@ function MultiAutocompleteExample() {
       label="Tags"
       value={inputValue}
       placeholder="Vintage, cotton, summer"
-      clearButton
     />
   );
 
@@ -667,11 +666,8 @@ function AutocompleteActionBeforeExample() {
       <Autocomplete
         actionBefore={{
           accessibilityLabel: 'Destructive action label',
-          active: false,
           content: 'Destructive action',
-          disabled: false,
           destructive: true,
-          ellipsis: false,
           icon: DeleteMinor,
         }}
         options={options}

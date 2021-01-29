@@ -73,7 +73,7 @@ export const Autocomplete: React.FunctionComponent<AutocompleteProps> & {
         ? conditionalOptions.map((option) => (
             <MappedOption
               {...option}
-              key={option.id}
+              key={option.id || option.value}
               selected={selected.includes(option.value)}
               singleSelection={!allowMultiple}
             />
