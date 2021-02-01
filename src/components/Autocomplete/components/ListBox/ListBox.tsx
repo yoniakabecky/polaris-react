@@ -35,13 +35,13 @@ import {
 import styles from './ListBox.scss';
 
 export interface ListBoxProps {
-  // ListBox.option
+  /** Inner content of the listbox */
   children: ReactNode;
-  // Explicitly enable keyboard control
+  /** Explicitly enable keyboard control */
   enableKeyboardControl?: boolean;
-  // Visually hidden text for screen readers
+  /** Visually hidden text for screen readers */
   accessibilityLabel?: string;
-  // Callback when an option is selected
+  /** Callback when an option is selected */
   onSelect?(value: string): void;
 }
 
