@@ -134,12 +134,6 @@ export function ListBox({
           }
           return nextOption;
         } else {
-          // This function is called 3 times
-          // onBlur - cannot exists without combobox which invoke this function without a nextOption
-          // handleArrow - returns early if a valid option is not found
-          // onOptionSelect - is passed to option so the option always exists
-          // TODO confirm before delete
-          // if (setActiveOptionId) setActiveOptionId('');
           return undefined;
         }
       });
@@ -216,7 +210,6 @@ export function ListBox({
       return nextElement;
     }
 
-    // TODO - Confirm optional UX
     return null;
   }
 
@@ -268,7 +261,7 @@ export function ListBox({
     disableKeyboardEvents();
   }
 
-  const listenners =
+  const listeners =
     keyboardEventsEnabled || textFieldFocused ? (
       <>
         <KeypressListener
@@ -291,7 +284,7 @@ export function ListBox({
 
   return (
     <>
-      {listenners}
+      {listeners}
       <VisuallyHidden>
         <div aria-live="polite">{loading ? loading : null}</div>
       </VisuallyHidden>

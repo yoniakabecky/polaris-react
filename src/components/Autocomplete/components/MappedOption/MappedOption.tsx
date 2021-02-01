@@ -12,8 +12,6 @@ type MappedOption = ArrayElement<ComboBoxOldProps['options']> & {
   singleSelection: boolean;
 };
 
-// id was previous used for label/checked or button & react key
-// they don't extend the API so we can omit them
 export const MappedOption = memo(function MappedOption({
   label,
   value,
@@ -37,7 +35,7 @@ export const MappedOption = memo(function MappedOption({
   return (
     <ListBox.Option
       accessibilityLabel={accessibilityLabel}
-      key={`${value}`}
+      key={value}
       selected={selected}
       value={value}
       disabled={disabled}
