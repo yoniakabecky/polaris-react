@@ -236,6 +236,9 @@ export class PopoverOverlay extends PureComponent<PopoverOverlayProps, State> {
         <EventListener event="click" handler={this.handleClick} />
         <EventListener event="touchstart" handler={this.handleClick} />
         <KeypressListener keyCode={Key.Escape} handler={this.handleEscape} />
+        <KeypressListener keyCode={Key.Enter} handler={this.handleToggle} />
+        <KeypressListener keyCode={Key.Space} handler={this.handleToggle} />
+
         <div
           className={styles.FocusTracker}
           // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
@@ -282,6 +285,8 @@ export class PopoverOverlay extends PureComponent<PopoverOverlayProps, State> {
   private handleEscape = () => {
     this.props.onClose(PopoverCloseSource.EscapeKeypress);
   };
+
+  private handleToggle = (event: KeyboardEvent) => {};
 
   private handleFocusFirstItem = () => {
     this.props.onClose(PopoverCloseSource.FocusOut);

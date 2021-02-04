@@ -55,10 +55,13 @@ $content-max-width: rem(400px);
 
 .Wrapper {
   position: relative;
-  overflow: hidden;
+  overflow: visible;
   background-color: var(--p-surface);
   border-radius: var(--p-border-radius-wide);
   outline: 1px solid transparent;
+  &:focus {
+    @include focus-ring;
+  }
 }
 
 .Content {
@@ -69,9 +72,9 @@ $content-max-width: rem(400px);
   max-width: $content-max-width;
   max-height: $content-max-height;
 
-  &:focus {
-    outline: none;
-  }
+  // &:focus {
+  //   @include focus-ring;
+  // }
 }
 
 .Content-fullHeight {
