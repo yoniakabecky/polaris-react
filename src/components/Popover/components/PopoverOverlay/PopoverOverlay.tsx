@@ -237,7 +237,7 @@ export class PopoverOverlay extends PureComponent<PopoverOverlayProps, State> {
         <EventListener event="touchstart" handler={this.handleClick} />
         <KeypressListener keyCode={Key.Escape} handler={this.handleEscape} />
         <KeypressListener keyCode={Key.Enter} handler={this.handleToggle} />
-        <KeypressListener keyCode={Key.Space} handler={this.handleToggle} />
+        {/* <KeypressListener keyCode={Key.Space} handler={this.handleToggle} /> */}
 
         <div
           className={styles.FocusTracker}
@@ -289,10 +289,13 @@ export class PopoverOverlay extends PureComponent<PopoverOverlayProps, State> {
   private handleToggle = (event: KeyboardEvent) => {};
 
   private handleFocusFirstItem = () => {
+    console.log('Handle Focus First');
     this.props.onClose(PopoverCloseSource.FocusOut);
   };
 
   private handleFocusLastItem = () => {
+    console.log('Handle Focus LAST');
+
     this.props.onClose(PopoverCloseSource.FocusOut);
   };
 }
