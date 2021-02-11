@@ -373,24 +373,6 @@ Use when there is only one primary action but other related actions can be taken
 </div>
 ```
 
-### Button with Icon
-
-Use the icon property to add an icon to your Button
-
-```jsx
-<Button icon={ExternalMinor}>Add to Cart</Button>
-```
-
-### Button with Icon after
-
-By default icons are placed before the button content, use the `iconPlacement` property to display the icon after the content instead.
-
-```jsx
-<Button iconPlacement="after" icon={ExternalMinor}>
-  Continue
-</Button>
-```
-
 ### Disabled state
 
 Use for actions that aren’t currently available. The surrounding interface should make it clear why the button is disabled and what needs to be done to enable it.
@@ -441,6 +423,24 @@ Use when a button has been pressed and the associated action is in progress.
 
 ```jsx
 <Button loading>Save product</Button>
+```
+
+### Button with Icon
+
+Use the icon property to add an icon to your Button
+
+```jsx
+<Button icon={ExternalMinor}>Add to Cart</Button>
+```
+
+### Button with Icon after
+
+By default icons are placed before the button content, use the `iconPlacement` property to display the icon after the content instead.
+
+```jsx
+<Button iconPlacement="after" icon={ExternalMinor}>
+  Continue
+</Button>
 ```
 
 ---
