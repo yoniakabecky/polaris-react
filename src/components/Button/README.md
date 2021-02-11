@@ -378,13 +378,15 @@ Use when there is only one primary action but other related actions can be taken
 Use the icon property to add an icon to your Button
 
 ```jsx
-<Button icon={CartMajor}>Add to Cart</Button>
+<Button icon={ExternalMinor}>Add to Cart</Button>
 ```
+
+### Button with Icon after
 
 By default icons are placed before the button content, use the `iconPlacement` property to display the icon after the content instead.
 
 ```jsx
-<Button iconPlacement="after" icon={ArrowRightMinor}>
+<Button iconPlacement="after" icon={ExternalMinor}>
   Continue
 </Button>
 ```
